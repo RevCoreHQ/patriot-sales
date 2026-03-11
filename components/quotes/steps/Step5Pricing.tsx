@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useWizardStore } from '@/store/wizard';
 import { useSettingsStore } from '@/store/settings';
-import { useAuthStore } from '@/store/auth';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Input';
 import { buildLineItems, buildPoolLineItems, calculateTotals } from '@/lib/pricing';
@@ -13,8 +12,7 @@ import { Lock } from 'lucide-react';
 export function Step5Pricing() {
   const { manualLineItems, addonSelections, siteConditions, projectTypes, poolConfig, discountPercent, setDiscountPercent, discountName, setDiscountName, priceOverride, setPriceOverride, notes, setNotes, internalNotes, setInternalNotes } = useWizardStore();
   const { settings } = useSettingsStore();
-  const { currentUser } = useAuthStore();
-  const isAdmin = currentUser?.role === 'admin';
+  const isAdmin = true;
   const [overrideEnabled, setOverrideEnabled] = useState(priceOverride !== undefined);
 
   // addons + demo from site conditions; manual items handle everything else
