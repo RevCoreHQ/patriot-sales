@@ -1,22 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { AppShell } from '@/components/layout/AppShell';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Input';
 import { useSettingsStore } from '@/store/settings';
-import { useAuthStore } from '@/store/auth';
 import { useQuotesStore } from '@/store/quotes';
 import { useProjectsStore } from '@/store/projects';
 import { seedSampleData } from '@/lib/storage';
 import type { AppSettings } from '@/types';
-import { CheckCircle2, Trash2, Database, LogOut, User } from 'lucide-react';
+import { CheckCircle2, Trash2, Database } from 'lucide-react';
 
 export default function SettingsPage() {
-  const router = useRouter();
   const { settings, init, update } = useSettingsStore();
-  const { currentUser, logout } = useAuthStore();
   const { init: initQuotes } = useQuotesStore();
   const { init: initProjects } = useProjectsStore();
   const [form, setForm] = useState<AppSettings>(settings);
@@ -39,11 +35,6 @@ export default function SettingsPage() {
     initProjects();
     setDataAction('loaded');
     setTimeout(() => setDataAction('idle'), 2500);
-  };
-
-  const handleLogout = () => {
-    logout();
-    router.replace('/login');
   };
 
   useEffect(() => { init(); }, []);
@@ -78,28 +69,6 @@ export default function SettingsPage() {
         </div>
 
         <div className="space-y-6">
-          {/* Profile & Logout */}
-          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center">
-                  <User className="w-5 h-5 text-amber-400" />
-                </div>
-                <div>
-                  <div className="text-base font-bold text-c-text">{currentUser?.name ?? 'User'}</div>
-                  <div className="text-xs text-c-text-4 capitalize">{currentUser?.role ?? 'sales'}</div>
-                </div>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm font-semibold bg-red-500/8 border border-red-500/20 text-red-400 hover:bg-red-500/12 active:scale-[0.98] transition-all"
-              >
-                <LogOut className="w-4 h-4" />
-                Log Out
-              </button>
-            </div>
-          </section>
-
           {/* Company */}
           <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-c-text mb-4">Company Information</h2>

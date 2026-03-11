@@ -2,9 +2,8 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useAuthStore } from '@/store/auth';
 import { useThemeStore } from '@/store/theme';
 import { useQuotesStore } from '@/store/quotes';
 import { useProjectsStore } from '@/store/projects';
@@ -58,24 +57,15 @@ const TABS: Tab[] = [
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const router = useRouter();
-  const { currentUser, initialized, init } = useAuthStore();
   const { init: initTheme } = useThemeStore();
   const { init: initQuotes } = useQuotesStore();
   const { init: initProjects } = useProjectsStore();
 
   useEffect(() => {
-    init();
     initTheme();
     initQuotes();
     initProjects();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (initialized && !currentUser) router.replace('/login');
-  }, [initialized, currentUser, router]);
-
-  if (!initialized || !currentUser) return null;
 
   // Hide tab bar on presentation (fullscreen) routes
   const hideTabBar = pathname.startsWith('/presentation');
