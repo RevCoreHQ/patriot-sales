@@ -1,20 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { AppShell } from '@/components/layout/AppShell';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Input';
 import { useSettingsStore } from '@/store/settings';
-import { useThemeStore } from '@/store/theme';
+import { useAuthStore } from '@/store/auth';
 import { useQuotesStore } from '@/store/quotes';
 import { useProjectsStore } from '@/store/projects';
 import { seedSampleData } from '@/lib/storage';
 import type { AppSettings } from '@/types';
-import { CheckCircle2, Moon, Sun, Trash2, Database } from 'lucide-react';
+import { CheckCircle2, Trash2, Database, LogOut, User } from 'lucide-react';
 
 export default function SettingsPage() {
+  const router = useRouter();
   const { settings, init, update } = useSettingsStore();
-  const { theme, setTheme } = useThemeStore();
+  const { currentUser, logout } = useAuthStore();
   const { init: initQuotes } = useQuotesStore();
   const { init: initProjects } = useProjectsStore();
   const [form, setForm] = useState<AppSettings>(settings);
@@ -37,6 +39,11 @@ export default function SettingsPage() {
     initProjects();
     setDataAction('loaded');
     setTimeout(() => setDataAction('idle'), 2500);
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.replace('/login');
   };
 
   useEffect(() => { init(); }, []);
@@ -63,7 +70,7 @@ export default function SettingsPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-c-text">Settings</h1>
-            <p className="text-sm text-neutral-500 mt-0.5">Configure your company and pricing information</p>
+            <p className="text-sm text-c-text-4 mt-0.5">Configure your company and pricing information</p>
           </div>
           <Button onClick={handleSave} className="gap-2">
             {saved ? <><CheckCircle2 className="w-4 h-4" /> Saved!</> : 'Save Changes'}
@@ -71,32 +78,30 @@ export default function SettingsPage() {
         </div>
 
         <div className="space-y-6">
-          {/* Appearance */}
-          <section className="bg-c-card border border-c-border-inner rounded-xl p-5">
-            <h2 className="text-sm font-semibold text-c-text mb-4">Appearance</h2>
+          {/* Profile & Logout */}
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <div className="flex items-center justify-between">
-              <div>
-                <div className="text-sm text-c-text font-medium">Theme</div>
-                <div className="text-xs text-neutral-500 mt-0.5">Choose between dark and light interface</div>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center">
+                  <User className="w-5 h-5 text-amber-400" />
+                </div>
+                <div>
+                  <div className="text-base font-bold text-c-text">{currentUser?.name ?? 'User'}</div>
+                  <div className="text-xs text-c-text-4 capitalize">{currentUser?.role ?? 'sales'}</div>
+                </div>
               </div>
-              <div className="flex gap-2">
-                {(['dark', 'light'] as const).map(t => (
-                  <button key={t} onClick={() => setTheme(t)}
-                    className={`flex items-center gap-2 h-11 px-5 rounded-xl border text-sm font-medium transition-all ${
-                      theme === t
-                        ? 'bg-amber-500/15 border-amber-500/40 text-amber-400'
-                        : 'border-c-border-input text-neutral-500 hover:border-c-border-hover hover:text-neutral-300'
-                    }`}>
-                    {t === 'dark' ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
-                    {t === 'dark' ? 'Dark' : 'Light'}
-                  </button>
-                ))}
-              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm font-semibold bg-red-500/8 border border-red-500/20 text-red-400 hover:bg-red-500/12 active:scale-[0.98] transition-all"
+              >
+                <LogOut className="w-4 h-4" />
+                Log Out
+              </button>
             </div>
           </section>
 
           {/* Company */}
-          <section className="bg-c-card border border-c-border-inner rounded-xl p-5">
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-c-text mb-4">Company Information</h2>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
@@ -116,7 +121,7 @@ export default function SettingsPage() {
           </section>
 
           {/* Sales Rep */}
-          <section className="bg-c-card border border-c-border-inner rounded-xl p-5">
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-c-text mb-4">Sales Representative</h2>
             <div className="grid grid-cols-2 gap-4">
               <Input label="Name" value={form.salesRep.name} onChange={e => setSalesRep({ name: e.target.value })} />
@@ -127,7 +132,7 @@ export default function SettingsPage() {
           </section>
 
           {/* Pricing */}
-          <section className="bg-c-card border border-c-border-inner rounded-xl p-5">
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-c-text mb-4">Pricing Defaults</h2>
             <div className="grid grid-cols-3 gap-4">
               <Input
@@ -154,7 +159,7 @@ export default function SettingsPage() {
           </section>
 
           {/* Financing */}
-          <section className="bg-c-card border border-c-border-inner rounded-xl p-5">
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-c-text mb-4">Financing Options</h2>
             <div className="space-y-3">
               {form.financing.map((opt, i) => (
@@ -189,20 +194,20 @@ export default function SettingsPage() {
                       setForm(prev => ({ ...prev, financing: f }));
                     }}
                   />
-                  <div className="text-xs text-neutral-500 pb-2">Option {i + 1}</div>
+                  <div className="text-xs text-c-text-4 pb-2">Option {i + 1}</div>
                 </div>
               ))}
             </div>
           </section>
 
           {/* Presentation */}
-          <section className="bg-c-card border border-c-border-inner rounded-xl p-5">
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-c-text mb-4">Presentation Settings</h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-sm text-c-text">Show Financing Slide</div>
-                  <div className="text-xs text-neutral-500">Include financing options in the client presentation</div>
+                  <div className="text-xs text-c-text-4">Include financing options in the client presentation</div>
                 </div>
                 <button
                   onClick={() => setPresentation({ showFinancing: !form.presentation.showFinancing })}
@@ -221,21 +226,22 @@ export default function SettingsPage() {
               )}
             </div>
           </section>
+
           {/* Data Management */}
-          <section className="bg-c-card border border-c-border-inner rounded-xl p-5">
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-c-text mb-1">Data Management</h2>
             <p className="text-xs text-c-text-4 mb-4">Reset the app or load sample data for demonstrations.</p>
             <div className="flex gap-3">
               <button
                 onClick={handleLoadSampleData}
-                className="flex items-center gap-2.5 h-11 px-5 rounded-xl text-sm font-semibold bg-amber-500/10 border border-amber-500/25 text-amber-400 hover:bg-amber-500/15 active:scale-[0.98] transition-all"
+                className="flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm font-semibold bg-amber-500/10 border border-amber-500/25 text-amber-400 hover:bg-amber-500/15 active:scale-[0.98] transition-all"
               >
                 <Database className="w-4 h-4" />
                 {dataAction === 'loaded' ? 'Sample Data Loaded!' : 'Load Sample Data'}
               </button>
               <button
                 onClick={handleClearAllData}
-                className="flex items-center gap-2.5 h-11 px-5 rounded-xl text-sm font-semibold bg-red-500/8 border border-red-500/20 text-red-400 hover:bg-red-500/12 active:scale-[0.98] transition-all"
+                className="flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm font-semibold bg-red-500/8 border border-red-500/20 text-red-400 hover:bg-red-500/12 active:scale-[0.98] transition-all"
               >
                 <Trash2 className="w-4 h-4" />
                 {dataAction === 'cleared' ? 'All Data Cleared!' : 'Clear All Data'}

@@ -110,7 +110,7 @@ export default function LoginPage() {
                 <div
                   key={i}
                   className={`w-4 h-4 rounded-full transition-all duration-150 ${
-                    i < pin.length ? 'bg-amber-400 scale-110' : 'bg-c-border-inner'
+                    i < pin.length ? 'bg-amber-400 scale-110 shadow-[0_0_12px_rgba(245,158,11,0.5)]' : 'bg-c-border-inner'
                   }`}
                 />
               ))}
@@ -120,17 +120,17 @@ export default function LoginPage() {
             <div className="grid grid-cols-3 gap-3">
               {['1','2','3','4','5','6','7','8','9'].map(d => (
                 <button key={d} onClick={() => appendPin(d)}
-                  className="h-16 text-xl font-semibold text-c-text rounded-xl bg-c-surface hover:bg-c-elevated active:scale-95 transition-all border border-c-border-inner">
+                  className="h-[72px] text-xl font-semibold text-c-text rounded-2xl bg-c-surface hover:bg-c-elevated active:scale-95 transition-all border border-c-border-inner">
                   {d}
                 </button>
               ))}
               <div />
               <button onClick={() => appendPin('0')}
-                className="h-16 text-xl font-semibold text-c-text rounded-xl bg-c-surface hover:bg-c-elevated active:scale-95 transition-all border border-c-border-inner">
+                className="h-[72px] text-xl font-semibold text-c-text rounded-2xl bg-c-surface hover:bg-c-elevated active:scale-95 transition-all border border-c-border-inner">
                 0
               </button>
               <button onClick={deletePin}
-                className="h-16 flex items-center justify-center text-c-text-3 hover:text-c-text rounded-xl bg-c-surface hover:bg-c-elevated active:scale-95 transition-all border border-c-border-inner">
+                className="h-[72px] flex items-center justify-center text-c-text-3 hover:text-c-text rounded-2xl bg-c-surface hover:bg-c-elevated active:scale-95 transition-all border border-c-border-inner">
                 <Delete className="w-5 h-5" />
               </button>
             </div>

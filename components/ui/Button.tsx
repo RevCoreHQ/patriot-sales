@@ -13,7 +13,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled}
         className={cn(
-          'inline-flex items-center justify-center gap-2 font-semibold rounded-xl cursor-pointer select-none transition-all active:scale-[0.97]',
+          'inline-flex items-center justify-center gap-2 font-semibold rounded-2xl cursor-pointer select-none transition-all active:scale-[0.97]',
           'disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100',
           {
             // Variants
@@ -22,9 +22,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             'active:bg-c-elevated text-c-text-3 active:text-c-text': variant === 'ghost',
             'bg-red-500/10 active:bg-red-500/20 text-red-400 border border-red-500/20': variant === 'danger',
             'border border-c-border-inner active:border-amber-500/50 text-c-text active:text-amber-400 bg-transparent': variant === 'outline',
-            // Sizes — all meet 44px minimum touch target
-            'h-11 px-4 text-sm': size === 'sm',
-            'h-11 px-5 text-sm': size === 'md',
+            // Sizes — 48px minimum touch targets
+            'h-12 px-5 text-sm': size === 'sm',
+            'h-13 px-6 text-sm': size === 'md',
             'h-14 px-8 text-base': size === 'lg',
           },
           className

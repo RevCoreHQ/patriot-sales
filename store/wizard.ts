@@ -3,13 +3,11 @@
 import { create } from 'zustand';
 import type { WizardState, ProjectTypeId, MaterialSelection, AddonSelection, SiteConditions, Client, PoolConfig, LineItem } from '@/types';
 
-function stepsForTypes(types: ProjectTypeId[]): number {
-  return types.includes('pool-construction') ? 8 : 7;
-}
+const TOTAL_STEPS = 4;
 
 const INITIAL_STATE: WizardState = {
   currentStep: 0,
-  totalSteps: 7,
+  totalSteps: TOTAL_STEPS,
   client: {},
   projectTypes: [],
   siteConditions: {
@@ -62,13 +60,13 @@ export const useWizardStore = create<WizardStore>((set) => ({
   prevStep: () => set((s) => ({ currentStep: Math.max(s.currentStep - 1, 0) })),
 
   setClient: (client) => set((s) => ({ client: { ...s.client, ...client } })),
-  setProjectTypes: (projectTypes) => set({ projectTypes, totalSteps: stepsForTypes(projectTypes) }),
+  setProjectTypes: (projectTypes) => set({ projectTypes, totalSteps: TOTAL_STEPS }),
   toggleProjectType: (type) =>
     set((s) => {
       const newTypes = s.projectTypes.includes(type)
         ? s.projectTypes.filter((t) => t !== type)
         : [...s.projectTypes, type];
-      return { projectTypes: newTypes, totalSteps: stepsForTypes(newTypes) };
+      return { projectTypes: newTypes, totalSteps: TOTAL_STEPS };
     }),
 
   setSiteConditions: (conditions) =>

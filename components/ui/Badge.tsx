@@ -10,7 +10,7 @@ interface BadgeProps {
 export function Badge({ children, variant = 'neutral', className }: BadgeProps) {
   return (
     <span className={cn(
-      'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium',
+      'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium',
       {
         'bg-amber-500/15 text-amber-400 border border-amber-500/20': variant === 'amber',
         'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20': variant === 'green',

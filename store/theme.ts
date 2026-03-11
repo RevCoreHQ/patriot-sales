@@ -2,43 +2,23 @@
 
 import { create } from 'zustand';
 
-export type Theme = 'dark' | 'light';
-const THEME_KEY = 'rnr:theme';
+export type Theme = 'dark';
 
-function isClient() { return typeof window !== 'undefined'; }
-
-function applyTheme(theme: Theme) {
-  if (!isClient()) return;
-  document.documentElement.setAttribute('data-theme', theme);
+function applyTheme() {
+  if (typeof window === 'undefined') return;
+  document.documentElement.setAttribute('data-theme', 'dark');
 }
 
 interface ThemeStore {
   theme: Theme;
   init: () => void;
-  setTheme: (t: Theme) => void;
-  toggle: () => void;
 }
 
-export const useThemeStore = create<ThemeStore>((set, get) => ({
+export const useThemeStore = create<ThemeStore>((set) => ({
   theme: 'dark',
 
   init: () => {
-    if (!isClient()) return;
-    const saved = localStorage.getItem(THEME_KEY) as Theme | null;
-    const theme = saved ?? 'dark';
-    applyTheme(theme);
-    set({ theme });
-  },
-
-  setTheme: (theme) => {
-    if (!isClient()) return;
-    localStorage.setItem(THEME_KEY, theme);
-    applyTheme(theme);
-    set({ theme });
-  },
-
-  toggle: () => {
-    const next = get().theme === 'dark' ? 'light' : 'dark';
-    get().setTheme(next);
+    applyTheme();
+    set({ theme: 'dark' });
   },
 }));
