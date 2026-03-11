@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+/* ── Dark theme (default) ──────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --background: #06060b;
+  --foreground: #f0f0f0;
+  --card: #0f0f18;
+  --border: rgba(255,255,255,0.07);
+  --sidebar: #09090f;
+  --sidebar-border: rgba(255,255,255,0.06);
+  --surface: #0d0d15;
+  --surface-2: #141420;
+  --input-bg: #0f0f18;
+  --accent: #f59e0b;
+  --muted: #6b7280;
+  --muted-text: rgba(255,255,255,0.35);
+  --scrollbar: rgba(255,255,255,0.1);
+
+  /* ── Component surface tokens ── */
+  --c-card: #17171f;
+  --c-surface: #1c1c26;
+  --c-input: #14141c;
+  --c-elevated: #242432;
+  --c-tag: #20202c;
+  /* ── Border tokens ── */
+  --c-border: rgba(255,255,255,0.12);
+  --c-border-inner: rgba(255,255,255,0.10);
+  --c-border-input: #333345;
+  --c-border-hover: #444458;
+  /* ── Text tokens ── */
+  --c-text: #ffffff;
+  --c-text-2: rgba(255,255,255,0.6);
+  --c-text-3: rgba(255,255,255,0.4);
+  --c-text-4: rgba(255,255,255,0.25);
+  --c-text-5: rgba(255,255,255,0.12);
+}
+
+/* ── Light theme ───────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --background: #f2ede4;
+  --foreground: #1a1612;
+  --card: #ffffff;
+  --border: rgba(0,0,0,0.09);
+  --sidebar: #ffffff;
+  --sidebar-border: rgba(0,0,0,0.08);
+  --surface: #faf7f2;
+  --surface-2: #f0ebe1;
+  --input-bg: #faf7f2;
+  --accent: #f59e0b;
+  --muted: #78716c;
+  --muted-text: rgba(0,0,0,0.45);
+  --scrollbar: rgba(0,0,0,0.15);
+
+  /* ── Component surface tokens ── */
+  --c-card: #ffffff;
+  --c-surface: #f5f0e8;
+  --c-input: #faf7f2;
+  --c-elevated: #ede8de;
+  --c-tag: #ede8de;
+  /* ── Border tokens ── */
+  --c-border: rgba(0,0,0,0.08);
+  --c-border-inner: rgba(0,0,0,0.07);
+  --c-border-input: rgba(0,0,0,0.14);
+  --c-border-hover: rgba(0,0,0,0.22);
+  /* ── Text tokens ── */
+  --c-text: #1a1612;
+  --c-text-2: rgba(0,0,0,0.6);
+  --c-text-3: rgba(0,0,0,0.45);
+  --c-text-4: rgba(0,0,0,0.28);
+  --c-text-5: rgba(0,0,0,0.12);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  /* ── Semantic surface colors (bg-c-card, bg-c-surface, etc.) ── */
+  --color-c-card: var(--c-card);
+  --color-c-surface: var(--c-surface);
+  --color-c-input: var(--c-input);
+  --color-c-elevated: var(--c-elevated);
+  --color-c-tag: var(--c-tag);
+  /* ── Semantic text colors (text-c-text, text-c-text-3, etc.) ── */
+  --color-c-text: var(--c-text);
+  --color-c-text-2: var(--c-text-2);
+  --color-c-text-3: var(--c-text-3);
+  --color-c-text-4: var(--c-text-4);
+  --color-c-text-5: var(--c-text-5);
+  /* ── Semantic border colors ── */
+  --color-c-border: var(--c-border);
+  --color-c-border-inner: var(--c-border-inner);
+  --color-c-border-input: var(--c-border-input);
+  --color-c-border-hover: var(--c-border-hover);
+}
+
+/* ── Base ───────────────────────────────────────────────────────────── */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ── Light theme structural overrides ───────────────────────────────── */
+[data-theme="light"] aside {
+  background: var(--sidebar) !important;
+  border-color: var(--sidebar-border) !important;
+}
+[data-theme="light"] aside a,
+[data-theme="light"] aside span,
+[data-theme="light"] aside div {
+  transition: color 0.2s ease;
+}
+[data-theme="light"] main {
+  background: var(--background) !important;
+}
+
+/* ── Card elevation — border-only, no glow ──────────────────────────── */
+[data-theme="dark"] .bg-c-card {
+  box-shadow: 0 0 0 0.5px rgba(255,255,255,0.07);
+}
+[data-theme="dark"] .bg-c-card:hover {
+  box-shadow: 0 0 0 0.5px rgba(255,255,255,0.12);
+  transition: box-shadow 0.15s ease;
+}
+[data-theme="dark"] .bg-c-surface {
+  box-shadow: 0 0 0 0.5px rgba(255,255,255,0.05);
+}
+[data-theme="light"] .bg-c-card {
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
+}
+[data-theme="light"] .bg-c-card:hover {
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.07);
+  transition: box-shadow 0.15s ease;
+}
+
+/* ── iPad / Touch optimizations ───────────────────────────────────── */
+button, a, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+input, textarea, select {
+  font-size: 16px !important;
+  touch-action: manipulation;
+}
+.overflow-y-auto, .overflow-x-auto, .overflow-auto {
+  -webkit-overflow-scrolling: touch;
+}
+button, nav a {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 4px; }
+
+/* ── Date input color-scheme ────────────────────────────────────────── */
+[data-theme="dark"] input[type="date"] { color-scheme: dark; }
+[data-theme="light"] input[type="date"] { color-scheme: light; }
+
+/* ── Autofill override ──────────────────────────────────────────────── */
+[data-theme="dark"] input:-webkit-autofill,
+[data-theme="dark"] input:-webkit-autofill:hover,
+[data-theme="dark"] input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #f0f0f0;
+  -webkit-box-shadow: 0 0 0px 1000px #13131e inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+[data-theme="light"] input:-webkit-autofill,
+[data-theme="light"] input:-webkit-autofill:hover,
+[data-theme="light"] input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1a1612;
+  -webkit-box-shadow: 0 0 0px 1000px #faf7f2 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
