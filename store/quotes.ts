@@ -3,6 +3,7 @@
 import { create } from 'zustand';
 import type { Quote, QuoteStatus } from '@/types';
 import { getQuotes, saveQuote, deleteQuote } from '@/lib/storage';
+import { generateId } from '@/lib/utils';
 
 interface QuotesStore {
   quotes: Quote[];
@@ -12,6 +13,7 @@ interface QuotesStore {
   remove: (id: string) => void;
   updateStatus: (id: string, status: QuoteStatus) => void;
   sign: (id: string, signatureData: string, signedBy: string) => void;
+  duplicate: (id: string) => string | undefined;
   getById: (id: string) => Quote | undefined;
 }
 
@@ -61,6 +63,32 @@ export const useQuotesStore = create<QuotesStore>((set, get) => ({
       updatedAt: new Date().toISOString(),
     };
     save(updated);
+  },
+
+  duplicate: (id: string) => {
+    const quote = get().quotes.find((q) => q.id === id);
+    if (!quote) return undefined;
+    const now = new Date().toISOString();
+    const validUntil = new Date();
+    validUntil.setDate(validUntil.getDate() + 30);
+    const newQuote: Quote = {
+      ...structuredClone(quote),
+      id: generateId(),
+      status: 'draft',
+      signatureData: undefined,
+      signedAt: undefined,
+      signedBy: undefined,
+      presentedAt: undefined,
+      createdAt: now,
+      updatedAt: now,
+      validUntil: validUntil.toISOString(),
+      internalNotes: quote.internalNotes
+        ? `Duplicated from quote. ${quote.internalNotes}`
+        : 'Duplicated from previous quote.',
+    };
+    const { save } = get();
+    save(newQuote);
+    return newQuote.id;
   },
 
   getById: (id: string) => {

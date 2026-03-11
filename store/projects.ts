@@ -1,7 +1,7 @@
 'use client';
 
 import { create } from 'zustand';
-import type { Project, ProjectPhase, ProjectUpdate, ProjectTodo, CloseoutItem, PaymentTransaction, PaymentType, PaymentMethod } from '@/types';
+import type { Project, ProjectPhase, ProjectUpdate, ProjectTodo, CloseoutItem, PaymentTransaction, PaymentType, PaymentMethod, ProjectPhoto } from '@/types';
 import { DEFAULT_CLOSEOUT_CHECKLIST } from '@/types';
 import { generateId } from '@/lib/utils';
 
@@ -14,12 +14,13 @@ function loadProjects(): Project[] {
   try {
     const r = localStorage.getItem(PROJECTS_KEY);
     const raw = r ? JSON.parse(r) : [];
-    // Migrate older records that lack todos/closeoutChecklist/payments
+    // Migrate older records that lack todos/closeoutChecklist/payments/photos
     return raw.map((p: Project) => ({
       ...p,
       todos: p.todos ?? [],
       closeoutChecklist: p.closeoutChecklist ?? DEFAULT_CLOSEOUT_CHECKLIST.map(item => ({ ...item, id: generateId() })),
       payments: p.payments ?? [],
+      photos: p.photos ?? [],
     }));
   } catch { return []; }
 }
@@ -48,6 +49,9 @@ interface ProjectsStore {
   // Payments
   addPayment: (id: string, amount: number, type: PaymentType, method: PaymentMethod, note?: string) => void;
   removePayment: (id: string, paymentId: string) => void;
+  // Photos
+  addPhoto: (id: string, photo: Omit<ProjectPhoto, 'id' | 'timestamp'>) => void;
+  removePhoto: (id: string, photoId: string) => void;
   remove: (id: string) => void;
   getByQuoteId: (quoteId: string) => Project | undefined;
 }
@@ -72,6 +76,7 @@ export const useProjectsStore = create<ProjectsStore>((set, get) => ({
       cashCollected: 0,
       payments: [],
       todos: [],
+      photos: [],
       closeoutChecklist: DEFAULT_CLOSEOUT_CHECKLIST.map(item => ({ ...item, id: generateId() })),
       updates: [{
         id: generateId(),
@@ -208,6 +213,23 @@ export const useProjectsStore = create<ProjectsStore>((set, get) => ({
       const cashCollected = payments.reduce((s, t) => s + t.amount, 0);
       return { ...p, payments, cashCollected, updatedAt: new Date().toISOString() };
     });
+    saveProjects(projects);
+    set({ projects });
+  },
+
+  addPhoto: (id, photoData) => {
+    const photo: ProjectPhoto = { ...photoData, id: generateId(), timestamp: new Date().toISOString() };
+    const projects = get().projects.map(p =>
+      p.id !== id ? p : { ...p, photos: [...p.photos, photo], updatedAt: new Date().toISOString() }
+    );
+    saveProjects(projects);
+    set({ projects });
+  },
+
+  removePhoto: (id, photoId) => {
+    const projects = get().projects.map(p =>
+      p.id !== id ? p : { ...p, photos: p.photos.filter(ph => ph.id !== photoId), updatedAt: new Date().toISOString() }
+    );
     saveProjects(projects);
     set({ projects });
   },

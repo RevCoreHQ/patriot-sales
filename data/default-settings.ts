@@ -35,4 +35,11 @@ export const DEFAULT_SETTINGS: AppSettings = {
     accentColor: '#f59e0b',
     showFinancing: true,
   },
+  notifications: {
+    enabled: false,
+    reminders: {
+      followUpDays: 3,
+      quoteExpiryDays: 2,
+    },
+  },
 };

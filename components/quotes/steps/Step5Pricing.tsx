@@ -10,7 +10,7 @@ import { formatCurrency } from '@/lib/utils';
 import { Lock } from 'lucide-react';
 
 export function Step5Pricing() {
-  const { manualLineItems, addonSelections, siteConditions, projectTypes, poolConfig, discountPercent, setDiscountPercent, discountName, setDiscountName, priceOverride, setPriceOverride, notes, setNotes, internalNotes, setInternalNotes } = useWizardStore();
+  const { manualLineItems, addonSelections, siteConditions, projectTypes, poolConfig, discountPercent, setDiscountPercent, discountName, setDiscountName, priceOverride, setPriceOverride, notes, setNotes, internalNotes, setInternalNotes, updateManualLineItem } = useWizardStore();
   const { settings } = useSettingsStore();
   const isAdmin = true;
   const [overrideEnabled, setOverrideEnabled] = useState(priceOverride !== undefined);
@@ -20,6 +20,17 @@ export function Step5Pricing() {
   const poolItems = projectTypes.includes('pool-construction') && poolConfig ? buildPoolLineItems(poolConfig) : [];
   const lineItems = [...manualLineItems, ...addonItems, ...poolItems];
   const { subtotal, discountAmount, taxAmount, total } = calculateTotals(lineItems, discountPercent, settings.pricing.taxRate);
+
+  // Margin calculations
+  const totalCost = lineItems.reduce((s, item) => {
+    if (item.costPerUnit) return s + (item.costPerUnit * item.quantity);
+    return s;
+  }, 0);
+  const hasCosts = lineItems.some(item => item.costPerUnit !== undefined && item.costPerUnit > 0);
+  const overallMarginPct = hasCosts && subtotal > 0 ? ((subtotal - totalCost) / subtotal * 100) : null;
+  const overallMarginColor = overallMarginPct !== null
+    ? overallMarginPct >= 30 ? 'text-emerald-400' : overallMarginPct >= 15 ? 'text-amber-400' : 'text-red-400'
+    : '';
 
   const categoryColor = (cat: string) => {
     switch (cat) {
@@ -42,20 +53,45 @@ export function Step5Pricing() {
           <div className="text-xs font-medium text-neutral-500 uppercase tracking-wider">Line Items</div>
         </div>
         <div className="divide-y divide-c-border-inner">
-          {lineItems.map(item => (
-            <div key={item.id} className="px-4 py-2.5 flex items-center justify-between gap-4">
-              <div className="min-w-0">
-                <div className="text-sm text-c-text truncate">{item.description}</div>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className={cn('text-xs capitalize', categoryColor(item.category))}>{item.category}</span>
-                  {item.unit !== 'flat' && (
-                    <span className="text-xs text-neutral-600">{item.quantity} {item.unit} &times; {formatCurrency(item.unitPrice)}</span>
-                  )}
+          {lineItems.map(item => {
+            const isManual = manualLineItems.some(m => m.id === item.id);
+            const itemMargin = item.costPerUnit && item.unitPrice > 0
+              ? ((item.unitPrice - item.costPerUnit) / item.unitPrice * 100)
+              : null;
+            const marginColor = itemMargin !== null
+              ? itemMargin >= 30 ? 'text-emerald-400' : itemMargin >= 15 ? 'text-amber-400' : 'text-red-400'
+              : '';
+            return (
+              <div key={item.id} className="px-4 py-2.5 flex items-center gap-4">
+                <div className="min-w-0 flex-1">
+                  <div className="text-sm text-c-text truncate">{item.description}</div>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className={cn('text-xs capitalize', categoryColor(item.category))}>{item.category}</span>
+                    {item.unit !== 'flat' && (
+                      <span className="text-xs text-neutral-600">{item.quantity} {item.unit} &times; {formatCurrency(item.unitPrice)}</span>
+                    )}
+                    {itemMargin !== null && (
+                      <span className={cn('text-[10px] font-semibold', marginColor)}>{itemMargin.toFixed(0)}% margin</span>
+                    )}
+                  </div>
                 </div>
+                {isManual && (
+                  <div className="w-20 shrink-0">
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      placeholder="Cost"
+                      value={item.costPerUnit ?? ''}
+                      onChange={e => updateManualLineItem(item.id, { costPerUnit: e.target.value === '' ? undefined : Number(e.target.value) })}
+                      className="w-full bg-c-input border border-c-border-input rounded-lg px-2 py-1 text-xs text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-amber-500/50 tabular-nums"
+                    />
+                  </div>
+                )}
+                <div className="text-sm font-medium text-c-text shrink-0">{formatCurrency(item.total)}</div>
               </div>
-              <div className="text-sm font-medium text-c-text shrink-0">{formatCurrency(item.total)}</div>
-            </div>
-          ))}
+            );
+          })}
           {lineItems.length === 0 && (
             <div className="px-4 py-6 text-center text-sm text-c-text-3">
               No line items yet — add items in the previous step.
@@ -68,6 +104,18 @@ export function Step5Pricing() {
             <span className="text-neutral-400">Subtotal</span>
             <span className="text-c-text">{formatCurrency(subtotal)}</span>
           </div>
+          {hasCosts && (
+            <div className="px-4 py-2.5 flex justify-between text-sm">
+              <span className="text-neutral-400">Total Cost</span>
+              <div className="flex items-center gap-3">
+                <span className="text-c-text-3">{formatCurrency(totalCost)}</span>
+                <span className={cn('text-xs font-semibold', overallMarginColor)}>
+                  {overallMarginPct !== null ? `${overallMarginPct.toFixed(1)}% margin` : ''}
+                </span>
+                <span className="text-emerald-400 font-semibold">{formatCurrency(subtotal - totalCost)} profit</span>
+              </div>
+            </div>
+          )}
           {discountPercent > 0 && (
             <div className="px-4 py-2.5 flex justify-between text-sm">
               <span className="text-emerald-400">Discount ({discountPercent}%)</span>

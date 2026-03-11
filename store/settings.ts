@@ -19,7 +19,8 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
   init: () => {
     const stored = getSettings();
     set({
-      settings: stored ?? DEFAULT_SETTINGS,
+      // Merge stored settings with defaults so new fields (e.g. notifications) get filled
+      settings: stored ? { ...DEFAULT_SETTINGS, ...stored, notifications: { ...DEFAULT_SETTINGS.notifications, ...stored.notifications } } : DEFAULT_SETTINGS,
       initialized: true,
     });
   },

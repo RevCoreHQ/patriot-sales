@@ -15,7 +15,7 @@ const CATEGORIES: { value: LineItem['category']; label: string; color: string }[
 
 const COMMON_UNITS = ['sq ft', 'linear ft', 'each', 'flat', 'hr', 'ton'];
 
-const EMPTY_FORM = { description: '', category: 'material' as LineItem['category'], quantity: 1, unit: 'sq ft', unitPrice: 0 };
+const EMPTY_FORM = { description: '', category: 'material' as LineItem['category'], quantity: 1, unit: 'sq ft', unitPrice: 0, costPerUnit: undefined as number | undefined };
 
 export function StepLineItems() {
   const { manualLineItems, addManualLineItem, removeManualLineItem } = useWizardStore();
@@ -34,6 +34,7 @@ export function StepLineItems() {
       unit: form.unit,
       unitPrice: form.unitPrice,
       total: form.quantity * form.unitPrice,
+      costPerUnit: form.costPerUnit,
     });
     setForm(EMPTY_FORM);
     setShowForm(false);
@@ -126,8 +127,8 @@ export function StepLineItems() {
             </div>
           </div>
 
-          {/* Qty / Unit / Price row */}
-          <div className="grid grid-cols-3 gap-3">
+          {/* Qty / Unit / Price / Cost row */}
+          <div className="grid grid-cols-4 gap-3">
             <div>
               <label className="text-xs text-c-text-3 mb-1.5 block">Qty</label>
               <input type="number" min="0" step="1" value={form.quantity}
@@ -148,6 +149,16 @@ export function StepLineItems() {
                 <input type="number" min="0" step="0.01" value={form.unitPrice || ''}
                   onChange={e => setForm(p => ({ ...p, unitPrice: Number(e.target.value) || 0 }))}
                   placeholder="0.00"
+                  className="w-full bg-c-input border border-c-border-input rounded-lg pl-7 pr-3 py-2 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-amber-500/50" />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-c-text-3 mb-1.5 block">Cost (opt.)</label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-c-text-3 text-sm">$</span>
+                <input type="number" min="0" step="0.01" value={form.costPerUnit ?? ''}
+                  onChange={e => setForm(p => ({ ...p, costPerUnit: e.target.value === '' ? undefined : Number(e.target.value) }))}
+                  placeholder="—"
                   className="w-full bg-c-input border border-c-border-input rounded-lg pl-7 pr-3 py-2 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-amber-500/50" />
               </div>
             </div>

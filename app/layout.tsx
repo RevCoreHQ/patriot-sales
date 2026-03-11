@@ -15,6 +15,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "RNR Stoneworks — Sales",
   description: "Sales presentation and quoting tool for Rock N Roll Stoneworks",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "RNR Sales",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 export default function RootLayout({
@@ -24,6 +33,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="dark">
+      <head>
+        <meta name="theme-color" content="#f59e0b" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>

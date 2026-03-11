@@ -7,10 +7,12 @@ import { cn } from '@/lib/utils';
 import { useThemeStore } from '@/store/theme';
 import { useQuotesStore } from '@/store/quotes';
 import { useProjectsStore } from '@/store/projects';
+import { useNotifications } from '@/lib/useNotifications';
 import {
   LayoutDashboard,
   FileText,
   Hammer,
+  Users,
   Presentation,
   Settings,
 } from 'lucide-react';
@@ -42,6 +44,12 @@ const TABS: Tab[] = [
     match: (p) => p.startsWith('/projects'),
   },
   {
+    href: '/clients',
+    label: 'Clients',
+    icon: Users,
+    match: (p) => p.startsWith('/clients'),
+  },
+  {
     href: '/presentation',
     label: 'Present',
     icon: Presentation,
@@ -60,6 +68,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { init: initTheme } = useThemeStore();
   const { init: initQuotes } = useQuotesStore();
   const { init: initProjects } = useProjectsStore();
+  useNotifications();
 
   useEffect(() => {
     initTheme();

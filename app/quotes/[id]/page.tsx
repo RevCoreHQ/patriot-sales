@@ -19,6 +19,7 @@ import { calculateFinancing } from '@/lib/financing';
 import { formatCurrency, formatDate, formatDateShort } from '@/lib/utils';
 import { generateQuotePDF, getQuotePDFBase64 } from '@/lib/pdf';
 import type { QuoteStatus } from '@/types';
+import { ContactActions } from '@/components/ui/ContactActions';
 import {
   ArrowLeft, Edit2, Presentation, Trash2, ChevronDown, Hammer,
   Download, Send, PenLine, CheckCircle2, Clock, AlertTriangle,
@@ -43,7 +44,7 @@ const CAT_COLORS: Record<string, string> = {
 export default function QuoteDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
-  const { quotes, init, remove, updateStatus, sign } = useQuotesStore();
+  const { quotes, init, remove, updateStatus, sign, duplicate } = useQuotesStore();
   const { settings, init: initSettings } = useSettingsStore();
   const { projects, createFromQuote, getByQuoteId, init: initProjects } = useProjectsStore();
 
@@ -95,6 +96,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
   const financingOption = settings.financing[selectedTerm];
   const financing = financingOption ? calculateFinancing(quote.total, 20, financingOption.apr, financingOption.termMonths) : null;
 
+  const handleDuplicate = () => { const newId = duplicate(id); if (newId) router.push(`/quotes/${newId}/edit`); };
   const handleDelete = () => { if (confirm('Delete this quote? This cannot be undone.')) { remove(id); router.push('/quotes'); } };
   const handleDownloadPDF = async () => { setPdfLoading(true); try { await generateQuotePDF(quote, settings); } finally { setPdfLoading(false); } };
   const handleSendEmail = async () => {
@@ -222,6 +224,10 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                         </button>
                       )}
                       <div className="h-px bg-c-border-inner mx-3 my-1" />
+                      <button onClick={() => { handleDuplicate(); setMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors">
+                        <Copy className="w-4 h-4 text-c-text-4" />
+                        Duplicate Quote
+                      </button>
                       <button onClick={() => { handleDelete(); setMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 active:bg-red-500/10 transition-colors">
                         <Trash2 className="w-4 h-4" />
                         Delete Quote
@@ -331,7 +337,10 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
 
               {/* Client */}
               <div className="rounded-2xl border border-c-border bg-c-card p-5 space-y-2.5">
-                <div className="text-[10px] font-bold text-c-text-4 uppercase tracking-widest">Client</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] font-bold text-c-text-4 uppercase tracking-widest">Client</div>
+                  <ContactActions phone={quote.client.phone} email={quote.client.email} size="sm" />
+                </div>
                 <div className="text-base font-bold text-c-text">{quote.client.name}</div>
                 <div className="space-y-1.5">
                   {quote.client.email && <div className="text-sm text-c-text-3">{quote.client.email}</div>}

@@ -107,6 +107,18 @@ export function LiveQuoteSummary() {
             <AnimatedNumber value={total} format={(n) => formatCurrency(n)} />
           </span>
         </div>
+        {(() => {
+          const totalCost = allItems.reduce((s, item) => item.costPerUnit ? s + item.costPerUnit * item.quantity : s, 0);
+          if (totalCost <= 0) return null;
+          const marginPct = subtotal > 0 ? ((subtotal - totalCost) / subtotal * 100) : 0;
+          const color = marginPct >= 30 ? 'text-emerald-400' : marginPct >= 15 ? 'text-amber-400' : 'text-red-400';
+          return (
+            <div className="flex justify-between text-xs mt-1">
+              <span className="text-c-text-4">Margin</span>
+              <span className={`font-semibold ${color} tabular-nums`}>{marginPct.toFixed(1)}% ({formatCurrency(subtotal - totalCost)})</span>
+            </div>
+          );
+        })()}
       </div>
     </div>
   );

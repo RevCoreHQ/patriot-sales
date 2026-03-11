@@ -9,7 +9,8 @@ import { useQuotesStore } from '@/store/quotes';
 import { useProjectsStore } from '@/store/projects';
 import { seedSampleData } from '@/lib/storage';
 import type { AppSettings } from '@/types';
-import { CheckCircle2, Trash2, Database } from 'lucide-react';
+import { requestPermission, sendNotification } from '@/lib/notifications';
+import { CheckCircle2, Trash2, Database, Bell, Smartphone } from 'lucide-react';
 
 export default function SettingsPage() {
   const { settings, init, update } = useSettingsStore();
@@ -18,6 +19,8 @@ export default function SettingsPage() {
   const [form, setForm] = useState<AppSettings>(settings);
   const [saved, setSaved] = useState(false);
   const [dataAction, setDataAction] = useState<'idle' | 'cleared' | 'loaded'>('idle');
+  const [isStandalone, setIsStandalone] = useState(false);
+  const [notifStatus, setNotifStatus] = useState<'idle' | 'sent' | 'denied'>('idle');
 
   const handleClearAllData = () => {
     if (!confirm('Clear all estimates and jobs? This cannot be undone.')) return;
@@ -39,6 +42,11 @@ export default function SettingsPage() {
 
   useEffect(() => { init(); }, []);
   useEffect(() => { setForm(settings); }, [settings]);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsStandalone(window.matchMedia('(display-mode: standalone)').matches || (navigator as unknown as Record<string, unknown>).standalone === true);
+    }
+  }, []);
 
   const setCompany = (patch: Partial<AppSettings['company']>) =>
     setForm(f => ({ ...f, company: { ...f.company, ...patch } }));
@@ -48,6 +56,21 @@ export default function SettingsPage() {
     setForm(f => ({ ...f, pricing: { ...f.pricing, ...patch } }));
   const setPresentation = (patch: Partial<AppSettings['presentation']>) =>
     setForm(f => ({ ...f, presentation: { ...f.presentation, ...patch } }));
+  const setNotifications = (patch: Partial<AppSettings['notifications']>) =>
+    setForm(f => ({ ...f, notifications: { ...f.notifications, ...patch } }));
+  const setReminders = (patch: Partial<AppSettings['notifications']['reminders']>) =>
+    setForm(f => ({ ...f, notifications: { ...f.notifications, reminders: { ...f.notifications.reminders, ...patch } } }));
+
+  const handleTestNotification = async () => {
+    const granted = await requestPermission();
+    if (granted) {
+      sendNotification('RNR Sales', 'Notifications are working! You\'ll get reminders for follow-ups and expiring quotes.');
+      setNotifStatus('sent');
+    } else {
+      setNotifStatus('denied');
+    }
+    setTimeout(() => setNotifStatus('idle'), 3000);
+  };
 
   const handleSave = () => {
     update(form);
@@ -194,6 +217,85 @@ export default function SettingsPage() {
                 />
               )}
             </div>
+          </section>
+
+          {/* Notifications */}
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
+            <h2 className="text-sm font-semibold text-c-text mb-4 flex items-center gap-2">
+              <Bell className="w-4 h-4 text-amber-500" /> Notifications
+            </h2>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-sm text-c-text">Enable Reminders</div>
+                  <div className="text-xs text-c-text-4">Get notified about follow-ups and expiring quotes</div>
+                </div>
+                <button
+                  onClick={() => setNotifications({ enabled: !form.notifications.enabled })}
+                  className={`w-14 h-8 rounded-full transition-colors cursor-pointer flex items-center px-1 ${form.notifications.enabled ? 'bg-amber-500' : 'bg-c-elevated'}`}
+                >
+                  <div className={`w-6 h-6 rounded-full bg-white transition-transform ${form.notifications.enabled ? 'translate-x-6' : 'translate-x-0'}`} />
+                </button>
+              </div>
+              {form.notifications.enabled && (
+                <>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Input
+                      label="Follow-up after (days)"
+                      type="number"
+                      min={1}
+                      value={form.notifications.reminders.followUpDays}
+                      onChange={e => setReminders({ followUpDays: Number(e.target.value) })}
+                    />
+                    <Input
+                      label="Expiry warning (days before)"
+                      type="number"
+                      min={1}
+                      value={form.notifications.reminders.quoteExpiryDays}
+                      onChange={e => setReminders({ quoteExpiryDays: Number(e.target.value) })}
+                    />
+                  </div>
+                  <button
+                    onClick={handleTestNotification}
+                    className="flex items-center gap-2.5 h-10 px-4 rounded-xl text-sm font-medium bg-amber-500/10 border border-amber-500/25 text-amber-400 hover:bg-amber-500/15 active:scale-[0.98] transition-all"
+                  >
+                    <Bell className="w-3.5 h-3.5" />
+                    {notifStatus === 'sent' ? 'Notification Sent!' : notifStatus === 'denied' ? 'Permission Denied' : 'Test Notification'}
+                  </button>
+                </>
+              )}
+            </div>
+          </section>
+
+          {/* Install App */}
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
+            <h2 className="text-sm font-semibold text-c-text mb-4 flex items-center gap-2">
+              <Smartphone className="w-4 h-4 text-amber-500" /> Install App
+            </h2>
+            {isStandalone ? (
+              <div className="flex items-center gap-2 text-sm text-emerald-400">
+                <CheckCircle2 className="w-4 h-4" />
+                App is installed and running in standalone mode
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm text-c-text-3">Install RNR Sales on your device for fullscreen access and faster loading.</p>
+                <div className="bg-c-elevated rounded-xl p-4 space-y-2">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-amber-500/15 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</div>
+                    <p className="text-sm text-c-text-3">Tap the <strong className="text-c-text">Share</strong> button in Safari (square with arrow)</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-amber-500/15 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</div>
+                    <p className="text-sm text-c-text-3">Scroll down and tap <strong className="text-c-text">Add to Home Screen</strong></p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-amber-500/15 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</div>
+                    <p className="text-sm text-c-text-3">Tap <strong className="text-c-text">Add</strong> to install</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </section>
 
           {/* Data Management */}

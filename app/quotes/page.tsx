@@ -19,7 +19,7 @@ import type { Quote } from '@/types';
 import {
   Plus, FileText, Search, X, ChevronRight,
   MoreHorizontal, Edit2, Trash2, Presentation, Bell,
-  DollarSign, TrendingUp, Target, Percent,
+  DollarSign, TrendingUp, Target, Percent, Copy,
 } from 'lucide-react';
 
 function daysSince(dateStr: string) {
@@ -27,7 +27,7 @@ function daysSince(dateStr: string) {
 }
 
 // ── Quote row ────────────────────────────────────────────────────────────────
-function QuoteRow({ quote, onDelete }: { quote: Quote; onDelete: (id: string) => void }) {
+function QuoteRow({ quote, onDelete, onDuplicate }: { quote: Quote; onDelete: (id: string) => void; onDuplicate: (id: string) => void }) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const needsFollowUp = quote.status === 'presented' && daysSince(quote.updatedAt) >= 3;
@@ -103,6 +103,13 @@ function QuoteRow({ quote, onDelete }: { quote: Quote; onDelete: (id: string) =>
             Edit
           </button>
           <button
+            onClick={() => { onDuplicate(quote.id); setMenuOpen(false); }}
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors"
+          >
+            <Copy className="w-4 h-4 text-c-text-4" />
+            Duplicate
+          </button>
+          <button
             onClick={() => { if (confirm('Delete this quote?')) onDelete(quote.id); setMenuOpen(false); }}
             className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 active:bg-red-500/10 transition-colors"
           >
@@ -140,8 +147,9 @@ function FilterTab({ label, count, active, onClick }: { label: string; count: nu
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function QuotesDashboardPage() {
-  const { quotes, init, remove } = useQuotesStore();
+  const { quotes, init, remove, duplicate } = useQuotesStore();
   const { projects, init: initProjects } = useProjectsStore();
+  const router = useRouter();
   const [filter, setFilter] = useState<string>('all');
   const [search, setSearch] = useState('');
 
@@ -175,6 +183,11 @@ export default function QuotesDashboardPage() {
     pipeline: openPipeline.reduce((s, q) => s + q.total, 0),
     closeRate: presented.length > 0 ? Math.round((accepted.length / presented.length) * 100) : 0,
     wonRevenue: accepted.reduce((s, q) => s + q.total, 0),
+  };
+
+  const handleDuplicate = (id: string) => {
+    const newId = duplicate(id);
+    if (newId) router.push(`/quotes/${newId}/edit`);
   };
 
   const filterCounts: Record<string, number> = {
@@ -277,7 +290,7 @@ export default function QuotesDashboardPage() {
           <StaggerContainer className="rounded-2xl border border-c-border bg-c-card overflow-hidden divide-y divide-c-border-inner">
             {filtered.map(q => (
               <StaggerItem key={q.id}>
-                <QuoteRow quote={q} onDelete={remove} />
+                <QuoteRow quote={q} onDelete={remove} onDuplicate={handleDuplicate} />
               </StaggerItem>
             ))}
           </StaggerContainer>

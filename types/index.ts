@@ -86,6 +86,7 @@ export interface LineItem {
   unit: string;
   unitPrice: number;
   total: number;
+  costPerUnit?: number; // actual cost for margin tracking
 }
 
 // ─── Material Selection ───────────────────────────────────────────────────────
@@ -208,6 +209,13 @@ export interface AppSettings {
     showFinancing: boolean;
     customSlideText?: string;
   };
+  notifications: {
+    enabled: boolean;
+    reminders: {
+      followUpDays: number;
+      quoteExpiryDays: number;
+    };
+  };
 }
 
 // ─── Pool Configuration ───────────────────────────────────────────────────────
@@ -288,6 +296,15 @@ export const DEFAULT_CLOSEOUT_CHECKLIST: Omit<CloseoutItem, 'id'>[] = [
   { label: 'Warranty documents provided to client', completed: false },
 ];
 
+// ─── Project Photos ──────────────────────────────────────────────────────────
+export interface ProjectPhoto {
+  id: string;
+  phase: 'before' | 'during' | 'after';
+  dataUrl: string;
+  caption?: string;
+  timestamp: string;
+}
+
 export interface Project {
   id: string;
   quoteId: string;
@@ -303,6 +320,7 @@ export interface Project {
   updates: ProjectUpdate[];
   todos: ProjectTodo[];
   closeoutChecklist: CloseoutItem[];
+  photos: ProjectPhoto[];
   ghlContactId?: string;
   createdAt: string;
   updatedAt: string;

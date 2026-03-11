@@ -11,6 +11,8 @@ import { AnimatedPage } from '@/components/motion/AnimatedPage';
 import { StaggerContainer, StaggerItem } from '@/components/motion/StaggerList';
 import { AnimatedNumber } from '@/components/motion/AnimatedNumber';
 import { MetricCardSkeleton, QuoteRowSkeleton } from '@/components/ui/Skeleton';
+import { ContactActions } from '@/components/ui/ContactActions';
+import { CalendarStrip } from '@/components/dashboard/CalendarStrip';
 import {
   Plus, Bell, ChevronRight, Hammer, TrendingUp,
   Target, DollarSign, FolderOpen,
@@ -129,6 +131,11 @@ export default function HomePage() {
           ))}
         </StaggerContainer>
 
+        {/* Calendar strip */}
+        {projects.length > 0 && (
+          <CalendarStrip projects={projects} />
+        )}
+
         {/* Follow-up alert */}
         {followUpNeeded.length > 0 && (
           <Link
@@ -203,6 +210,7 @@ export default function HomePage() {
                         <span>{formatDateShort(q.createdAt)}</span>
                       </div>
                     </div>
+                    <ContactActions phone={q.client.phone} size="sm" />
                     <StatusBadge status={q.status} />
                     <div className="text-sm font-bold text-c-text shrink-0 tabular-nums">{formatCurrency(q.total)}</div>
                     <ChevronRight className="w-4 h-4 text-c-text-5 shrink-0" />

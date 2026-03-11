@@ -3,14 +3,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { useProjectsStore } from '@/store/projects';
+import { useQuotesStore } from '@/store/quotes';
 import { formatCurrency, formatDateShort } from '@/lib/utils';
 import { AnimatedPage } from '@/components/motion/AnimatedPage';
 import { StaggerContainer, StaggerItem } from '@/components/motion/StaggerList';
+import { ContactActions } from '@/components/ui/ContactActions';
 import type { Project, ProjectPhase, ProjectTodo, CloseoutItem, PaymentType, PaymentMethod } from '@/types';
+import { PhotoGallery } from '@/components/projects/PhotoGallery';
 import {
   Hammer, CheckCircle2, DollarSign, Truck, FileText, Calendar,
   Plus, X, ChevronDown, Link2, ClipboardList, ListTodo, Clock,
-  Trash2, Check, CreditCard, Banknote,
+  Trash2, Check, CreditCard, Banknote, ImageIcon,
 } from 'lucide-react';
 
 const PAYMENT_TYPES: { value: PaymentType; label: string }[] = [
@@ -60,13 +63,13 @@ function DatePickerInput({ label, value, onChange }: { label: string; value: str
 }
 
 // ── Project Detail (right panel) ────────────────────────────────────────────
-function ProjectDetail({ project }: { project: Project }) {
+function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project; clientPhone?: string; clientEmail?: string }) {
   const {
     updatePhase, addUpdate, setDates, setCashCollected, setGhlContactId,
     addTodo, toggleTodo, removeTodo, toggleCloseout, addPayment, removePayment, remove,
   } = useProjectsStore();
 
-  const [tab, setTab] = useState<'overview' | 'todos' | 'closeout' | 'finance' | 'notes'>('overview');
+  const [tab, setTab] = useState<'overview' | 'todos' | 'closeout' | 'finance' | 'photos' | 'notes'>('overview');
   const [noteText, setNoteText] = useState('');
   const [todoText, setTodoText] = useState('');
   const [editing, setEditing] = useState(false);
@@ -104,7 +107,10 @@ function ProjectDetail({ project }: { project: Project }) {
       <div className="px-6 pt-6 pb-4 shrink-0">
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-c-text">{project.clientName}</h2>
+            <div className="flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-c-text">{project.clientName}</h2>
+              <ContactActions phone={clientPhone} email={clientEmail} size="sm" />
+            </div>
             <div className="flex items-center gap-2 mt-1.5">
               {project.projectTypes.map(pt => (
                 <span key={pt} className="text-[11px] bg-c-elevated text-c-text-3 px-2.5 py-1 rounded-full capitalize">{pt.replace(/-/g, ' ')}</span>
@@ -162,6 +168,7 @@ function ProjectDetail({ project }: { project: Project }) {
           { key: 'todos', label: `To-do${project.todos.length > 0 ? ` (${todoDone}/${project.todos.length})` : ''}`, icon: ListTodo },
           { key: 'closeout', label: 'Closeout', icon: ClipboardList },
           { key: 'finance', label: `Finance${payments.length > 0 ? ` (${payments.length})` : ''}`, icon: DollarSign },
+          { key: 'photos', label: `Photos${project.photos.length > 0 ? ` (${project.photos.length})` : ''}`, icon: ImageIcon },
           { key: 'notes', label: 'Notes', icon: FileText },
         ] as const).map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setTab(key)} className={`flex items-center gap-1.5 h-12 px-4 rounded-2xl text-sm font-medium transition-all ${tab === key ? 'bg-c-elevated text-c-text' : 'text-c-text-4 active:text-c-text-2'}`}>
@@ -281,6 +288,9 @@ function ProjectDetail({ project }: { project: Project }) {
           </div>
         )}
 
+        {/* Photos */}
+        {tab === 'photos' && <PhotoGallery projectId={project.id} />}
+
         {/* Notes */}
         {tab === 'notes' && (
           <div>{project.updates.length === 0 ? <div className="text-xs text-c-text-4 py-3">No notes logged yet.</div> : (
@@ -306,10 +316,11 @@ function ProjectDetail({ project }: { project: Project }) {
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function ProjectsPage() {
   const { projects, init } = useProjectsStore();
+  const { quotes, init: initQuotes } = useQuotesStore();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [filter, setFilter] = useState<ProjectPhase | 'all'>('all');
 
-  useEffect(() => { init(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { init(); initQuotes(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (projects.length > 0 && !selectedId) setSelectedId(projects[0]?.id ?? null); }, [projects, selectedId]);
 
   const filtered = filter === 'all' ? projects : projects.filter(p => p.phase === filter);
@@ -389,7 +400,7 @@ export default function ProjectsPage() {
 
           {/* Right panel — project detail */}
           <div className="flex-1 overflow-hidden">
-            {selected ? <ProjectDetail key={selected.id} project={selected} /> : (
+            {selected ? (() => { const q = quotes.find(qu => qu.id === selected.quoteId); return <ProjectDetail key={selected.id} project={selected} clientPhone={q?.client.phone} clientEmail={q?.client.email} />; })() : (
               <div className="flex items-center justify-center h-full text-c-text-4 text-sm">Select a project</div>
             )}
           </div>
