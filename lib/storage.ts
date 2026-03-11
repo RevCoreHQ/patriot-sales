@@ -122,6 +122,11 @@ export function seedSampleData(settings: AppSettings, force = false): void {
 
   const tr = settings.pricing.taxRate;
   const rep = settings.salesRep.name;
+  // Use team members if available, otherwise fall back to salesRep name
+  const team = settings.team ?? [];
+  const hayden = team.find(m => m.name.toLowerCase().includes('hayden'))?.name ?? rep;
+  const derick = team.find(m => m.name.toLowerCase().includes('derick'))?.name ?? 'Derick';
+  const evan = team.find(m => m.name.toLowerCase().includes('evan'))?.name ?? 'Evan';
 
   const quotes: Quote[] = [
     // ── Q1: Harrison — Accepted & Delivered — $92k ──────────────────────────
@@ -139,7 +144,7 @@ export function seedSampleData(settings: AppSettings, force = false): void {
         { id: 'li-01-8', description: 'Drainage system — French drain 60 linear ft', category: 'labor', quantity: 60, unit: 'linear ft', unitPrice: 85, total: 5100 },
         { id: 'li-01-9', description: 'Project management & permits', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 3500, total: 3500 },
       ],
-      86360, 0, tr, 148, 90, 130, rep, 'Amanda Harrison',
+      86360, 0, tr, 148, 90, 130, hayden, 'Amanda Harrison',
       'Completed backyard transformation. Client thrilled with results — left a 5-star Google review.',
     ),
     // ── Q2: Murphy — Accepted, Active Job — $142k ───────────────────────────
@@ -158,7 +163,7 @@ export function seedSampleData(settings: AppSettings, force = false): void {
         { id: 'li-05-8', description: 'Gas line rough-in & electrical for kitchen', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 6500, total: 6500 },
         { id: 'li-05-9', description: 'Project management & design', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 4500, total: 4500 },
       ],
-      133020, 0, tr, 79, 50, 68, rep, 'Colleen Murphy',
+      133020, 0, tr, 79, 50, 68, derick, 'Colleen Murphy',
       'Premium outdoor living space. Kitchen appliances on order, expected delivery in 2 weeks.',
     ),
     // ── Q3: Williams — Presented, Big Pipeline — $195k ──────────────────────
@@ -176,7 +181,7 @@ export function seedSampleData(settings: AppSettings, force = false): void {
         { id: 'li-10-7', description: 'Water features — 3 deck jets & sheer descent', category: 'addon', quantity: 1, unit: 'flat', unitPrice: 9500, total: 9500 },
         { id: 'li-10-8', description: 'Project management, engineering & permits', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 7500, total: 7500 },
       ],
-      182700, 0, tr, 18, 5, 5, rep, undefined,
+      182700, 0, tr, 18, 5, 5, hayden, undefined,
       'Largest prospect in the pipeline. Clients comparing 2 other pool builders. Decision expected this week.',
     ),
     // ── Q4: Ramirez — Accepted, Active Job — $118k ──────────────────────────
@@ -193,7 +198,7 @@ export function seedSampleData(settings: AppSettings, force = false): void {
         { id: 'li-04-7', description: 'Polymeric sand, edging & seal coat', category: 'material', quantity: 1, unit: 'flat', unitPrice: 3200, total: 3200 },
         { id: 'li-04-8', description: 'Project management & permits', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 4200, total: 4200 },
       ],
-      110620, 5, tr, 62, 45, 55, rep, 'Carlos Ramirez',
+      110620, 5, tr, 62, 45, 55, evan, 'Carlos Ramirez',
       'Heated driveway is the premium upsell. Snow-melt system requires boiler install coordination.',
     ),
     // ── Q5: Chen — Presented, Awaiting Decision — $165k ─────────────────────
@@ -209,7 +214,7 @@ export function seedSampleData(settings: AppSettings, force = false): void {
         { id: 'li-06-6', description: 'Outdoor kitchen — L-shape, granite, grill & smoker', category: 'addon', quantity: 1, unit: 'flat', unitPrice: 28000, total: 28000 },
         { id: 'li-06-7', description: 'Project management, engineering & permits', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 6000, total: 6000 },
       ],
-      155000, 0, tr, 12, 3, 3, rep, undefined,
+      155000, 0, tr, 12, 3, 3, derick, undefined,
       'Premium travertine selection. Client wants to start before Memorial Day. Following up Thursday.',
     ),
     // ── Q6: Thompson — Draft — $88k ─────────────────────────────────────────
@@ -226,7 +231,7 @@ export function seedSampleData(settings: AppSettings, force = false): void {
         { id: 'li-07-7', description: 'Polymeric sand, seal coat & cleanup', category: 'material', quantity: 1, unit: 'flat', unitPrice: 1800, total: 1800 },
         { id: 'li-07-8', description: 'Project management & design', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 3800, total: 3800 },
       ],
-      82600, 5, tr, 4, 2, null, rep, undefined,
+      82600, 5, tr, 4, 2, null, evan, undefined,
       'Steep hillside lot — requires significant retaining work. Waiting on final measurements.',
     ),
     // ── Q7: Nguyen — Accepted, Active Job — $175k ───────────────────────────
@@ -244,7 +249,7 @@ export function seedSampleData(settings: AppSettings, force = false): void {
         { id: 'li-08-7', description: 'Demolition — existing patio & landscaping', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 5500, total: 5500 },
         { id: 'li-08-8', description: 'Project management, engineering & permits', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 6500, total: 6500 },
       ],
-      163850, 0, tr, 45, 20, 38, rep, 'Tony Nguyen',
+      163850, 0, tr, 45, 20, 38, hayden, 'Tony Nguyen',
       'Pool shell poured. Deck work starts next week. Client very engaged — visits site daily.',
     ),
     // ── Q8: Patel — Lost — $98k ─────────────────────────────────────────────
@@ -260,7 +265,7 @@ export function seedSampleData(settings: AppSettings, force = false): void {
         { id: 'li-09-6', description: 'Polymeric sand, edging & seal coat', category: 'material', quantity: 1, unit: 'flat', unitPrice: 2100, total: 2100 },
         { id: 'li-09-7', description: 'Project management & design', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 4000, total: 4000 },
       ],
-      92250, 5, tr, 35, 28, 30, rep, undefined,
+      92250, 5, tr, 35, 28, 30, derick, undefined,
       'Lost to competitor on price. Client went with a lower bid — no outdoor kitchen experience.',
     ),
     // ── Q9: Foster — Presented — $128k ──────────────────────────────────────
@@ -278,7 +283,7 @@ export function seedSampleData(settings: AppSettings, force = false): void {
         { id: 'li-11-8', description: 'Turf sub-base, drainage mat & infill', category: 'labor', quantity: 400, unit: 'sq ft', unitPrice: 6.00, total: 2400 },
         { id: 'li-11-9', description: 'Project management, design & permits', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 5500, total: 5500 },
       ],
-      120020, 0, tr, 8, 2, 2, rep, undefined,
+      120020, 0, tr, 8, 2, 2, evan, undefined,
       'Natural flagstone look with kid-friendly turf zone. Presented on-site Monday — very interested.',
     ),
     // ── Q10: Dixon — Draft — $200k ──────────────────────────────────────────
@@ -297,7 +302,7 @@ export function seedSampleData(settings: AppSettings, force = false): void {
         { id: 'li-12-8', description: 'Demolition — existing pool, deck & landscaping', category: 'labor', quantity: 2400, unit: 'sq ft', unitPrice: 4.00, total: 9600 },
         { id: 'li-12-9', description: 'Structural engineering, permits & project management', category: 'labor', quantity: 1, unit: 'flat', unitPrice: 9500, total: 9500 },
       ],
-      187820, 0, tr, 2, 1, null, rep, undefined,
+      187820, 0, tr, 2, 1, null, hayden, undefined,
       'Complete backyard renovation — tear out old pool, build infinity edge. Site visit scheduled Friday.',
     ),
   ];

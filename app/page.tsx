@@ -12,7 +12,6 @@ import { StaggerContainer, StaggerItem } from '@/components/motion/StaggerList';
 import { AnimatedNumber } from '@/components/motion/AnimatedNumber';
 import { MetricCardSkeleton, QuoteRowSkeleton } from '@/components/ui/Skeleton';
 import { ContactActions } from '@/components/ui/ContactActions';
-import { CalendarStrip } from '@/components/dashboard/CalendarStrip';
 import {
   Plus, Bell, ChevronRight, Hammer, TrendingUp,
   Target, DollarSign, FolderOpen,
@@ -130,11 +129,6 @@ export default function HomePage() {
             </StaggerItem>
           ))}
         </StaggerContainer>
-
-        {/* Calendar strip */}
-        {projects.length > 0 && (
-          <CalendarStrip projects={projects} />
-        )}
 
         {/* Follow-up alert */}
         {followUpNeeded.length > 0 && (

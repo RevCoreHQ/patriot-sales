@@ -178,6 +178,7 @@ export interface FinancingCalculation {
 
 // ─── App Settings ─────────────────────────────────────────────────────────────
 export interface AppSettings {
+  team: TeamMember[];
   company: {
     name: string;
     tagline: string;
@@ -324,6 +325,17 @@ export interface Project {
   ghlContactId?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+// ─── Team ────────────────────────────────────────────────────────────────────
+export type TeamRole = 'admin' | 'closer' | 'setter';
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: TeamRole;
+  phone?: string;
+  email?: string;
 }
 
 // ─── Auth / Users ─────────────────────────────────────────────────────────────

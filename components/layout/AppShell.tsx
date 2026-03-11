@@ -13,7 +13,7 @@ import {
   FileText,
   Hammer,
   Users,
-  Presentation,
+  BarChart3,
   Settings,
 } from 'lucide-react';
 
@@ -50,10 +50,10 @@ const TABS: Tab[] = [
     match: (p) => p.startsWith('/clients'),
   },
   {
-    href: '/presentation',
-    label: 'Present',
-    icon: Presentation,
-    match: (p) => p.startsWith('/presentation'),
+    href: '/reports',
+    label: 'Reports',
+    icon: BarChart3,
+    match: (p) => p.startsWith('/reports'),
   },
   {
     href: '/settings',

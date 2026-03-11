@@ -1,6 +1,11 @@
 import type { AppSettings } from '@/types';
 
 export const DEFAULT_SETTINGS: AppSettings = {
+  team: [
+    { id: 'tm-1', name: 'Hayden Mitchell', role: 'admin', phone: '303-587-3035', email: 'hayden@revcorehq.com' },
+    { id: 'tm-2', name: 'Derick', role: 'setter', phone: '(720) 555-0201' },
+    { id: 'tm-3', name: 'Evan', role: 'setter', phone: '(720) 555-0302' },
+  ],
   company: {
     name: 'Rock N Roll Stoneworks',
     tagline: 'Premium Outdoor Spaces. Zero Subcontractors. Built to Last.',

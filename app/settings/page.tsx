@@ -8,9 +8,12 @@ import { useSettingsStore } from '@/store/settings';
 import { useQuotesStore } from '@/store/quotes';
 import { useProjectsStore } from '@/store/projects';
 import { seedSampleData } from '@/lib/storage';
-import type { AppSettings } from '@/types';
+import type { AppSettings, TeamMember, TeamRole } from '@/types';
 import { requestPermission, sendNotification } from '@/lib/notifications';
-import { CheckCircle2, Trash2, Database, Bell, Smartphone } from 'lucide-react';
+import { generateId } from '@/lib/utils';
+import { CheckCircle2, Trash2, Database, Bell, Smartphone, Plus, X, UsersRound } from 'lucide-react';
+
+const ROLE_LABELS: Record<TeamRole, string> = { admin: 'Admin', closer: 'Closer', setter: 'Setter' };
 
 export default function SettingsPage() {
   const { settings, init, update } = useSettingsStore();
@@ -60,6 +63,13 @@ export default function SettingsPage() {
     setForm(f => ({ ...f, notifications: { ...f.notifications, ...patch } }));
   const setReminders = (patch: Partial<AppSettings['notifications']['reminders']>) =>
     setForm(f => ({ ...f, notifications: { ...f.notifications, reminders: { ...f.notifications.reminders, ...patch } } }));
+
+  const updateTeamMember = (id: string, patch: Partial<TeamMember>) =>
+    setForm(f => ({ ...f, team: f.team.map(m => m.id === id ? { ...m, ...patch } : m) }));
+  const addTeamMember = () =>
+    setForm(f => ({ ...f, team: [...f.team, { id: generateId(), name: '', role: 'setter' as TeamRole }] }));
+  const removeTeamMember = (id: string) =>
+    setForm(f => ({ ...f, team: f.team.filter(m => m.id !== id) }));
 
   const handleTestNotification = async () => {
     const granted = await requestPermission();
@@ -120,6 +130,63 @@ export default function SettingsPage() {
               <Input label="Title" value={form.salesRep.title} onChange={e => setSalesRep({ title: e.target.value })} />
               <Input label="Phone" value={form.salesRep.phone} onChange={e => setSalesRep({ phone: e.target.value })} />
               <Input label="Email" type="email" value={form.salesRep.email} onChange={e => setSalesRep({ email: e.target.value })} />
+            </div>
+          </section>
+
+          {/* Team */}
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-c-text flex items-center gap-2">
+                <UsersRound className="w-4 h-4 text-amber-500" /> Team Members
+              </h2>
+              <button
+                onClick={addTeamMember}
+                className="flex items-center gap-1.5 h-8 px-3 rounded-xl text-xs font-semibold bg-amber-500/10 border border-amber-500/25 text-amber-400 hover:bg-amber-500/15 active:scale-[0.98] transition-all"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add
+              </button>
+            </div>
+            <div className="space-y-3">
+              {form.team.map((member, i) => (
+                <div key={member.id} className="grid grid-cols-[1fr_120px_1fr_1fr_32px] gap-3 items-end">
+                  <Input
+                    label={i === 0 ? 'Name' : undefined}
+                    value={member.name}
+                    onChange={e => updateTeamMember(member.id, { name: e.target.value })}
+                  />
+                  <div>
+                    {i === 0 && <label className="block text-xs font-medium text-c-text-3 mb-1.5">Role</label>}
+                    <select
+                      value={member.role}
+                      onChange={e => updateTeamMember(member.id, { role: e.target.value as TeamRole })}
+                      className="w-full h-12 px-3 rounded-xl bg-c-elevated border border-c-border-inner text-sm text-c-text appearance-none cursor-pointer"
+                    >
+                      {Object.entries(ROLE_LABELS).map(([val, label]) => (
+                        <option key={val} value={val}>{label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <Input
+                    label={i === 0 ? 'Phone' : undefined}
+                    value={member.phone ?? ''}
+                    onChange={e => updateTeamMember(member.id, { phone: e.target.value })}
+                  />
+                  <Input
+                    label={i === 0 ? 'Email' : undefined}
+                    value={member.email ?? ''}
+                    onChange={e => updateTeamMember(member.id, { email: e.target.value })}
+                  />
+                  <button
+                    onClick={() => removeTeamMember(member.id)}
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-red-400/60 hover:text-red-400 hover:bg-red-500/10 transition-all ${i === 0 ? 'mt-6' : ''}`}
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+              {form.team.length === 0 && (
+                <p className="text-xs text-c-text-4 py-2">No team members yet. Add your sales reps to track performance.</p>
+              )}
             </div>
           </section>
 
