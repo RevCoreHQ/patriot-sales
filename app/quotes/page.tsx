@@ -9,6 +9,12 @@ import { StatusBadge } from '@/components/ui/Badge';
 import { useQuotesStore } from '@/store/quotes';
 import { useProjectsStore } from '@/store/projects';
 import { formatCurrency, formatDateShort } from '@/lib/utils';
+import { AnimatedPage } from '@/components/motion/AnimatedPage';
+import { StaggerContainer, StaggerItem } from '@/components/motion/StaggerList';
+import { AnimatedNumber } from '@/components/motion/AnimatedNumber';
+import { AnimatedOverlay } from '@/components/motion/AnimatedOverlay';
+import { QuoteRowSkeleton } from '@/components/ui/Skeleton';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { Quote } from '@/types';
 import {
   Plus, FileText, Search, X, ChevronRight,
@@ -69,34 +75,41 @@ function QuoteRow({ quote, onDelete }: { quote: Quote; onDelete: (id: string) =>
         >
           <MoreHorizontal className="w-4.5 h-4.5" />
         </button>
-        {menuOpen && (
-          <>
-            <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
-            <div className="absolute right-0 top-full mt-1 w-48 bg-c-card border border-c-border-inner rounded-2xl shadow-2xl z-20 overflow-hidden py-1">
-              <button
-                onClick={() => { router.push(`/presentation?id=${quote.id}`); setMenuOpen(false); }}
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors"
-              >
-                <Presentation className="w-4 h-4 text-c-text-4" />
-                Present
-              </button>
-              <button
-                onClick={() => { router.push(`/quotes/${quote.id}/edit`); setMenuOpen(false); }}
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors"
-              >
-                <Edit2 className="w-4 h-4 text-c-text-4" />
-                Edit
-              </button>
-              <button
-                onClick={() => { if (confirm('Delete this quote?')) onDelete(quote.id); setMenuOpen(false); }}
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 active:bg-red-500/10 transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete
-              </button>
-            </div>
-          </>
-        )}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              className="fixed inset-0 z-10"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              onClick={() => setMenuOpen(false)}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatedOverlay open={menuOpen} className="absolute right-0 top-full mt-1 w-48 bg-c-card border border-c-border-inner rounded-2xl shadow-2xl z-20 overflow-hidden py-1">
+          <button
+            onClick={() => { router.push(`/presentation?id=${quote.id}`); setMenuOpen(false); }}
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors"
+          >
+            <Presentation className="w-4 h-4 text-c-text-4" />
+            Present
+          </button>
+          <button
+            onClick={() => { router.push(`/quotes/${quote.id}/edit`); setMenuOpen(false); }}
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors"
+          >
+            <Edit2 className="w-4 h-4 text-c-text-4" />
+            Edit
+          </button>
+          <button
+            onClick={() => { if (confirm('Delete this quote?')) onDelete(quote.id); setMenuOpen(false); }}
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 active:bg-red-500/10 transition-colors"
+          >
+            <Trash2 className="w-4 h-4" />
+            Delete
+          </button>
+        </AnimatedOverlay>
       </div>
 
       <ChevronRight className="w-4 h-4 text-c-text-5 shrink-0" />
@@ -174,7 +187,7 @@ export default function QuotesDashboardPage() {
 
   return (
     <AppShell>
-      <div className="max-w-5xl mx-auto px-6 py-6 space-y-5">
+      <AnimatedPage className="max-w-5xl mx-auto px-6 py-6 space-y-5">
 
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -190,14 +203,16 @@ export default function QuotesDashboardPage() {
         {/* Metrics — single row */}
         <div className="grid grid-cols-4 gap-3">
           {[
-            { label: 'This Month', value: String(stats.thisMonth), icon: TrendingUp, color: 'text-blue-400' },
-            { label: 'Pipeline', value: formatCurrency(stats.pipeline), icon: DollarSign, color: 'text-amber-400' },
-            { label: 'Close Rate', value: `${stats.closeRate}%`, icon: Target, color: 'text-emerald-400' },
-            { label: 'Won Revenue', value: formatCurrency(stats.wonRevenue), icon: Percent, color: 'text-purple-400' },
+            { label: 'This Month', value: stats.thisMonth, format: (n: number) => String(n), icon: TrendingUp, color: 'text-blue-400' },
+            { label: 'Pipeline', value: stats.pipeline, format: (n: number) => formatCurrency(n), icon: DollarSign, color: 'text-amber-400' },
+            { label: 'Close Rate', value: stats.closeRate, format: (n: number) => `${n}%`, icon: Target, color: 'text-emerald-400' },
+            { label: 'Won Revenue', value: stats.wonRevenue, format: (n: number) => formatCurrency(n), icon: Percent, color: 'text-purple-400' },
           ].map(m => (
             <div key={m.label} className="rounded-2xl border border-c-border bg-c-card px-5 py-4">
               <div className="text-[11px] font-medium text-c-text-4 uppercase tracking-wider mb-1.5">{m.label}</div>
-              <div className={`text-xl font-bold ${m.color} tracking-tight`}>{m.value}</div>
+              <div className={`text-xl font-bold ${m.color} tracking-tight`}>
+                <AnimatedNumber value={m.value} format={m.format} />
+              </div>
             </div>
           ))}
         </div>
@@ -259,13 +274,15 @@ export default function QuotesDashboardPage() {
             )}
           </div>
         ) : (
-          <div className="rounded-2xl border border-c-border bg-c-card overflow-hidden divide-y divide-c-border-inner">
+          <StaggerContainer className="rounded-2xl border border-c-border bg-c-card overflow-hidden divide-y divide-c-border-inner">
             {filtered.map(q => (
-              <QuoteRow key={q.id} quote={q} onDelete={remove} />
+              <StaggerItem key={q.id}>
+                <QuoteRow quote={q} onDelete={remove} />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         )}
-      </div>
+      </AnimatedPage>
     </AppShell>
   );
 }

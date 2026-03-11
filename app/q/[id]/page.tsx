@@ -36,7 +36,7 @@ function ClientSignature({ quote, onSigned }: {
     canvas.height = rect.height * dpr;
     ctx.scale(dpr, dpr);
     ctx.strokeStyle = '#0f0f1a';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
   }, []);
@@ -125,7 +125,7 @@ function ClientSignature({ quote, onSigned }: {
       <div className="text-xs text-gray-400 mb-2 font-medium">Draw your signature below</div>
       <div
         className="relative rounded-xl border border-gray-200 bg-white overflow-hidden"
-        style={{ touchAction: 'none', height: 160 }}
+        style={{ touchAction: 'none', height: 240 }}
       >
         <canvas
           ref={canvasRef}
@@ -143,8 +143,8 @@ function ClientSignature({ quote, onSigned }: {
             <span className="text-gray-300 text-sm italic select-none">Sign here…</span>
           </div>
         )}
-        <div className="absolute bottom-10 left-6 right-6 border-b border-gray-200" />
-        <div className="absolute bottom-4 left-6 text-[10px] text-gray-300 font-medium tracking-widest uppercase select-none">
+        <div className="absolute bottom-14 left-6 right-6 border-b border-gray-200" />
+        <div className="absolute bottom-6 left-6 text-[10px] text-gray-300 font-medium tracking-widest uppercase select-none">
           Signature
         </div>
       </div>
@@ -159,7 +159,7 @@ function ClientSignature({ quote, onSigned }: {
         <button
           onClick={handleSign}
           disabled={!hasSignature}
-          className={`flex items-center gap-2 h-11 px-6 rounded-xl text-sm font-bold transition-all ${
+          className={`flex items-center gap-2 h-12 px-7 rounded-xl text-sm font-bold transition-all ${
             hasSignature
               ? 'bg-amber-500 hover:bg-amber-400 text-black'
               : 'bg-gray-100 text-gray-300 cursor-not-allowed'

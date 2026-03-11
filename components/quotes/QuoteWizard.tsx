@@ -2,7 +2,8 @@
 
 import { useWizardStore } from '@/store/wizard';
 import { useSettingsStore } from '@/store/settings';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { LiveQuoteSummary } from './LiveQuoteSummary';
 import { Step0ClientInfo } from './steps/Step0ClientInfo';
@@ -102,9 +103,10 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
   const currentStep = Math.min(wizard.currentStep, steps.length - 1);
   const isLastStep = currentStep === steps.length - 1;
   const canNext = validateStep(currentStep, wizard);
+  const directionRef = useRef(1);
 
-  const goNext = () => wizard.setStep(Math.min(currentStep + 1, steps.length - 1));
-  const goPrev = () => wizard.setStep(Math.max(currentStep - 1, 0));
+  const goNext = () => { directionRef.current = 1; wizard.setStep(Math.min(currentStep + 1, steps.length - 1)); };
+  const goPrev = () => { directionRef.current = -1; wizard.setStep(Math.max(currentStep - 1, 0)); };
 
   return (
     <div className="flex flex-col h-full">
@@ -156,8 +158,19 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
       {/* Split panel content */}
       <div className="flex-1 flex min-h-0">
         {/* Left: form (60%) */}
-        <div className="flex-[3] overflow-y-auto px-6 py-6 border-r border-c-border-inner">
-          {steps[currentStep]?.render()}
+        <div className="flex-[3] overflow-y-auto border-r border-c-border-inner">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, x: directionRef.current * 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: directionRef.current * -20 }}
+              transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+              className="px-6 py-6"
+            >
+              {steps[currentStep]?.render()}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Right: live summary (40%) */}

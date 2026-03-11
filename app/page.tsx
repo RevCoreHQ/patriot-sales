@@ -2,13 +2,15 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { AppShell } from '@/components/layout/AppShell';
-import { useAuthStore } from '@/store/auth';
 import { useQuotesStore } from '@/store/quotes';
 import { useProjectsStore } from '@/store/projects';
 import { formatCurrency, formatDateShort } from '@/lib/utils';
 import { StatusBadge } from '@/components/ui/Badge';
+import { AnimatedPage } from '@/components/motion/AnimatedPage';
+import { StaggerContainer, StaggerItem } from '@/components/motion/StaggerList';
+import { AnimatedNumber } from '@/components/motion/AnimatedNumber';
+import { MetricCardSkeleton, QuoteRowSkeleton } from '@/components/ui/Skeleton';
 import {
   Plus, Bell, ChevronRight, Hammer, TrendingUp,
   Target, DollarSign, FolderOpen,
@@ -20,23 +22,45 @@ function daysSince(dateStr: string) {
   return Math.floor((Date.now() - new Date(dateStr).getTime()) / 86_400_000);
 }
 
+const fmtCurrency = (n: number) => formatCurrency(n);
+const fmtPercent = (n: number) => `${n}%`;
+const fmtInt = (n: number) => String(n);
+
 export default function HomePage() {
-  const router = useRouter();
-  const { currentUser, initialized, init } = useAuthStore();
-  const { quotes, init: initQuotes } = useQuotesStore();
-  const { projects, init: initProjects } = useProjectsStore();
+  const { quotes, initialized: quotesReady, init: initQuotes } = useQuotesStore();
+  const { projects, initialized: projectsReady, init: initProjects } = useProjectsStore();
 
   useEffect(() => {
-    init();
     initQuotes();
     initProjects();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    if (initialized && !currentUser) router.replace('/login');
-  }, [initialized, currentUser, router]);
+  const ready = quotesReady && projectsReady;
 
-  if (!initialized || !currentUser) return null;
+  if (!ready) {
+    return (
+      <AppShell>
+        <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="skeleton h-11 w-28 rounded-xl" />
+              <div className="space-y-2">
+                <div className="skeleton h-7 w-52" />
+                <div className="skeleton h-4 w-36" />
+              </div>
+            </div>
+            <div className="skeleton h-14 w-36 rounded-2xl" />
+          </div>
+          <div className="grid grid-cols-4 gap-3">
+            {Array.from({ length: 4 }).map((_, i) => <MetricCardSkeleton key={i} />)}
+          </div>
+          <div className="rounded-2xl border border-c-border bg-c-card overflow-hidden">
+            {Array.from({ length: 4 }).map((_, i) => <QuoteRowSkeleton key={i} />)}
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
 
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
@@ -54,15 +78,15 @@ export default function HomePage() {
   const today = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
   const metrics = [
-    { label: 'Open Pipeline', value: formatCurrency(pipeline), icon: DollarSign, color: 'text-amber-400', bg: 'bg-amber-500/10' },
-    { label: 'Won This Month', value: String(thisMonthWon.length), icon: TrendingUp, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-    { label: 'Close Rate', value: `${closeRate}%`, icon: Target, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-    { label: 'Active Jobs', value: String(activeProjects), icon: Hammer, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+    { label: 'Open Pipeline', value: pipeline, format: fmtCurrency, icon: DollarSign, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+    { label: 'Won This Month', value: thisMonthWon.length, format: fmtInt, icon: TrendingUp, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    { label: 'Close Rate', value: closeRate, format: fmtPercent, icon: Target, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    { label: 'Active Jobs', value: activeProjects, format: fmtInt, icon: Hammer, color: 'text-purple-400', bg: 'bg-purple-500/10' },
   ];
 
   return (
     <AppShell>
-      <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
+      <AnimatedPage className="max-w-4xl mx-auto px-6 py-8 space-y-6">
 
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -71,7 +95,7 @@ export default function HomePage() {
             <img src={LOGO_URL} alt="RNR" className="h-11 w-auto object-contain" />
             <div>
               <h1 className="text-2xl font-bold text-c-text tracking-tight">
-                {greeting}, {currentUser.name.split(' ')[0]}
+                {greeting}
               </h1>
               <p className="text-sm text-c-text-3 mt-0.5">{today}</p>
             </div>
@@ -87,24 +111,28 @@ export default function HomePage() {
         </div>
 
         {/* Metrics */}
-        <div className="grid grid-cols-4 gap-3">
+        <StaggerContainer className="grid grid-cols-4 gap-3">
           {metrics.map(m => (
-            <div key={m.label} className="rounded-2xl border border-c-border bg-c-card p-5">
-              <div className="flex items-center gap-2.5 mb-3">
-                <div className={`w-9 h-9 rounded-xl ${m.bg} flex items-center justify-center`}>
-                  <m.icon className={`w-4.5 h-4.5 ${m.color}`} />
+            <StaggerItem key={m.label}>
+              <div className="rounded-2xl border border-c-border bg-c-card p-5">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <div className={`w-9 h-9 rounded-xl ${m.bg} flex items-center justify-center`}>
+                    <m.icon className={`w-4.5 h-4.5 ${m.color}`} />
+                  </div>
+                  <span className="text-xs font-medium text-c-text-3">{m.label}</span>
                 </div>
-                <span className="text-xs font-medium text-c-text-3">{m.label}</span>
+                <div className={`text-2xl font-bold ${m.color} tracking-tight`}>
+                  <AnimatedNumber value={m.value} format={m.format} />
+                </div>
               </div>
-              <div className={`text-2xl font-bold ${m.color} tracking-tight`}>{m.value}</div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
         {/* Follow-up alert */}
         {followUpNeeded.length > 0 && (
-          <button
-            onClick={() => router.push('/quotes')}
+          <Link
+            href="/quotes"
             className="w-full flex items-center justify-between px-5 py-4 bg-c-card border border-c-border rounded-2xl active:bg-c-surface transition-colors"
             style={{ borderLeftColor: 'rgba(251,146,60,0.5)', borderLeftWidth: 3 }}
           >
@@ -120,7 +148,7 @@ export default function HomePage() {
               </div>
             </div>
             <ChevronRight className="w-4 h-4 text-c-text-4 shrink-0" />
-          </button>
+          </Link>
         )}
 
         {/* Active jobs banner */}
@@ -160,27 +188,28 @@ export default function HomePage() {
                 View all
               </Link>
             </div>
-            <div className="divide-y divide-c-border-inner">
+            <StaggerContainer className="divide-y divide-c-border-inner">
               {quotes.slice(0, 6).map(q => (
-                <Link
-                  key={q.id}
-                  href={`/quotes/${q.id}`}
-                  className="flex items-center gap-4 px-5 py-3.5 active:bg-c-surface transition-colors min-h-[56px]"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-semibold text-c-text truncate">{q.client.name}</div>
-                    <div className="text-xs text-c-text-4 mt-0.5 flex items-center gap-2">
-                      <span className="capitalize">{q.projectTypes[0]?.replace(/-/g, ' ')}</span>
-                      <span>·</span>
-                      <span>{formatDateShort(q.createdAt)}</span>
+                <StaggerItem key={q.id}>
+                  <Link
+                    href={`/quotes/${q.id}`}
+                    className="flex items-center gap-4 px-5 py-3.5 active:bg-c-surface transition-colors min-h-[56px]"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-semibold text-c-text truncate">{q.client.name}</div>
+                      <div className="text-xs text-c-text-4 mt-0.5 flex items-center gap-2">
+                        <span className="capitalize">{q.projectTypes[0]?.replace(/-/g, ' ')}</span>
+                        <span>·</span>
+                        <span>{formatDateShort(q.createdAt)}</span>
+                      </div>
                     </div>
-                  </div>
-                  <StatusBadge status={q.status} />
-                  <div className="text-sm font-bold text-c-text shrink-0 tabular-nums">{formatCurrency(q.total)}</div>
-                  <ChevronRight className="w-4 h-4 text-c-text-5 shrink-0" />
-                </Link>
+                    <StatusBadge status={q.status} />
+                    <div className="text-sm font-bold text-c-text shrink-0 tabular-nums">{formatCurrency(q.total)}</div>
+                    <ChevronRight className="w-4 h-4 text-c-text-5 shrink-0" />
+                  </Link>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         )}
 
@@ -203,7 +232,7 @@ export default function HomePage() {
             </Link>
           </div>
         )}
-      </div>
+      </AnimatedPage>
     </AppShell>
   );
 }

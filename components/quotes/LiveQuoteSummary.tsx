@@ -4,6 +4,8 @@ import { useWizardStore } from '@/store/wizard';
 import { useSettingsStore } from '@/store/settings';
 import { buildLineItems, buildPoolLineItems, calculateTotals } from '@/lib/pricing';
 import { formatCurrency } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatedNumber } from '@/components/motion/AnimatedNumber';
 
 export function LiveQuoteSummary() {
   const wizard = useWizardStore();
@@ -52,21 +54,30 @@ export function LiveQuoteSummary() {
           </div>
         ) : (
           <div className="space-y-1.5">
-            {allItems.map(item => (
-              <div key={item.id} className="flex items-start justify-between gap-2 py-1.5">
-                <div className="min-w-0 flex-1">
-                  <div className="text-xs text-c-text-2 truncate">{item.description}</div>
-                  {item.unit !== 'flat' && (
-                    <div className="text-[10px] text-c-text-4 mt-0.5">
-                      {item.quantity} {item.unit} × {formatCurrency(item.unitPrice)}
-                    </div>
-                  )}
-                </div>
-                <span className="text-xs font-semibold text-c-text tabular-nums shrink-0">
-                  {formatCurrency(item.total)}
-                </span>
-              </div>
-            ))}
+            <AnimatePresence initial={false}>
+              {allItems.map(item => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-start justify-between gap-2 py-1.5"
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="text-xs text-c-text-2 truncate">{item.description}</div>
+                    {item.unit !== 'flat' && (
+                      <div className="text-[10px] text-c-text-4 mt-0.5">
+                        {item.quantity} {item.unit} × {formatCurrency(item.unitPrice)}
+                      </div>
+                    )}
+                  </div>
+                  <span className="text-xs font-semibold text-c-text tabular-nums shrink-0">
+                    {formatCurrency(item.total)}
+                  </span>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         )}
       </div>
@@ -92,7 +103,9 @@ export function LiveQuoteSummary() {
         <div className="h-px bg-c-border-inner" />
         <div className="flex justify-between items-center">
           <span className="text-sm font-bold text-c-text">Total</span>
-          <span className="text-2xl font-bold text-amber-400 tabular-nums">{formatCurrency(total)}</span>
+          <span className="text-2xl font-bold text-amber-400 tabular-nums">
+            <AnimatedNumber value={total} format={(n) => formatCurrency(n)} />
+          </span>
         </div>
       </div>
     </div>

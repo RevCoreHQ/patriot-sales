@@ -4,17 +4,19 @@ import { ButtonHTMLAttributes, forwardRef } from 'react';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
   size?: 'sm' | 'md' | 'lg';
+  loading?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'primary', size = 'md', children, disabled, ...props }, ref) => {
+  ({ className, variant = 'primary', size = 'md', loading, children, disabled, ...props }, ref) => {
     return (
       <button
         ref={ref}
-        disabled={disabled}
+        disabled={disabled || loading}
         className={cn(
           'inline-flex items-center justify-center gap-2 font-semibold rounded-2xl cursor-pointer select-none transition-all active:scale-[0.97]',
           'disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100',
+          loading && 'pointer-events-none',
           {
             // Variants
             'bg-amber-500 active:bg-amber-400 text-black': variant === 'primary',
@@ -31,7 +33,17 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         {...props}
       >
-        {children}
+        {loading ? (
+          <>
+            <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="opacity-25" />
+              <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="opacity-75" />
+            </svg>
+            {typeof children === 'string' ? children : null}
+          </>
+        ) : (
+          children
+        )}
       </button>
     );
   }

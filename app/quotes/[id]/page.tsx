@@ -3,11 +3,15 @@
 import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
 import { AppShell } from '@/components/layout/AppShell';
 import { Button } from '@/components/ui/Button';
 import { StatusBadge } from '@/components/ui/Badge';
 import { SignaturePad } from '@/components/ui/SignaturePad';
 import { MaterialSwatch } from '@/components/ui/MaterialSwatch';
+import { AnimatedPage } from '@/components/motion/AnimatedPage';
+import { AnimatedOverlay } from '@/components/motion/AnimatedOverlay';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { useQuotesStore } from '@/store/quotes';
 import { useSettingsStore } from '@/store/settings';
 import { useProjectsStore } from '@/store/projects';
@@ -61,8 +65,24 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
   if (!quote) {
     return (
       <AppShell>
-        <div className="flex items-center justify-center h-full">
-          <div className="text-c-text-3 text-sm">Loading...</div>
+        <div className="px-6 py-6 space-y-6">
+          <div className="flex items-center gap-4">
+            <Skeleton className="w-10 h-10 rounded-xl" />
+            <Skeleton className="h-7 w-48" />
+            <div className="flex-1" />
+            <Skeleton className="h-12 w-32 rounded-2xl" />
+            <Skeleton className="h-12 w-32 rounded-2xl" />
+          </div>
+          <div className="grid grid-cols-5 gap-6">
+            <div className="col-span-3 space-y-4">
+              <Skeleton className="h-40 rounded-2xl" />
+              <Skeleton className="h-64 rounded-2xl" />
+            </div>
+            <div className="col-span-2 space-y-4">
+              <Skeleton className="h-32 rounded-2xl" />
+              <Skeleton className="h-48 rounded-2xl" />
+            </div>
+          </div>
         </div>
       </AppShell>
     );
@@ -96,12 +116,14 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
 
   return (
     <>
-      {showSignature && (
-        <SignaturePad clientName={quote.client.name} total={formatCurrency(quote.total)} onSave={handleSign} onCancel={() => setShowSignature(false)} />
-      )}
+      <AnimatePresence>
+        {showSignature && (
+          <SignaturePad clientName={quote.client.name} total={formatCurrency(quote.total)} onSave={handleSign} onCancel={() => setShowSignature(false)} />
+        )}
+      </AnimatePresence>
 
       <AppShell>
-        <div className="p-6 max-w-5xl mx-auto">
+        <AnimatedPage className="p-6 max-w-5xl mx-auto">
 
           {/* ── Header ── */}
           <div className="flex items-center justify-between mb-6">
@@ -153,10 +175,12 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                 <Button variant="secondary" onClick={() => setMenuOpen(!menuOpen)} className="!px-3">
                   <MoreHorizontal className="w-4.5 h-4.5" />
                 </Button>
-                {menuOpen && (
-                  <>
-                    <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
-                    <div className="absolute right-0 top-full mt-2 w-56 bg-c-card border border-c-border-inner rounded-2xl shadow-2xl z-20 overflow-hidden py-1.5">
+                <AnimatePresence>
+                  {menuOpen && (
+                    <motion.div className="fixed inset-0 z-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} onClick={() => setMenuOpen(false)} />
+                  )}
+                </AnimatePresence>
+                <AnimatedOverlay open={menuOpen} className="absolute right-0 top-full mt-2 w-56 bg-c-card border border-c-border-inner rounded-2xl shadow-2xl z-20 overflow-hidden py-1.5">
                       {/* Status */}
                       <div className="px-4 py-2">
                         <div className="text-[10px] font-bold text-c-text-4 uppercase tracking-widest mb-2">Status</div>
@@ -202,9 +226,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                         <Trash2 className="w-4 h-4" />
                         Delete Quote
                       </button>
-                    </div>
-                  </>
-                )}
+                </AnimatedOverlay>
               </div>
             </div>
           </div>
@@ -414,7 +436,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
               )}
             </div>
           </div>
-        </div>
+        </AnimatedPage>
       </AppShell>
     </>
   );

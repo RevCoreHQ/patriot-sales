@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { useProjectsStore } from '@/store/projects';
 import { formatCurrency, formatDateShort } from '@/lib/utils';
+import { AnimatedPage } from '@/components/motion/AnimatedPage';
+import { StaggerContainer, StaggerItem } from '@/components/motion/StaggerList';
 import type { Project, ProjectPhase, ProjectTodo, CloseoutItem, PaymentType, PaymentMethod } from '@/types';
 import {
   Hammer, CheckCircle2, DollarSign, Truck, FileText, Calendar,
@@ -323,16 +325,16 @@ export default function ProjectsPage() {
   return (
     <AppShell>
       {projects.length === 0 ? (
-        <div className="max-w-3xl mx-auto px-6 py-12">
+        <AnimatedPage className="max-w-3xl mx-auto px-6 py-12">
           <h1 className="text-2xl font-bold text-c-text mb-2">Jobs</h1>
           <div className="flex flex-col items-center justify-center py-20 bg-c-card border border-c-border rounded-2xl text-center">
             <Hammer className="w-12 h-12 text-c-text-5 mb-4" />
             <div className="text-c-text-3 text-base font-medium mb-1">No projects yet</div>
             <div className="text-c-text-4 text-sm max-w-xs mb-4">Accept a quote and move it to projects to start tracking here.</div>
           </div>
-        </div>
+        </AnimatedPage>
       ) : (
-        <div className="flex h-full">
+        <AnimatedPage className="flex h-full">
           {/* Left panel — project list */}
           <div className="w-[380px] shrink-0 border-r border-c-border-inner flex flex-col h-full overflow-hidden">
             <div className="p-5 shrink-0">
@@ -391,7 +393,7 @@ export default function ProjectsPage() {
               <div className="flex items-center justify-center h-full text-c-text-4 text-sm">Select a project</div>
             )}
           </div>
-        </div>
+        </AnimatedPage>
       )}
     </AppShell>
   );

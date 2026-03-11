@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { X, RotateCcw, CheckCircle2, PenLine } from 'lucide-react';
 
@@ -29,7 +30,7 @@ export function SignaturePad({ clientName, total, onSave, onCancel }: Props) {
     canvas.height = rect.height * dpr;
     ctx.scale(dpr, dpr);
     ctx.strokeStyle = '#0f0f1a';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
   }, []);
@@ -93,9 +94,19 @@ export function SignaturePad({ clientName, total, onSave, onCancel }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-6">
-      <div
-        className="w-full max-w-lg rounded-2xl border border-c-border-inner bg-c-card overflow-hidden shadow-2xl"
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+    >
+      <motion.div
+        className="w-full max-w-3xl rounded-2xl border border-c-border-inner bg-c-card overflow-hidden shadow-2xl"
+        initial={{ opacity: 0, scale: 0.95, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 12 }}
+        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
       >
         {/* Header */}
         <div className="px-6 py-5 flex items-start justify-between border-b border-c-border-inner">
@@ -133,7 +144,7 @@ export function SignaturePad({ clientName, total, onSave, onCancel }: Props) {
           <div className="text-xs text-c-text-4 mb-2 font-medium">Draw signature below</div>
           <div
             className="relative rounded-xl border border-c-border-inner bg-white overflow-hidden"
-            style={{ touchAction: 'none', height: 160 }}
+            style={{ touchAction: 'none', height: 280 }}
           >
             <canvas
               ref={canvasRef}
@@ -152,8 +163,8 @@ export function SignaturePad({ clientName, total, onSave, onCancel }: Props) {
               </div>
             )}
             {/* Baseline */}
-            <div className="absolute bottom-10 left-6 right-6 border-b border-gray-200" />
-            <div className="absolute bottom-4 left-6 text-[10px] text-gray-300 font-medium tracking-widest uppercase select-none">
+            <div className="absolute bottom-14 left-6 right-6 border-b border-gray-200" />
+            <div className="absolute bottom-6 left-6 text-[10px] text-gray-300 font-medium tracking-widest uppercase select-none">
               Signature
             </div>
           </div>
@@ -184,7 +195,7 @@ export function SignaturePad({ clientName, total, onSave, onCancel }: Props) {
             </Button>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
