@@ -65,9 +65,9 @@ const PHASES = [
     number: '01',
     label: 'Free Roof Inspection',
     icon: ClipboardList,
-    color: 'from-accent/20 to-accent/5',
-    border: 'border-accent/30',
-    text: 'text-accent',
+    color: 'from-pres-accent/20 to-pres-accent/5',
+    border: 'border-pres-accent/30',
+    text: 'text-pres-accent',
     accent: '#C62828',
     image: 'https://images.unsplash.com/photo-1632823471565-1ecdf5c6da20?w=1200&q=85',
     description: 'We come to you — no charge, no obligation. Our inspector visits your property, examines shingles, flashing, and gutters, checks for storm damage, and takes detailed measurements and photos. We\'ll walk you through our findings, recommend materials, and provide a written estimate.',
@@ -155,9 +155,9 @@ const PHASES = [
     number: '06',
     label: 'Final Walkthrough',
     icon: BadgeCheck,
-    color: 'from-accent/20 to-accent/5',
-    border: 'border-accent/30',
-    text: 'text-accent',
+    color: 'from-pres-accent/20 to-pres-accent/5',
+    border: 'border-pres-accent/30',
+    text: 'text-pres-accent',
     accent: '#C62828',
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=85',
     description: 'We don\'t consider a project finished until you sign off. We walk the entire property with you, explain ongoing maintenance, and hand over all warranty documentation. You\'re backed by our workmanship guarantee and full manufacturer warranty registration.',
@@ -301,7 +301,7 @@ function computeTierPricing(quote: Quote, settings: AppSettings): TierPackage[] 
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
     <div className="bg-c-elevated border border-c-border-inner rounded-2xl p-6 text-center">
-      <div className="text-4xl font-bold text-accent mb-1">{value}</div>
+      <div className="text-4xl font-bold text-pres-accent mb-1">{value}</div>
       <div className="text-sm text-c-text-3 leading-tight">{label}</div>
     </div>
   );
@@ -449,7 +449,7 @@ function PresentationContent() {
       {/* ── Progress bar ── */}
       <div className="h-[2px] w-full bg-c-elevated shrink-0 relative">
         <motion.div
-          className="h-full bg-accent"
+          className="h-full bg-pres-accent"
           initial={false}
           animate={{ width: `${progressPct}%` }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -496,15 +496,15 @@ function PresentationContent() {
                 <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />
                 <div className="relative z-10 max-w-2xl">
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}>
-                    <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/25 text-accent text-[13px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-8">
-                      <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                    <div className="inline-flex items-center gap-2 bg-pres-accent/10 border border-pres-accent/25 text-pres-accent text-[13px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-8">
+                      <div className="w-1.5 h-1.5 rounded-full bg-pres-accent" />
                       Patriot Roofing &amp; Home Repairs
                     </div>
                   </motion.div>
                   <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.65 }}
                     className="text-7xl font-bold text-c-text mb-5 leading-[1.05] tracking-tight">
                     Your Home.<br />
-                    <span className="text-accent">Protected &amp; Beautiful.</span>
+                    <span className="text-pres-accent">Protected &amp; Beautiful.</span>
                   </motion.h1>
                   <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }}
                     className="text-xl text-c-text-3 max-w-lg mx-auto mb-10 leading-relaxed">
@@ -518,7 +518,7 @@ function PresentationContent() {
                       { icon: CheckCircle2, label: 'Workmanship Guarantee' },
                     ].map(({ icon: Icon, label }) => (
                       <div key={label} className="flex items-center gap-2">
-                        <Icon className="w-4 h-4 text-accent" />
+                        <Icon className="w-4 h-4 text-pres-accent" />
                         {label}
                       </div>
                     ))}
@@ -547,7 +547,7 @@ function PresentationContent() {
                   </div>
                 </div>
                 <div className="flex flex-col justify-center px-16 py-14 bg-c-surface">
-                  <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-3">Who We Are</div>
+                  <div className="text-pres-accent text-[13px] font-bold tracking-widest uppercase mb-3">Who We Are</div>
                   <h2 className="text-5xl font-bold text-c-text mb-5 leading-tight">
                     Lexington, NC&apos;s<br />Roofing Specialists
                   </h2>
@@ -575,7 +575,7 @@ function PresentationContent() {
                   style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1632823471565-1ecdf5c6da20?w=1200&q=85)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.12 }} />
                 <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/75 to-background" />
                 <div className="relative z-10 w-full max-w-4xl mt-6">
-                  <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-3">The Patriot Difference</div>
+                  <div className="text-pres-accent text-[13px] font-bold tracking-widest uppercase mb-3">The Patriot Difference</div>
                   <h2 className="text-5xl font-bold text-c-text mb-10">Why Piedmont Triad Homeowners Choose Us</h2>
                   <div className="grid grid-cols-2 gap-5">
                     {[
@@ -583,7 +583,7 @@ function PresentationContent() {
                         icon: Award,
                         title: 'Safety First',
                         desc: 'Roofing is serious work. Our crews follow strict safety protocols on every job — proper fall protection, equipment inspection, and worksite management. Your family and property are always protected during our work.',
-                        color: 'text-accent',
+                        color: 'text-pres-accent',
                         bg: 'rgba(198,40,40,0.1)',
                       },
                       {
@@ -626,7 +626,7 @@ function PresentationContent() {
             {/* ── PORTFOLIO ── */}
             {currentSlide === 'portfolio' && (
               <div className="h-full flex flex-col px-12 py-8">
-                <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-2">Our Work</div>
+                <div className="text-pres-accent text-[13px] font-bold tracking-widest uppercase mb-2">Our Work</div>
                 <h2 className="text-4xl font-bold text-c-text mb-5">Recent Piedmont Triad Projects</h2>
                 <div className="flex-1 grid grid-cols-3 grid-rows-2 gap-3 min-h-0">
                   {/* Project photos */}
@@ -668,7 +668,7 @@ function PresentationContent() {
               <div className="h-full flex flex-col items-center justify-center px-16"
                 style={{ background: 'radial-gradient(ellipse at 70% 50%, rgba(198,40,40,0.05) 0%, transparent 60%)' }}>
                 <div className="w-full max-w-5xl">
-                  <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-3">Your Roofing Project</div>
+                  <div className="text-pres-accent text-[13px] font-bold tracking-widest uppercase mb-3">Your Roofing Project</div>
                   <h2 className="text-5xl font-bold text-c-text mb-3">From First Call to Final Walkthrough</h2>
                   <p className="text-c-text-3 mb-10 text-lg">A process we&apos;ve refined across 500+ Piedmont Triad projects — always with our own crew, never subcontracted.</p>
                   <div className="grid grid-cols-3 gap-4">
@@ -755,7 +755,7 @@ function PresentationContent() {
                         <span>Est. Timeline: <span className="text-c-text-2 font-medium">{timeline}</span></span>
                       </div>
                       <div className="flex items-center gap-2 text-base text-c-text-3">
-                        <Star className="w-4 h-4 text-accent/70" />
+                        <Star className="w-4 h-4 text-pres-accent/70" />
                         <span>GAF Certified</span>
                       </div>
                       <div className="flex items-center gap-2 text-base text-c-text-3">
@@ -791,7 +791,7 @@ function PresentationContent() {
                   <div className="w-full max-w-5xl">
                     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
                       className="text-center mb-7">
-                      <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-2">Choose Your Package</div>
+                      <div className="text-pres-accent text-[13px] font-bold tracking-widest uppercase mb-2">Choose Your Package</div>
                       <h2 className="text-5xl font-bold text-c-text">Select the Right Option for Your Home</h2>
                     </motion.div>
 
@@ -857,7 +857,7 @@ function PresentationContent() {
                             <div className="h-px bg-c-border-inner my-3" />
                             <div className="text-center">
                               <div className={cn('text-4xl font-bold mb-1',
-                                isBetter ? 'text-accent-secondary' : pkg.tier === 'best' ? 'text-accent' : 'text-c-text'
+                                isBetter ? 'text-accent-secondary' : pkg.tier === 'best' ? 'text-pres-accent' : 'text-c-text'
                               )}>
                                 {formatCurrency(pkg.total)}
                               </div>
@@ -866,7 +866,7 @@ function PresentationContent() {
                                 <div className="text-base text-c-text-3">~{formatCurrency(pkg.monthlyPayment)}/mo*</div>
                               )}
                               {pkg.isSelected && (
-                                <div className="inline-flex items-center gap-1.5 bg-accent/10 border border-accent/25 text-accent text-xs font-bold px-3 py-1 rounded-full mt-3">
+                                <div className="inline-flex items-center gap-1.5 bg-pres-accent/10 border border-pres-accent/25 text-pres-accent text-xs font-bold px-3 py-1 rounded-full mt-3">
                                   <BadgeCheck className="w-3 h-3" />
                                   Your Selection
                                 </div>
@@ -892,7 +892,7 @@ function PresentationContent() {
             {currentSlide === 'financing' && quote && (
               <div className="h-full flex flex-col items-center justify-center px-12">
                 <div className="w-full max-w-3xl">
-                  <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-2">Flexible Options</div>
+                  <div className="text-pres-accent text-[13px] font-bold tracking-widest uppercase mb-2">Flexible Options</div>
                   <h2 className="text-5xl font-bold text-c-text mb-2">Financing Available</h2>
                   <p className="text-c-text-3 mb-2 text-lg">
                     We offer flexible financing options to fit your budget. Fast approvals, competitive rates, and easy monthly payments for your roofing project.
@@ -906,7 +906,7 @@ function PresentationContent() {
                     {settings.financing.map((opt, i) => (
                       <button key={opt.id} onClick={() => setSelectedTerm(i)}
                         className={cn('flex-1 py-3 rounded-xl text-base font-semibold transition-all cursor-pointer',
-                          selectedTerm === i ? 'bg-accent text-white shadow-lg shadow-accent/25' : 'text-c-text-3 active:bg-c-card'
+                          selectedTerm === i ? 'bg-pres-accent text-white shadow-lg shadow-pres-accent/25' : 'text-c-text-3 active:bg-c-card'
                         )}>
                         {opt.label}
                       </button>
@@ -916,7 +916,7 @@ function PresentationContent() {
                     <div className="bg-c-card border border-c-border-inner rounded-2xl p-8">
                       <div className="grid grid-cols-3 gap-8 text-center mb-6">
                         <div>
-                          <div className="text-6xl font-bold text-accent mb-2">{formatCurrency(financing.monthlyPayment)}</div>
+                          <div className="text-6xl font-bold text-pres-accent mb-2">{formatCurrency(financing.monthlyPayment)}</div>
                           <div className="text-sm text-c-text-3 uppercase tracking-wider">per month</div>
                         </div>
                         <div>
@@ -948,7 +948,7 @@ function PresentationContent() {
                 <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/85 to-background" />
                 <div className="relative z-10 w-full max-w-3xl">
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                    <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/25 text-accent text-[13px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
+                    <div className="inline-flex items-center gap-2 bg-pres-accent/10 border border-pres-accent/25 text-pres-accent text-[13px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
                       <ThumbsUp className="w-3.5 h-3.5" />
                       Ready to Protect Your Home?
                     </div>
@@ -956,7 +956,7 @@ function PresentationContent() {
                   <motion.h2 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}
                     className="text-6xl font-bold text-c-text mb-5 leading-[1.05] tracking-tight">
                     Let&apos;s Protect Your Home<br />
-                    <span className="text-accent">For Years to Come</span>
+                    <span className="text-pres-accent">For Years to Come</span>
                   </motion.h2>
                   <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}
                     className="text-c-text-3 max-w-lg mx-auto mb-10 text-lg leading-relaxed">
@@ -971,7 +971,7 @@ function PresentationContent() {
                       <motion.div key={s.step}
                         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 + i * 0.1, duration: 0.45 }}
                         className="bg-c-elevated border border-c-border-inner rounded-2xl p-5">
-                        <div className="text-4xl font-bold text-accent/25 mb-3">{s.step}</div>
+                        <div className="text-4xl font-bold text-pres-accent/25 mb-3">{s.step}</div>
                         <div className="text-base font-semibold text-c-text mb-1.5">{s.label}</div>
                         <div className="text-sm text-c-text-3 leading-relaxed">{s.desc}</div>
                       </motion.div>
@@ -980,7 +980,7 @@ function PresentationContent() {
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
                     className="flex items-center justify-center gap-5 text-base text-c-text-3">
                     <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-accent/70" />
+                      <Phone className="w-4 h-4 text-pres-accent/70" />
                       {settings.company.phone}
                     </div>
                     <span className="text-c-text-5">|</span>
@@ -1008,7 +1008,7 @@ function PresentationContent() {
               className="p-1.5 cursor-pointer"
             >
               <div className={cn('rounded-full transition-all',
-                i === slide ? 'w-5 h-2 bg-accent' : 'w-2 h-2 bg-c-border'
+                i === slide ? 'w-5 h-2 bg-pres-accent' : 'w-2 h-2 bg-c-border'
               )} />
             </button>
           ))}
