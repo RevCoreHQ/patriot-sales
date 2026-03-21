@@ -35,7 +35,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
     { id: 'fin-60', label: '60 Months', termMonths: 60, apr: 13.99 },
   ],
   presentation: {
-    accentColor: '#fb8e28',
+    accentColor: '#C62828',
     showFinancing: true,
   },
   notifications: {

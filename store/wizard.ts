@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import type { WizardState, ProjectTypeId, MaterialSelection, AddonSelection, SiteConditions, Client, LineItem } from '@/types';
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 7;
 
 const INITIAL_STATE: WizardState = {
   currentStep: 0,

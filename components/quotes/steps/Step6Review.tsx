@@ -26,7 +26,7 @@ function GlassCard({ children, className = '' }: { children: React.ReactNode; cl
 function SectionLabel({ icon: Icon, label }: { icon: React.ComponentType<{ className?: string }>; label: string }) {
   return (
     <div className="flex items-center gap-2 px-4 py-3 border-b border-c-border-inner">
-      <Icon className="w-3.5 h-3.5 text-[#fb8e28]/70" />
+      <Icon className="w-3.5 h-3.5 text-[#C62828]/70" />
       <span className="text-[11px] font-bold text-c-text-4 uppercase tracking-widest">{label}</span>
     </div>
   );
@@ -131,7 +131,7 @@ export function Step6Review({ editingId }: Step6ReviewProps) {
           <div className="px-4 py-3 space-y-2">
             <div className="flex flex-wrap gap-1.5">
               {wizard.projectTypes.map(pt => (
-                <span key={pt} className="text-[11px] bg-[#fb8e28]/10 text-[#fb8e28] border border-[#fb8e28]/20 px-2.5 py-0.5 rounded-full capitalize font-medium">
+                <span key={pt} className="text-[11px] bg-[#C62828]/10 text-[#C62828] border border-[#C62828]/20 px-2.5 py-0.5 rounded-full capitalize font-medium">
                   {pt.replace(/-/g, ' ')}
                 </span>
               ))}
@@ -217,7 +217,7 @@ export function Step6Review({ editingId }: Step6ReviewProps) {
           <div className="flex justify-between items-center mt-2 pt-3 border-t border-c-border-inner">
             <span className="text-sm font-bold text-c-text">Total Investment</span>
             <div className="text-right">
-              <span className="text-2xl font-bold text-[#fb8e28]">{formatCurrency(wizard.priceOverride ?? total)}</span>
+              <span className="text-2xl font-bold text-[#C62828]">{formatCurrency(wizard.priceOverride ?? total)}</span>
               {wizard.priceOverride !== undefined && (
                 <div className="text-xs text-neutral-500 line-through">{formatCurrency(total)}</div>
               )}

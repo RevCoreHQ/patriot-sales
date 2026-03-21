@@ -93,7 +93,7 @@ export default function ClientsPage() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search clients by name, phone, email, or address..."
-            className="w-full h-12 pl-11 pr-10 bg-c-card border border-c-border rounded-2xl text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-[#fb8e28]/40 transition-colors"
+            className="w-full h-12 pl-11 pr-10 bg-c-card border border-c-border rounded-2xl text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-[#C62828]/40 transition-colors"
           />
           {search && (
             <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-c-text-4 active:text-c-text">

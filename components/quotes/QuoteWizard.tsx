@@ -2,7 +2,7 @@
 
 import { useWizardStore } from '@/store/wizard';
 import { useSettingsStore } from '@/store/settings';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { LiveQuoteSummary } from './LiveQuoteSummary';
@@ -14,7 +14,9 @@ import { Step4Addons } from './steps/Step4Addons';
 import { Step5Pricing } from './steps/Step5Pricing';
 import { Step6Review } from './steps/Step6Review';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, PanelRightOpen, PanelRightClose } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
+import { buildLineItems, calculateTotals } from '@/lib/pricing';
 import type { WizardState } from '@/types';
 
 interface StepDef {
@@ -24,50 +26,20 @@ interface StepDef {
 
 function buildSteps(editingId?: string): StepDef[] {
   return [
-    {
-      label: 'Client & Project',
-      render: () => (
-        <div className="space-y-8">
-          <Step0ClientInfo />
-          <div className="h-px bg-c-border-inner" />
-          <Step1ProjectTypes />
-        </div>
-      ),
-    },
-    {
-      label: 'Site Details',
-      render: () => (
-        <div className="space-y-8">
-          <Step2SiteConditions />
-        </div>
-      ),
-    },
-    {
-      label: 'Items & Add-ons',
-      render: () => (
-        <div className="space-y-8">
-          <StepLineItems />
-          <div className="h-px bg-c-border-inner" />
-          <Step4Addons />
-        </div>
-      ),
-    },
-    {
-      label: 'Review & Save',
-      render: () => (
-        <div className="space-y-8">
-          <Step5Pricing />
-          <div className="h-px bg-c-border-inner" />
-          <Step6Review editingId={editingId} />
-        </div>
-      ),
-    },
+    { label: 'Client',      render: () => <Step0ClientInfo /> },
+    { label: 'Project',     render: () => <Step1ProjectTypes /> },
+    { label: 'Site',        render: () => <Step2SiteConditions /> },
+    { label: 'Line Items',  render: () => <StepLineItems /> },
+    { label: 'Add-Ons',     render: () => <Step4Addons /> },
+    { label: 'Pricing',     render: () => <Step5Pricing /> },
+    { label: 'Review',      render: () => <Step6Review editingId={editingId} /> },
   ];
 }
 
 function validateStep(stepIndex: number, state: WizardState): boolean {
   switch (stepIndex) {
-    case 0: return !!(state.client.name && state.client.phone) && state.projectTypes.length > 0;
+    case 0: return !!(state.client.name && state.client.phone);
+    case 1: return state.projectTypes.length > 0;
     default: return true;
   }
 }
@@ -79,7 +51,8 @@ interface QuoteWizardProps {
 
 export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
   const wizard = useWizardStore();
-  const { init: initSettings } = useSettingsStore();
+  const { settings, init: initSettings } = useSettingsStore();
+  const [summaryOpen, setSummaryOpen] = useState(false);
 
   useEffect(() => {
     initSettings();
@@ -97,60 +70,65 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
   const canNext = validateStep(currentStep, wizard);
   const directionRef = useRef(1);
 
+  // Auto-open summary on review step
+  useEffect(() => {
+    if (currentStep === steps.length - 1) setSummaryOpen(true);
+  }, [currentStep, steps.length]);
+
   const goNext = () => { directionRef.current = 1; wizard.setStep(Math.min(currentStep + 1, steps.length - 1)); };
   const goPrev = () => { directionRef.current = -1; wizard.setStep(Math.max(currentStep - 1, 0)); };
 
+  // Running total for the summary toggle button
+  const autoItems = buildLineItems(
+    wizard.materialSelections, wizard.addonSelections, wizard.siteConditions,
+    settings.pricing.demolitionRate, settings.pricing.materialPrices, settings.pricing.addonPrices,
+  );
+  const allItems = [...autoItems, ...wizard.manualLineItems];
+  const { total } = wizard.priceOverride
+    ? { total: wizard.priceOverride * (1 + settings.pricing.taxRate / 100) }
+    : calculateTotals(allItems, wizard.discountPercent, settings.pricing.taxRate);
+
   return (
     <div className="flex flex-col h-full">
-      {/* Step indicator */}
-      <div className="px-6 py-4 border-b border-c-border-inner shrink-0">
-        <div className="flex items-center gap-0">
-          {steps.map((step, idx) => {
-            const isActive = idx === currentStep;
-            const isDone = idx < currentStep;
-            return (
-              <div key={idx} className="flex items-center flex-1 min-w-0">
-                <button
-                  type="button"
-                  onClick={() => isDone && wizard.setStep(idx)}
-                  className={cn(
-                    'flex items-center gap-2.5 rounded-2xl px-3 py-2.5 text-left transition-all shrink-0',
-                    isDone ? 'cursor-pointer active:bg-c-elevated' : 'cursor-default'
-                  )}
-                >
-                  <span className={cn(
-                    'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-all',
-                    isActive
-                      ? 'bg-[#fb8e28] text-black shadow-[0_0_16px_rgba(251,142,40,0.35)]'
-                      : isDone
-                      ? 'bg-[#fb8e28]/20 text-[#fb8e28]'
-                      : 'bg-c-elevated text-c-text-4'
-                  )}>
-                    {isDone ? <Check className="w-3.5 h-3.5" strokeWidth={3} /> : idx + 1}
-                  </span>
-                  <span className={cn(
-                    'text-sm font-semibold transition-all whitespace-nowrap',
-                    isActive ? 'text-c-text' : isDone ? 'text-c-text-3' : 'text-c-text-5'
-                  )}>
-                    {step.label}
-                  </span>
-                </button>
-                {idx < steps.length - 1 && (
-                  <div className={cn(
-                    'flex-1 h-px mx-2 transition-all',
-                    isDone ? 'bg-[#fb8e28]/40' : 'bg-c-border-inner'
-                  )} />
-                )}
+      {/* Apple-style progress indicator */}
+      <div className="px-6 py-3 border-b border-c-border-inner shrink-0">
+        <div className="h-[3px] w-full bg-c-border-inner rounded-full overflow-hidden mb-2.5">
+          <motion.div
+            className="h-full rounded-full bg-gradient-to-r from-[#C62828] via-white/80 to-[#1565C0]"
+            animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+          />
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-semibold text-c-text">{steps[currentStep]?.label}</span>
+            {currentStep > 0 && (
+              <div className="flex items-center gap-1">
+                {steps.slice(0, currentStep).map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => wizard.setStep(idx)}
+                    className="w-1.5 h-1.5 rounded-full bg-[#C62828]/50 hover:bg-[#C62828] transition-colors cursor-pointer"
+                  />
+                ))}
               </div>
-            );
-          })}
+            )}
+          </div>
+          <span className="text-xs text-c-text-4 tabular-nums font-medium">
+            {currentStep + 1} / {steps.length}
+          </span>
         </div>
       </div>
 
-      {/* Split panel content */}
-      <div className="flex-1 flex min-h-0">
-        {/* Left: form (60%) */}
-        <div className="flex-[3] overflow-y-auto border-r border-c-border-inner">
+      {/* Content area */}
+      <div className="flex-1 flex min-h-0 relative overflow-hidden">
+        {/* Form — full width, shifts left when summary opens */}
+        <motion.div
+          className="flex-1 overflow-y-auto"
+          animate={{ marginRight: summaryOpen ? 320 : 0 }}
+          transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+        >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={currentStep}
@@ -158,22 +136,54 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: directionRef.current * -20 }}
               transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-              className="px-6 py-6"
+              className="px-6 py-5 max-w-2xl"
             >
               {steps[currentStep]?.render()}
             </motion.div>
           </AnimatePresence>
-        </div>
+        </motion.div>
 
-        {/* Right: live summary (40%) */}
-        <div className="flex-[2] bg-c-surface overflow-hidden">
-          <LiveQuoteSummary />
-        </div>
+        {/* Summary toggle button */}
+        <button
+          type="button"
+          onClick={() => setSummaryOpen(!summaryOpen)}
+          className={cn(
+            'absolute top-3 z-20 flex items-center gap-2 px-3 py-2 rounded-l-xl border border-r-0 transition-all',
+            'bg-c-card border-c-border-inner hover:bg-c-elevated active:scale-[0.97]',
+            summaryOpen ? 'right-[320px]' : 'right-0'
+          )}
+        >
+          {summaryOpen ? (
+            <PanelRightClose className="w-4 h-4 text-c-text-3" />
+          ) : (
+            <>
+              <PanelRightOpen className="w-4 h-4 text-c-text-3" />
+              <span className="text-sm font-bold text-[#C62828] tabular-nums">
+                {formatCurrency(total)}
+              </span>
+            </>
+          )}
+        </button>
+
+        {/* Slide-out summary drawer */}
+        <AnimatePresence>
+          {summaryOpen && (
+            <motion.div
+              initial={{ x: 320 }}
+              animate={{ x: 0 }}
+              exit={{ x: 320 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="absolute right-0 top-0 bottom-0 w-[320px] bg-c-surface border-l border-c-border-inner z-10"
+            >
+              <LiveQuoteSummary />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Navigation */}
       {!isLastStep && (
-        <div className="px-6 py-4 border-t border-c-border-inner flex items-center justify-between gap-4 shrink-0">
+        <div className="px-6 py-3 border-t border-c-border-inner flex items-center justify-between gap-4 shrink-0">
           <Button
             variant="ghost"
             size="md"
@@ -184,10 +194,6 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
             <ChevronLeft className="w-4 h-4" />
             Back
           </Button>
-
-          <div className="text-xs text-c-text-4 tabular-nums font-medium">
-            Step {currentStep + 1} of {steps.length}
-          </div>
 
           <Button
             size="md"

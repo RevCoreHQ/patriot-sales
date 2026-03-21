@@ -161,7 +161,7 @@ function ClientSignature({ quote, onSigned }: {
           disabled={!hasSignature}
           className={`flex items-center gap-2 h-12 px-7 rounded-xl text-sm font-bold transition-all ${
             hasSignature
-              ? 'bg-[#fb8e28] hover:bg-[#fb8e28] text-black'
+              ? 'bg-[#C62828] hover:bg-[#C62828] text-black'
               : 'bg-gray-100 text-gray-300 cursor-not-allowed'
           }`}
         >
@@ -209,7 +209,7 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
   if (!quote) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#fb8e28] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-[#C62828] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -259,7 +259,7 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
             {quote.projectTypes.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-4">
                 {quote.projectTypes.map(pt => (
-                  <span key={pt} className="text-xs bg-[#fb8e28]/10 text-[#d4700f] px-2.5 py-1 rounded-full capitalize font-medium">
+                  <span key={pt} className="text-xs bg-[#C62828]/10 text-[#d4700f] px-2.5 py-1 rounded-full capitalize font-medium">
                     {pt.replace(/-/g, ' ')}
                   </span>
                 ))}
@@ -371,7 +371,7 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-6 py-5">
               <div className="flex items-center gap-2 mb-4">
-                <CreditCard className="w-4.5 h-4.5 text-[#fb8e28]" />
+                <CreditCard className="w-4.5 h-4.5 text-[#C62828]" />
                 <h2 className="text-base font-bold text-gray-800">Financing Options</h2>
               </div>
               <p className="text-sm text-gray-500 mb-4">
@@ -386,7 +386,7 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
                     onClick={() => setSelectedTerm(i)}
                     className={`h-9 px-4 rounded-full text-xs font-semibold border transition-all ${
                       selectedTerm === i
-                        ? 'bg-[#fb8e28] text-black border-[#fb8e28]'
+                        ? 'bg-[#C62828] text-black border-[#C62828]'
                         : 'bg-gray-50 text-gray-600 border-gray-200 hover:border-[#fcad55]'
                     }`}
                   >
@@ -399,22 +399,22 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
                 <div className="bg-orange-50 border border-orange-100 rounded-xl p-4">
                   <div className="text-3xl font-bold text-[#d4700f] mb-1">
                     {formatCurrency(financing.monthlyPayment)}
-                    <span className="text-base font-medium text-[#fb8e28]">/mo</span>
+                    <span className="text-base font-medium text-[#C62828]">/mo</span>
                   </div>
                   <div className="text-xs text-[#e67a1f] mb-3">
                     {financingOption.termMonths} months · {financingOption.apr}% APR · 20% down ({formatCurrency(financing.downPayment)})
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <div className="text-xs text-[#fb8e28]">Amount Financed</div>
+                      <div className="text-xs text-[#C62828]">Amount Financed</div>
                       <div className="text-sm font-semibold text-[#d4700f]">{formatCurrency(financing.financed)}</div>
                     </div>
                     <div>
-                      <div className="text-xs text-[#fb8e28]">Total Cost</div>
+                      <div className="text-xs text-[#C62828]">Total Cost</div>
                       <div className="text-sm font-semibold text-[#d4700f]">{formatCurrency(financing.totalCost)}</div>
                     </div>
                   </div>
-                  <p className="text-[10px] text-[#fb8e28] mt-3">
+                  <p className="text-[10px] text-[#C62828] mt-3">
                     *Financing subject to credit approval. Contact us for details.
                   </p>
                 </div>
@@ -434,7 +434,7 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
             ].map(({ icon: Icon, label, sub }) => (
               <div key={label} className="flex flex-col items-center text-center gap-2">
                 <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-[#fb8e28]" />
+                  <Icon className="w-5 h-5 text-[#C62828]" />
                 </div>
                 <div>
                   <div className="text-xs font-semibold text-gray-700">{label}</div>
@@ -450,7 +450,7 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/50 flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center">
-                <PenLine className="w-4.5 h-4.5 text-[#fb8e28]" />
+                <PenLine className="w-4.5 h-4.5 text-[#C62828]" />
               </div>
               <div>
                 <div className="text-sm font-bold text-gray-800">Sign & Accept</div>
@@ -491,7 +491,7 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
               {effectiveSettings.company.phone}
             </a>
           </div>
-          <div className="mt-4 pt-4 border-t border-orange-100 text-[10px] text-[#fb8e28]">
+          <div className="mt-4 pt-4 border-t border-orange-100 text-[10px] text-[#C62828]">
             Prepared by {effectiveSettings.salesRep.name} · {effectiveSettings.company.name}
           </div>
         </div>

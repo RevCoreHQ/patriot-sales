@@ -22,7 +22,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           className={cn(
             'w-full h-12 rounded-2xl bg-c-input border border-c-border-input px-5 text-c-text placeholder:text-c-text-5',
-            'focus:outline-none focus:border-[#fb8e28]/70 focus:ring-2 focus:ring-[#fb8e28]/20',
+            'focus:outline-none focus:border-[#C62828]/70 focus:ring-2 focus:ring-[#C62828]/20',
             'transition-colors',
             error && 'border-red-500/50 focus:border-red-500/60 focus:ring-red-500/20',
             className
@@ -58,7 +58,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           id={inputId}
           className={cn(
             'w-full rounded-2xl bg-c-input border border-c-border-input px-5 py-4 text-c-text placeholder:text-c-text-5 resize-none',
-            'focus:outline-none focus:border-[#fb8e28]/70 focus:ring-2 focus:ring-[#fb8e28]/20',
+            'focus:outline-none focus:border-[#C62828]/70 focus:ring-2 focus:ring-[#C62828]/20',
             'transition-colors',
             error && 'border-red-500/50',
             className

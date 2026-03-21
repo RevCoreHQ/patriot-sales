@@ -12,7 +12,7 @@ export function Badge({ children, variant = 'neutral', className }: BadgeProps) 
     <span className={cn(
       'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium',
       {
-        'bg-[#fb8e28]/15 text-[#fb8e28] border border-[#fb8e28]/20': variant === 'amber',
+        'bg-[#C62828]/15 text-[#C62828] border border-[#C62828]/20': variant === 'amber',
         'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20': variant === 'green',
         'bg-blue-500/15 text-blue-400 border border-blue-500/20': variant === 'blue',
         'bg-red-500/15 text-red-400 border border-red-500/20': variant === 'red',
