@@ -6,6 +6,8 @@ import { useQuotesStore } from '@/store/quotes';
 import { useSettingsStore } from '@/store/settings';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { calculateFinancing } from '@/lib/financing';
+import { calculateAddonCost, calculateTearOffCost } from '@/lib/pricing';
+import { MATERIALS } from '@/data/catalog';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ChevronLeft,
@@ -27,8 +29,10 @@ import {
   Minimize2,
   Wrench,
   ThumbsUp,
+  MapPin,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { Quote, MaterialTier, MaterialCategory, AppSettings, Material } from '@/types';
 
 const LOGO_URL = 'https://assets.cdn.filesafe.space/UrIbmSbNwH6Sfvb4CBZw/media/69be3176402511cd924021b3.png';
 
@@ -46,12 +50,13 @@ const ALL_SLIDES = [
   'phase-5',
   'phase-6',
   'investment',
+  'pricing',
   'financing',
   'nextsteps',
 ] as const;
 type SlideId = typeof ALL_SLIDES[number];
 
-const QUOTE_SLIDES: SlideId[] = ['investment', 'financing'];
+const QUOTE_SLIDES: SlideId[] = ['investment', 'pricing', 'financing'];
 
 /* ─── Phase data — mirrors the Patriot Roofing process ───────────────────────── */
 const PHASES = [
@@ -164,6 +169,133 @@ const PHASES = [
     ],
   },
 ];
+
+/* ─── Scope helpers ────────────────────────────────────────────────────────── */
+interface ScopeGroup {
+  label: string;
+  icon: React.ElementType;
+  accentColor: string;
+  items: string[];
+}
+
+function buildScopeGroups(quote: Quote): ScopeGroup[] {
+  const groups: ScopeGroup[] = [];
+  if (quote.materialSelections.length > 0) {
+    groups.push({
+      label: 'Roofing Materials',
+      icon: Layers,
+      accentColor: '#2563EB',
+      items: quote.materialSelections.map(sel =>
+        `${sel.material.brand} ${sel.material.name} — ${sel.area} (${sel.squareFootage.toLocaleString()} sq ft)`
+      ),
+    });
+  }
+  const laborItems: string[] = [];
+  for (const sel of quote.materialSelections) laborItems.push(`Professional installation — ${sel.area}`);
+  if (quote.siteConditions.tearOff) {
+    const layers = quote.siteConditions.layers ?? 1;
+    laborItems.push(`Complete tear-off & disposal${layers > 1 ? ` (${layers} layers)` : ''}`);
+  }
+  laborItems.push('Debris cleanup & magnet sweep');
+  laborItems.push('Final inspection & walkthrough');
+  if (laborItems.length > 0) {
+    groups.push({ label: 'Labor & Installation', icon: HardHat, accentColor: '#C62828', items: laborItems });
+  }
+  if (quote.addonSelections.length > 0) {
+    groups.push({
+      label: 'Add-Ons & Upgrades',
+      icon: Sparkles,
+      accentColor: '#7c3aed',
+      items: quote.addonSelections.map(sel => {
+        const qty = sel.quantity > 1 ? ` (x${sel.quantity})` : '';
+        return `${sel.addon.name}${qty}${sel.notes ? ` — ${sel.notes}` : ''}`;
+      }),
+    });
+  }
+  groups.push({
+    label: 'Protection & Warranty',
+    icon: Shield,
+    accentColor: '#10b981',
+    items: ['Workmanship guarantee', 'Full manufacturer warranty registration', 'Post-installation maintenance guidance'],
+  });
+  return groups;
+}
+
+function estimateTimeline(quote: Quote): string {
+  const area = quote.siteConditions.roofArea ?? 0;
+  if (area <= 1500) return '1–2 days';
+  if (area <= 3000) return '2–3 days';
+  if (area <= 5000) return '3–5 days';
+  return '5–7 days';
+}
+
+/* ─── Tier pricing helpers ────────────────────────────────────────────────── */
+interface TierPackage {
+  tier: MaterialTier;
+  label: string;
+  tagline: string;
+  materials: { name: string; brand: string; features: string[] }[];
+  total: number;
+  monthlyPayment?: number;
+  isSelected: boolean;
+}
+
+function getRelatedCategories(category: MaterialCategory): MaterialCategory[] {
+  const families: MaterialCategory[][] = [
+    ['asphalt-shingles', 'architectural-shingles'],
+    ['metal-roofing'],
+    ['flat-roofing'],
+  ];
+  for (const cats of families) {
+    if (cats.includes(category)) return cats;
+  }
+  return [category];
+}
+
+const TIER_META: Record<MaterialTier, { label: string; tagline: string }> = {
+  good:   { label: 'Good',   tagline: 'Reliable Protection' },
+  better: { label: 'Better', tagline: 'Enhanced Performance' },
+  best:   { label: 'Best',   tagline: 'Premium Excellence' },
+};
+
+function computeTierPricing(quote: Quote, settings: AppSettings): TierPackage[] {
+  const addonCost = calculateAddonCost(quote.addonSelections, settings.pricing.addonPrices);
+  const tearOffCost = calculateTearOffCost(quote.siteConditions, settings.pricing.demolitionRate);
+
+  return (['good', 'better', 'best'] as MaterialTier[]).map(tier => {
+    let materialCost = 0;
+    let laborCost = 0;
+    const materials: TierPackage['materials'] = [];
+
+    for (const sel of quote.materialSelections) {
+      const related = getRelatedCategories(sel.material.category);
+      const candidates = MATERIALS.filter(m => related.includes(m.category) && m.tier === tier);
+      const tierMat: Material = candidates.length > 0 ? candidates[0] : sel.material;
+
+      const g = settings.pricing.materialPrices?.[tierMat.id];
+      const matPrice = g?.pricePerSqFt ?? tierMat.pricePerSqFt;
+      const labPrice = g?.laborPerSqFt ?? tierMat.laborPerSqFt;
+
+      materialCost += matPrice * sel.squareFootage;
+      laborCost += labPrice * sel.squareFootage;
+      materials.push({ name: tierMat.name, brand: tierMat.brand, features: tierMat.features });
+    }
+
+    // Add manual line items (non-material/labor) that exist on the quote
+    const manualCost = quote.lineItems
+      .filter(i => i.category === 'misc')
+      .reduce((s, i) => s + i.total, 0);
+
+    const subtotal = materialCost + laborCost + addonCost + tearOffCost + manualCost;
+    const discountAmount = subtotal * (quote.discountPercent / 100);
+    const taxableAmount = subtotal - discountAmount;
+    const taxAmount = taxableAmount * (quote.taxRate / 100);
+    const total = taxableAmount + taxAmount;
+    const isSelected = quote.materialSelections.length > 0 && quote.materialSelections.every(s => s.material.tier === tier);
+
+    return { tier, ...TIER_META[tier], materials, total, isSelected };
+  });
+}
 
 /* ─── Stat card ─────────────────────────────────────────────────────────────── */
 function StatCard({ value, label }: { value: string; label: string }) {
@@ -569,62 +701,193 @@ function PresentationContent() {
               <PhaseSlide key={phase.id} phase={phase} />
             ))}
 
-            {/* ── INVESTMENT ── */}
-            {currentSlide === 'investment' && quote && (
-              <div className="h-full flex flex-col items-center justify-center px-12"
-                style={{ background: 'radial-gradient(ellipse at 50% 40%, rgba(198,40,40,0.07) 0%, transparent 65%)' }}>
-                <div className="w-full max-w-3xl">
-                  <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-2">Your Investment</div>
-                  <h2 className="text-4xl font-bold text-white mb-8">Project Summary for {quote?.client.name}</h2>
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-4">
-                      <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-5">
-                        <div className="text-[10px] text-white/35 uppercase tracking-widest mb-4 font-semibold">Scope of Work</div>
-                        {quote.projectTypes.map(pt => (
-                          <div key={pt} className="flex items-center gap-2.5 text-sm text-white/75 mb-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-                            <span className="capitalize">{pt.replace(/-/g, ' ')}</span>
+            {/* ── INVESTMENT — Scope of Work Recap ── */}
+            {currentSlide === 'investment' && quote && (() => {
+              const scopeGroups = buildScopeGroups(quote);
+              const timeline = estimateTimeline(quote);
+              return (
+                <div className="h-full flex flex-col items-center justify-center px-12"
+                  style={{ background: 'radial-gradient(ellipse at 50% 40%, rgba(37,99,235,0.06) 0%, transparent 65%)' }}>
+                  <div className="w-full max-w-4xl">
+                    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                      <div className="text-accent-secondary text-[11px] font-bold tracking-widest uppercase mb-2">Your Investment</div>
+                      <h2 className="text-4xl font-bold text-white mb-3 leading-tight">Everything That&apos;s Included</h2>
+                      <div className="flex items-center gap-3 mb-7">
+                        <span className="text-sm text-white/40">Prepared for <span className="text-white/70 font-semibold">{quote.client.name}</span></span>
+                        <span className="text-white/10">|</span>
+                        <div className="flex gap-2">
+                          {quote.projectTypes.map(pt => (
+                            <Tag key={pt} label={pt.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} />
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    <div className="grid grid-cols-2 gap-4 mb-5">
+                      {scopeGroups.map((group, i) => (
+                        <motion.div key={group.label}
+                          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.15 + i * 0.08, duration: 0.45 }}
+                          className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-5"
+                        >
+                          <div className="flex items-center gap-3 mb-3.5">
+                            <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                              style={{ background: `${group.accentColor}18` }}>
+                              <group.icon className="w-4.5 h-4.5" style={{ color: group.accentColor }} />
+                            </div>
+                            <div className="text-sm font-semibold text-white">{group.label}</div>
                           </div>
-                        ))}
-                      </div>
-                      <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-5">
-                        <div className="text-[10px] text-white/35 uppercase tracking-widest mb-4 font-semibold">Site Details</div>
-                        <div className="space-y-2 text-sm text-white/55">
-                          <div>{quote.siteConditions.roofArea?.toLocaleString()} total sq ft</div>
-                          <div className="capitalize">{quote.siteConditions.pitch} pitch · {quote.siteConditions.stories} {quote.siteConditions.stories === 1 ? 'story' : 'stories'}</div>
-                          <div className="capitalize">{quote.siteConditions.access} access</div>
-                          {quote.siteConditions.tearOff && <div className="text-accent/70">Includes tear-off{quote.siteConditions.layers && quote.siteConditions.layers > 1 ? ` (${quote.siteConditions.layers} layers)` : ''}</div>}
-                        </div>
-                      </div>
-                      {/* Warranty badge */}
-                      <div className="bg-accent/8 border border-accent/25 rounded-2xl p-4 flex items-center gap-3">
-                        <BadgeCheck className="w-5 h-5 text-accent shrink-0" />
-                        <div>
-                          <div className="text-xs font-semibold text-accent">Workmanship Guarantee</div>
-                          <div className="text-[11px] text-white/35 mt-0.5">+ Manufacturer warranty on all materials</div>
-                        </div>
-                      </div>
+                          <div className="space-y-2">
+                            {group.items.map((item, j) => (
+                              <div key={j} className="flex items-start gap-2.5">
+                                <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 shrink-0" style={{ color: group.accentColor }} />
+                                <span className="text-sm text-white/60 leading-snug">{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
-                    <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-7 flex flex-col justify-between">
-                      <div className="space-y-3">
-                        {quote.discountPercent > 0 && (
-                          <>
-                            <div className="flex justify-between text-sm text-white/45"><span>Subtotal</span><span>{formatCurrency(quote.subtotal)}</span></div>
-                            <div className="flex justify-between text-sm text-emerald-400"><span>Discount ({quote.discountPercent}%)</span><span>−{formatCurrency(quote.discountAmount)}</span></div>
-                          </>
-                        )}
-                        <div className="flex justify-between text-sm text-white/45"><span>Sales Tax ({quote.taxRate}%)</span><span>{formatCurrency(quote.taxAmount)}</span></div>
+
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55 }}
+                      className="bg-white/[0.03] border border-white/[0.06] rounded-xl px-6 py-3.5 flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm text-white/45">
+                        <Clock className="w-4 h-4 text-accent-secondary/70" />
+                        <span>Est. Timeline: <span className="text-white/70 font-medium">{timeline}</span></span>
                       </div>
-                      <div className="mt-6 pt-6 border-t border-white/[0.08]">
-                        <div className="text-xs text-white/35 uppercase tracking-widest mb-3">Total Investment</div>
-                        <div className="text-6xl font-bold text-accent leading-none mb-3">{formatCurrency(quote.total)}</div>
-                        <div className="text-xs text-white/20">Quote valid until {formatDate(quote.validUntil)}</div>
+                      <div className="flex items-center gap-2 text-sm text-white/45">
+                        <Star className="w-4 h-4 text-accent/70" />
+                        <span>GAF Certified</span>
                       </div>
-                    </div>
+                      <div className="flex items-center gap-2 text-sm text-white/45">
+                        <MapPin className="w-4 h-4 text-white/30" />
+                        <span className="capitalize">{quote.siteConditions.roofArea?.toLocaleString()} sq ft · {quote.siteConditions.pitch} pitch · {quote.siteConditions.stories} {quote.siteConditions.stories === 1 ? 'story' : 'stories'}</span>
+                      </div>
+                    </motion.div>
                   </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
+
+            {/* ── PRICING — Good / Better / Best ── */}
+            {currentSlide === 'pricing' && quote && (() => {
+              const tiers = computeTierPricing(quote, settings);
+              const defaultFin = settings.financing[0];
+              const tiersWithPayment = tiers.map(t => ({
+                ...t,
+                monthlyPayment: defaultFin
+                  ? calculateFinancing(t.total, 20, defaultFin.apr, defaultFin.termMonths).monthlyPayment
+                  : undefined,
+              }));
+              const includedItems: string[] = [];
+              if (quote.siteConditions.tearOff) includedItems.push('Complete tear-off & disposal');
+              includedItems.push('Professional installation by in-house crew');
+              includedItems.push('Debris cleanup & magnet sweep');
+              quote.addonSelections.forEach(s => includedItems.push(s.addon.name));
+              includedItems.push('Workmanship guarantee');
+              includedItems.push('Manufacturer warranty');
+              return (
+                <div className="h-full flex flex-col items-center justify-center px-10"
+                  style={{ background: 'radial-gradient(ellipse at 50% 35%, rgba(37,99,235,0.06) 0%, transparent 65%)' }}>
+                  <div className="w-full max-w-5xl">
+                    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+                      className="text-center mb-7">
+                      <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-2">Choose Your Package</div>
+                      <h2 className="text-4xl font-bold text-white">Select the Right Option for Your Home</h2>
+                    </motion.div>
+
+                    <div className="grid grid-cols-3 gap-5 items-start">
+                      {tiersWithPayment.map((pkg, idx) => {
+                        const isBetter = pkg.tier === 'better';
+                        const tierColor = pkg.tier === 'good' ? '#6b7280' : pkg.tier === 'better' ? '#2563EB' : '#C62828';
+                        return (
+                          <motion.div key={pkg.tier}
+                            initial={{ opacity: 0, y: 24 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.15 + idx * 0.12, duration: 0.5 }}
+                            className={cn(
+                              'relative rounded-2xl p-6 flex flex-col bg-white/[0.03] border',
+                              isBetter
+                                ? 'border-accent-secondary/50 ring-1 ring-accent-secondary/20'
+                                : 'border-white/[0.08]'
+                            )}
+                          >
+                            {isBetter && (
+                              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg shadow-accent-secondary/30">
+                                Recommended
+                              </div>
+                            )}
+
+                            {/* Tier header */}
+                            <div className="mb-4">
+                              <div className="text-lg font-bold text-white">{pkg.label}</div>
+                              <div className="text-xs text-white/40 mt-0.5">{pkg.tagline}</div>
+                            </div>
+
+                            {/* Materials */}
+                            <div className="space-y-3 mb-4">
+                              {pkg.materials.map((mat, mi) => (
+                                <div key={mi}>
+                                  <div className="text-sm font-semibold text-white/80">{mat.name}</div>
+                                  <div className="text-[11px] text-white/35 mb-1.5">{mat.brand}</div>
+                                  <div className="space-y-1">
+                                    {mat.features.slice(0, 3).map((feat, fi) => (
+                                      <div key={fi} className="flex items-center gap-2">
+                                        <CheckCircle2 className="w-3 h-3 shrink-0" style={{ color: tierColor }} />
+                                        <span className="text-xs text-white/50">{feat}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Divider + included items */}
+                            <div className="h-px bg-white/[0.06] my-3" />
+                            <div className="space-y-1.5 mb-4 flex-1">
+                              <div className="text-[10px] text-white/30 uppercase tracking-widest font-semibold mb-2">Also Included</div>
+                              {includedItems.map((item, ii) => (
+                                <div key={ii} className="flex items-center gap-2">
+                                  <CheckCircle2 className="w-3 h-3 text-emerald-500/60 shrink-0" />
+                                  <span className="text-xs text-white/45">{item}</span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Divider + price */}
+                            <div className="h-px bg-white/[0.06] my-3" />
+                            <div className="text-center">
+                              <div className={cn('text-3xl font-bold mb-1',
+                                isBetter ? 'text-accent-secondary' : pkg.tier === 'best' ? 'text-accent' : 'text-white'
+                              )}>
+                                {formatCurrency(pkg.total)}
+                              </div>
+                              <div className="text-[10px] text-white/30 uppercase tracking-widest mb-1">Total Investment</div>
+                              {pkg.monthlyPayment && (
+                                <div className="text-sm text-white/35">~{formatCurrency(pkg.monthlyPayment)}/mo*</div>
+                              )}
+                              {pkg.isSelected && (
+                                <div className="inline-flex items-center gap-1.5 bg-accent/10 border border-accent/25 text-accent text-[10px] font-bold px-3 py-1 rounded-full mt-3">
+                                  <BadgeCheck className="w-3 h-3" />
+                                  Your Selection
+                                </div>
+                              )}
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+
+                    {defaultFin && (
+                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
+                        className="text-[11px] text-white/15 mt-4 text-center">
+                        *Estimated monthly payment based on {defaultFin.termMonths} months at {defaultFin.apr}% APR with 20% down. Subject to credit approval.
+                      </motion.p>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* ── FINANCING ── */}
             {currentSlide === 'financing' && quote && (
