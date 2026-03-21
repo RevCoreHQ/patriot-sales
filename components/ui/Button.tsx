@@ -24,10 +24,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             'active:bg-c-elevated text-c-text-3 active:text-c-text': variant === 'ghost',
             'bg-red-500/10 active:bg-red-500/20 text-red-400 border border-red-500/20': variant === 'danger',
             'border border-c-border-inner active:border-accent/50 text-c-text active:text-accent bg-transparent': variant === 'outline',
-            // Sizes — 48px minimum touch targets
-            'h-12 px-5 text-sm': size === 'sm',
-            'h-13 px-6 text-sm': size === 'md',
-            'h-14 px-8 text-base': size === 'lg',
+            // Sizes — iPad-optimized touch targets
+            'h-13 px-6 text-sm': size === 'sm',
+            'h-14 px-7 text-base': size === 'md',
+            'h-16 px-9 text-lg': size === 'lg',
           },
           className
         )}

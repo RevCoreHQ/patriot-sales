@@ -10,10 +10,10 @@ export function Step0ClientInfo() {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-c-text">Client Information</h2>
-        <p className="text-sm text-c-text-3 mt-1">Contact details for this quote.</p>
+        <p className="text-base text-c-text-3 mt-1">Contact details for this quote.</p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-5">
         <Input
           label="Full Name"
           placeholder="e.g. Michael & Sarah Thompson"

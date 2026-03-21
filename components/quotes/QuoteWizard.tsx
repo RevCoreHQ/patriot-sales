@@ -91,8 +91,8 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
   return (
     <div className="flex flex-col h-full">
       {/* Apple-style progress indicator */}
-      <div className="px-6 py-3 border-b border-c-border-inner shrink-0">
-        <div className="h-[3px] w-full bg-c-border-inner rounded-full overflow-hidden mb-2.5">
+      <div className="px-8 py-4 border-b border-c-border-inner shrink-0">
+        <div className="h-[3px] w-full bg-c-border-inner rounded-full overflow-hidden mb-3">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-accent via-white/80 to-accent-secondary"
             animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
@@ -101,7 +101,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-semibold text-c-text">{steps[currentStep]?.label}</span>
+            <span className="text-base font-semibold text-c-text">{steps[currentStep]?.label}</span>
             {currentStep > 0 && (
               <div className="flex items-center gap-1">
                 {steps.slice(0, currentStep).map((_, idx) => (
@@ -115,7 +115,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
               </div>
             )}
           </div>
-          <span className="text-xs text-c-text-4 tabular-nums font-medium">
+          <span className="text-sm text-c-text-4 tabular-nums font-medium">
             {currentStep + 1} / {steps.length}
           </span>
         </div>
@@ -126,7 +126,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
         {/* Form — full width, shifts left when summary opens */}
         <motion.div
           className="flex-1 overflow-y-auto"
-          animate={{ marginRight: summaryOpen ? 320 : 0 }}
+          animate={{ marginRight: summaryOpen ? 360 : 0 }}
           transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <AnimatePresence mode="wait" initial={false}>
@@ -136,7 +136,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: directionRef.current * -20 }}
               transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-              className="px-6 py-5 max-w-2xl mx-auto"
+              className="px-8 py-6 max-w-3xl mx-auto"
             >
               {steps[currentStep]?.render()}
             </motion.div>
@@ -148,17 +148,17 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
           type="button"
           onClick={() => setSummaryOpen(!summaryOpen)}
           className={cn(
-            'absolute top-3 z-20 flex items-center gap-2 px-3 py-2 rounded-l-xl border border-r-0 transition-all',
+            'absolute top-4 z-20 flex items-center gap-2.5 px-4 py-2.5 rounded-l-xl border border-r-0 transition-all',
             'bg-c-card border-c-border-inner hover:bg-c-elevated active:scale-[0.97]',
-            summaryOpen ? 'right-[320px]' : 'right-0'
+            summaryOpen ? 'right-[360px]' : 'right-0'
           )}
         >
           {summaryOpen ? (
-            <PanelRightClose className="w-4 h-4 text-c-text-3" />
+            <PanelRightClose className="w-5 h-5 text-c-text-3" />
           ) : (
             <>
-              <PanelRightOpen className="w-4 h-4 text-c-text-3" />
-              <span className="text-sm font-bold text-accent tabular-nums">
+              <PanelRightOpen className="w-5 h-5 text-c-text-3" />
+              <span className="text-base font-bold text-accent tabular-nums">
                 {formatCurrency(total)}
               </span>
             </>
@@ -169,11 +169,11 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
         <AnimatePresence>
           {summaryOpen && (
             <motion.div
-              initial={{ x: 320 }}
+              initial={{ x: 360 }}
               animate={{ x: 0 }}
-              exit={{ x: 320 }}
+              exit={{ x: 360 }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="absolute right-0 top-0 bottom-0 w-[320px] bg-c-surface border-l border-c-border-inner z-10"
+              className="absolute right-0 top-0 bottom-0 w-[360px] bg-c-surface border-l border-c-border-inner z-10"
             >
               <LiveQuoteSummary />
             </motion.div>
@@ -183,15 +183,15 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
 
       {/* Navigation */}
       {!isLastStep && (
-        <div className="px-6 py-3 border-t border-c-border-inner flex items-center justify-between gap-4 shrink-0">
+        <div className="px-8 py-4 border-t border-c-border-inner flex items-center justify-between gap-4 shrink-0">
           <Button
             variant="ghost"
             size="md"
             onClick={goPrev}
             disabled={currentStep === 0}
-            className="gap-2 min-w-[100px] text-c-text-3"
+            className="gap-2 min-w-[120px] text-c-text-3"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-5 h-5" />
             Back
           </Button>
 
@@ -199,10 +199,10 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
             size="md"
             onClick={goNext}
             disabled={!canNext}
-            className="gap-2 min-w-[140px]"
+            className="gap-2 min-w-[160px]"
           >
             {currentStep === steps.length - 2 ? 'Review Quote' : 'Continue'}
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-5 h-5" />
           </Button>
         </div>
       )}

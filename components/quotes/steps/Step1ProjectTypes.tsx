@@ -41,9 +41,9 @@ const CATEGORY_STYLES: Record<'roofing' | 'exterior' | 'interior', CategoryConfi
 
 function CategoryLabel({ label, dotColor }: { label: string; dotColor: string }) {
   return (
-    <div className="flex items-center gap-2 mb-2">
-      <div className={cn('w-1.5 h-1.5 rounded-full shrink-0', dotColor)} />
-      <span className="text-[10px] font-bold text-c-text-3 uppercase tracking-widest">{label}</span>
+    <div className="flex items-center gap-2.5 mb-3">
+      <div className={cn('w-2 h-2 rounded-full shrink-0', dotColor)} />
+      <span className="text-xs font-bold text-c-text-3 uppercase tracking-widest">{label}</span>
       <div className="flex-1 h-px bg-c-border-inner" />
     </div>
   );
@@ -68,28 +68,28 @@ function CompactCard({
       type="button"
       onClick={onToggle}
       className={cn(
-        'w-full flex items-center gap-3 px-3.5 py-3 rounded-xl border text-left transition-all active:scale-[0.97] cursor-pointer',
+        'w-full flex items-center gap-4 px-4 py-4 rounded-xl border text-left transition-all active:scale-[0.97] cursor-pointer',
         selected
           ? 'border-accent/50 bg-accent/8'
           : 'border-c-border bg-c-card hover:border-c-border-hover hover:bg-c-elevated'
       )}
     >
       <div className={cn(
-        'w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-all',
+        'w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all',
         selected ? 'bg-accent/20' : iconBg
       )}>
-        <Icon className={cn('w-4.5 h-4.5', selected ? 'text-accent' : iconColor)} />
+        <Icon className={cn('w-5 h-5', selected ? 'text-accent' : iconColor)} />
       </div>
       <div className="flex-1 min-w-0">
-        <div className={cn('text-sm font-semibold leading-tight', selected ? 'text-accent' : 'text-c-text')}>
+        <div className={cn('text-base font-semibold leading-tight', selected ? 'text-accent' : 'text-c-text')}>
           {pt.label}
         </div>
-        <div className="text-[11px] text-c-text-4">
+        <div className="text-sm text-c-text-4">
           From ${pt.basePrice.toLocaleString()} / {pt.unit}
         </div>
       </div>
       <div className={cn(
-        'w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all',
+        'w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all',
         selected ? 'bg-accent' : 'border-2 border-c-border-hover'
       )}>
         {selected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
@@ -106,16 +106,16 @@ export function Step1ProjectTypes() {
   const interiorTypes = byId(INTERIOR_IDS);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-bold text-c-text">Project Types</h2>
-        <p className="text-sm text-c-text-3 mt-0.5">Select all that apply.</p>
+        <h2 className="text-xl font-bold text-c-text">Project Types</h2>
+        <p className="text-base text-c-text-3 mt-1">Select all that apply.</p>
       </div>
 
       {/* Roofing */}
       <div>
         <CategoryLabel label="Roofing" dotColor={CATEGORY_STYLES.roofing.dotColor} />
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           {roofingTypes.map(pt => (
             <CompactCard
               key={pt.id}
@@ -132,7 +132,7 @@ export function Step1ProjectTypes() {
       {/* Exterior */}
       <div>
         <CategoryLabel label="Exterior" dotColor={CATEGORY_STYLES.exterior.dotColor} />
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           {exteriorTypes.map(pt => (
             <CompactCard
               key={pt.id}
@@ -149,7 +149,7 @@ export function Step1ProjectTypes() {
       {/* Interior */}
       <div>
         <CategoryLabel label="Interior & Home" dotColor={CATEGORY_STYLES.interior.dotColor} />
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           {interiorTypes.map(pt => (
             <CompactCard
               key={pt.id}
@@ -164,9 +164,9 @@ export function Step1ProjectTypes() {
       </div>
 
       {projectTypes.length > 0 && (
-        <div className="flex items-center gap-2 py-2 px-3.5 bg-accent/8 border border-accent/20 rounded-xl">
-          <div className="w-2 h-2 rounded-full bg-accent" />
-          <p className="text-sm text-accent font-medium">
+        <div className="flex items-center gap-2.5 py-3 px-4 bg-accent/8 border border-accent/20 rounded-xl">
+          <div className="w-2.5 h-2.5 rounded-full bg-accent" />
+          <p className="text-base text-accent font-medium">
             {projectTypes.length} selected
           </p>
         </div>

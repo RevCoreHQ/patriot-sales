@@ -17,23 +17,23 @@ function OptionGroup<T extends string>({
   onChange: (v: T) => void;
 }) {
   return (
-    <div className="space-y-2">
-      <div className="text-sm font-semibold text-c-text-2 tracking-wide">{label}</div>
-      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${Math.min(options.length, 4)}, 1fr)` }}>
+    <div className="space-y-3">
+      <div className="text-base font-semibold text-c-text-2 tracking-wide">{label}</div>
+      <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${Math.min(options.length, 4)}, 1fr)` }}>
         {options.map(opt => (
           <button
             key={opt.value}
             type="button"
             onClick={() => onChange(opt.value)}
             className={cn(
-              'flex flex-col items-center justify-center text-center min-h-[56px] px-3 py-3 rounded-xl border transition-all active:scale-[0.96] cursor-pointer',
+              'flex flex-col items-center justify-center text-center min-h-[64px] px-4 py-4 rounded-xl border transition-all active:scale-[0.96] cursor-pointer',
               value === opt.value
                 ? 'border-accent/60 bg-accent/10 text-accent'
                 : 'border-c-border bg-c-card text-c-text-3 active:border-c-border-hover'
             )}
           >
-            <span className={cn('text-sm font-semibold', value === opt.value ? 'text-accent' : 'text-c-text')}>{opt.label}</span>
-            {opt.sub && <span className="text-[11px] text-c-text-4 mt-0.5 leading-tight">{opt.sub}</span>}
+            <span className={cn('text-base font-semibold', value === opt.value ? 'text-accent' : 'text-c-text')}>{opt.label}</span>
+            {opt.sub && <span className="text-sm text-c-text-4 mt-0.5 leading-tight">{opt.sub}</span>}
           </button>
         ))}
       </div>
@@ -48,7 +48,7 @@ export function Step2SiteConditions() {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-c-text">Site Conditions</h2>
-        <p className="text-sm text-c-text-3 mt-1">Describe the roof and job site for accurate pricing.</p>
+        <p className="text-base text-c-text-3 mt-1">Describe the roof and job site for accurate pricing.</p>
       </div>
 
       {/* Roof area */}
@@ -115,7 +115,7 @@ export function Step2SiteConditions() {
 
       {/* Tear-Off */}
       <div className="space-y-3">
-        <div className="text-sm font-semibold text-c-text-2 tracking-wide">Tear-Off Required?</div>
+        <div className="text-base font-semibold text-c-text-2 tracking-wide">Tear-Off Required?</div>
         <div className="grid grid-cols-2 gap-3">
           {[
             { val: true,  label: 'Yes — Tear-Off Needed' },
@@ -126,7 +126,7 @@ export function Step2SiteConditions() {
               type="button"
               onClick={() => setSiteConditions({ tearOff: val })}
               className={cn(
-                'h-14 rounded-xl border text-sm font-semibold transition-all active:scale-[0.97] cursor-pointer',
+                'h-16 rounded-xl border text-base font-semibold transition-all active:scale-[0.97] cursor-pointer',
                 siteConditions.tearOff === val
                   ? val ? 'border-orange-500/60 bg-orange-500/10 text-orange-400' : 'border-emerald-500/60 bg-emerald-500/10 text-emerald-400'
                   : 'border-c-border bg-c-card text-c-text-3 active:border-c-border-hover'

@@ -77,7 +77,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* iPadOS-style sidebar rail */}
       {!hideSidebar && (
         <nav
-          className="w-[72px] shrink-0 flex flex-col items-center pt-6 pb-4 gap-1 border-r"
+          className="w-[88px] shrink-0 flex flex-col items-center pt-8 pb-5 gap-1.5 border-r"
           style={{
             background: 'var(--c-surface)',
             borderColor: 'var(--c-border-inner)',
@@ -90,15 +90,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 key={tab.href}
                 href={tab.href}
                 className={cn(
-                  'flex flex-col items-center justify-center w-[56px] h-[52px] rounded-2xl gap-0.5 transition-all active:scale-[0.92]',
+                  'flex flex-col items-center justify-center w-[68px] h-[62px] rounded-2xl gap-1 transition-all active:scale-[0.92]',
                   active
                     ? 'bg-accent/12 text-accent'
                     : 'text-c-text-3 hover:text-c-text-2 hover:bg-c-elevated'
                 )}
               >
-                <tab.icon className="w-[22px] h-[22px]" strokeWidth={active ? 2.2 : 1.6} />
+                <tab.icon className="w-6 h-6" strokeWidth={active ? 2.2 : 1.6} />
                 <span className={cn(
-                  'text-[10px] font-semibold leading-tight',
+                  'text-[11px] font-semibold leading-tight',
                   active ? 'text-accent' : ''
                 )}>
                   {tab.label}

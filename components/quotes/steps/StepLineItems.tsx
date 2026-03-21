@@ -46,10 +46,10 @@ export function StepLineItems() {
   const grandTotal = manualLineItems.reduce((s, i) => s + i.total, 0);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-c-text">Line Items</h2>
-        <p className="text-sm text-c-text-3 mt-1">Add each cost item for this project — materials, labor, and anything else.</p>
+        <h2 className="text-xl font-semibold text-c-text">Line Items</h2>
+        <p className="text-base text-c-text-3 mt-1">Add each cost item for this project — materials, labor, and anything else.</p>
       </div>
 
       {/* Existing items */}
@@ -57,11 +57,11 @@ export function StepLineItems() {
         <div className="bg-c-card border border-c-border-inner rounded-xl overflow-hidden">
           <div className="divide-y divide-c-border-inner">
             {manualLineItems.map(item => (
-              <div key={item.id} className="flex items-center gap-3 px-4 py-3">
+              <div key={item.id} className="flex items-center gap-4 px-5 py-4">
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-c-text truncate">{item.description}</div>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <span className={`text-xs capitalize ${categoryColor(item.category)}`}>{item.category}</span>
+                  <div className="text-base font-medium text-c-text truncate">{item.description}</div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`text-sm capitalize ${categoryColor(item.category)}`}>{item.category}</span>
                     {item.unit !== 'flat' && (
                       <span className="text-xs text-c-text-4">
                         {item.quantity} {item.unit} × {formatCurrency(item.unitPrice)}
@@ -69,17 +69,17 @@ export function StepLineItems() {
                     )}
                   </div>
                 </div>
-                <div className="text-sm font-semibold text-c-text shrink-0">{formatCurrency(item.total)}</div>
+                <div className="text-base font-semibold text-c-text shrink-0">{formatCurrency(item.total)}</div>
                 <button onClick={() => removeManualLineItem(item.id)}
-                  className="p-1 text-c-text-4 hover:text-red-400 transition-colors shrink-0">
-                  <Trash2 className="w-3.5 h-3.5" />
+                  className="p-2 text-c-text-4 hover:text-red-400 transition-colors shrink-0">
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             ))}
           </div>
-          <div className="px-4 py-3 border-t border-c-border-inner flex justify-between items-center bg-c-surface">
-            <span className="text-xs font-medium text-c-text-3 uppercase tracking-wider">Subtotal</span>
-            <span className="text-base font-bold text-c-text">{formatCurrency(grandTotal)}</span>
+          <div className="px-5 py-4 border-t border-c-border-inner flex justify-between items-center bg-c-surface">
+            <span className="text-sm font-medium text-c-text-3 uppercase tracking-wider">Subtotal</span>
+            <span className="text-lg font-bold text-c-text">{formatCurrency(grandTotal)}</span>
           </div>
         </div>
       )}
@@ -94,29 +94,29 @@ export function StepLineItems() {
 
       {/* Add item form */}
       {showForm && (
-        <div className="bg-c-card border border-c-border-inner rounded-xl p-4 space-y-3">
-          <div className="text-xs font-semibold text-c-text-3 uppercase tracking-wider">New Line Item</div>
+        <div className="bg-c-card border border-c-border-inner rounded-xl p-5 space-y-4">
+          <div className="text-sm font-semibold text-c-text-3 uppercase tracking-wider">New Line Item</div>
 
           {/* Description */}
           <div>
-            <label className="text-xs text-c-text-3 mb-1.5 block">Description</label>
+            <label className="text-sm text-c-text-3 mb-2 block">Description</label>
             <input
               type="text"
               value={form.description}
               onChange={e => setForm(p => ({ ...p, description: e.target.value }))}
               placeholder="e.g. GAF Timberline HDZ — Main Roof"
-              className="w-full bg-c-input border border-c-border-input rounded-lg px-3 py-2 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50"
+              className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl px-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50"
               onKeyDown={e => e.key === 'Enter' && handleAdd()}
             />
           </div>
 
           {/* Category */}
           <div>
-            <label className="text-xs text-c-text-3 mb-1.5 block">Category</label>
+            <label className="text-sm text-c-text-3 mb-2 block">Category</label>
             <div className="flex gap-2 flex-wrap">
               {CATEGORIES.map(cat => (
                 <button key={cat.value} type="button" onClick={() => setForm(p => ({ ...p, category: cat.value }))}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                  className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
                     form.category === cat.value
                       ? 'border-accent/40 bg-accent/10 text-accent'
                       : 'border-c-border-inner text-c-text-3 hover:border-c-border-hover'
@@ -128,58 +128,58 @@ export function StepLineItems() {
           </div>
 
           {/* Qty / Unit / Price / Cost row */}
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-4 gap-4">
             <div>
-              <label className="text-xs text-c-text-3 mb-1.5 block">Qty</label>
+              <label className="text-sm text-c-text-3 mb-2 block">Qty</label>
               <input type="number" min="0" step="1" value={form.quantity}
                 onChange={e => setForm(p => ({ ...p, quantity: Number(e.target.value) || 1 }))}
-                className="w-full bg-c-input border border-c-border-input rounded-lg px-3 py-2 text-sm text-c-text focus:outline-none focus:border-accent/50" />
+                className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl px-4 text-base text-c-text focus:outline-none focus:border-accent/50" />
             </div>
             <div>
-              <label className="text-xs text-c-text-3 mb-1.5 block">Unit</label>
+              <label className="text-sm text-c-text-3 mb-2 block">Unit</label>
               <select value={form.unit} onChange={e => setForm(p => ({ ...p, unit: e.target.value }))}
-                className="w-full bg-c-input border border-c-border-input rounded-lg px-3 py-2 text-sm text-c-text focus:outline-none focus:border-accent/50">
+                className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl px-4 text-base text-c-text focus:outline-none focus:border-accent/50">
                 {COMMON_UNITS.map(u => <option key={u} value={u}>{u}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-xs text-c-text-3 mb-1.5 block">Unit Price</label>
+              <label className="text-sm text-c-text-3 mb-2 block">Unit Price</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-c-text-3 text-sm">$</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-c-text-3 text-base">$</span>
                 <input type="number" min="0" step="0.01" value={form.unitPrice || ''}
                   onChange={e => setForm(p => ({ ...p, unitPrice: Number(e.target.value) || 0 }))}
                   placeholder="0.00"
-                  className="w-full bg-c-input border border-c-border-input rounded-lg pl-7 pr-3 py-2 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50" />
+                  className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl pl-8 pr-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50" />
               </div>
             </div>
             <div>
-              <label className="text-xs text-c-text-3 mb-1.5 block">Cost (opt.)</label>
+              <label className="text-sm text-c-text-3 mb-2 block">Cost (opt.)</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-c-text-3 text-sm">$</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-c-text-3 text-base">$</span>
                 <input type="number" min="0" step="0.01" value={form.costPerUnit ?? ''}
                   onChange={e => setForm(p => ({ ...p, costPerUnit: e.target.value === '' ? undefined : Number(e.target.value) }))}
                   placeholder="—"
-                  className="w-full bg-c-input border border-c-border-input rounded-lg pl-7 pr-3 py-2 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50" />
+                  className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl pl-8 pr-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50" />
               </div>
             </div>
           </div>
 
           {/* Total preview + actions */}
-          <div className="flex items-center justify-between pt-1">
-            <div className="text-sm text-c-text-3">
+          <div className="flex items-center justify-between pt-2">
+            <div className="text-base text-c-text-3">
               Total: <span className="font-bold text-c-text">{formatCurrency(total)}</span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               {manualLineItems.length > 0 && (
                 <button type="button" onClick={() => { setShowForm(false); setForm(EMPTY_FORM); }}
-                  className="px-4 py-1.5 bg-c-elevated text-c-text-3 text-xs rounded-lg hover:bg-c-surface transition-all">
+                  className="px-5 py-2.5 bg-c-elevated text-c-text-3 text-sm rounded-xl hover:bg-c-surface transition-all">
                   Cancel
                 </button>
               )}
               <button type="button" onClick={handleAdd}
                 disabled={!form.description.trim() || form.unitPrice <= 0}
-                className="flex items-center gap-1.5 px-4 py-1.5 bg-accent text-black text-xs font-bold rounded-lg hover:bg-accent transition-all disabled:opacity-40 disabled:cursor-not-allowed">
-                <Plus className="w-3 h-3" /> Add Item
+                className="flex items-center gap-2 px-5 py-2.5 bg-accent text-black text-sm font-bold rounded-xl hover:bg-accent transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                <Plus className="w-4 h-4" /> Add Item
               </button>
             </div>
           </div>
@@ -189,8 +189,8 @@ export function StepLineItems() {
       {/* Show add form button */}
       {!showForm && (
         <button onClick={() => setShowForm(true)}
-          className="w-full py-3 border border-dashed border-c-border-inner rounded-xl text-c-text-3 text-sm hover:border-c-border-hover hover:text-c-text-2 transition-all flex items-center justify-center gap-2">
-          <Plus className="w-4 h-4" /> Add Line Item
+          className="w-full py-4 border border-dashed border-c-border-inner rounded-xl text-c-text-3 text-base hover:border-c-border-hover hover:text-c-text-2 transition-all flex items-center justify-center gap-2">
+          <Plus className="w-5 h-5" /> Add Line Item
         </button>
       )}
     </div>

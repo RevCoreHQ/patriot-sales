@@ -50,20 +50,20 @@ export function Step4Addons() {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-c-text">Add-Ons & Upgrades</h2>
-        <p className="text-sm text-neutral-500 mt-1">Select optional features. Override price per item for this quote.</p>
+        <h2 className="text-xl font-semibold text-c-text">Add-Ons & Upgrades</h2>
+        <p className="text-base text-neutral-500 mt-1">Select optional features. Override price per item for this quote.</p>
       </div>
 
-      <div className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap gap-1.5">
         <button type="button" onClick={() => setFilter('all')}
-          className={cn('px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer',
+          className={cn('px-4 py-2 rounded-full text-sm font-medium border transition-all cursor-pointer',
             filter === 'all' ? 'bg-accent/15 border-accent/40 text-accent' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
           )}>All</button>
         {categories.map(cat => (
           <button key={cat} type="button" onClick={() => setFilter(cat)}
-            className={cn('px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer',
+            className={cn('px-4 py-2 rounded-full text-sm font-medium border transition-all cursor-pointer',
               filter === cat ? 'bg-accent/15 border-accent/40 text-accent' : 'border-c-border-inner text-c-text-3 hover:text-c-text-2'
             )}>
             {CATEGORY_LABELS[cat]}
@@ -71,7 +71,7 @@ export function Step4Addons() {
         ))}
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         {filtered.map(addon => {
           const sel = getSelection(addon.id);
           const globalPrice = settings.pricing.addonPrices?.[addon.id];
@@ -83,17 +83,17 @@ export function Step4Addons() {
             <div key={addon.id} className={cn('border rounded-xl transition-all',
               sel ? 'border-accent/30 bg-accent/5' : 'border-c-border-inner bg-c-surface'
             )}>
-              <div className="flex items-center gap-3 p-4">
-                <div className="text-xl w-8 text-center shrink-0">{addon.icon}</div>
+              <div className="flex items-center gap-4 p-5">
+                <div className="text-2xl w-10 text-center shrink-0">{addon.icon}</div>
                 <div className="flex-1 min-w-0">
-                  <div className={cn('text-sm font-medium', sel ? 'text-accent' : 'text-c-text')}>{addon.name}</div>
-                  <div className="text-xs text-neutral-500 mt-0.5">{addon.description}</div>
+                  <div className={cn('text-base font-medium', sel ? 'text-accent' : 'text-c-text')}>{addon.name}</div>
+                  <div className="text-sm text-neutral-500 mt-0.5">{addon.description}</div>
                 </div>
                 <div className="text-right shrink-0 mr-2">
-                  <div className={cn('text-sm font-semibold', isCustom ? 'text-accent' : isGlobalOverride ? 'text-[#fcad55]/70' : 'text-c-text')}>
+                  <div className={cn('text-base font-semibold', isCustom ? 'text-accent' : isGlobalOverride ? 'text-[#fcad55]/70' : 'text-c-text')}>
                     ${displayPrice.toLocaleString()}
                   </div>
-                  <div className="text-[10px] text-neutral-500">{UNIT_LABELS[addon.unit]}</div>
+                  <div className="text-xs text-neutral-500">{UNIT_LABELS[addon.unit]}</div>
                   {(isCustom || isGlobalOverride) && !isCustom && (
                     <div className="text-[9px] text-accent/50">global override</div>
                   )}
@@ -102,7 +102,7 @@ export function Step4Addons() {
                   )}
                 </div>
                 <button type="button" onClick={() => toggle(addon.id)}
-                  className={cn('w-8 h-8 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer',
+                  className={cn('w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 transition-all cursor-pointer',
                     sel ? 'bg-accent border-accent text-black hover:bg-accent'
                        : 'border-c-border-input text-neutral-500 hover:border-accent/50 hover:text-accent bg-transparent'
                   )}>
@@ -111,28 +111,30 @@ export function Step4Addons() {
               </div>
 
               {sel && (
-                <div className="px-4 pb-4 pt-0 grid grid-cols-3 gap-3">
+                <div className="px-5 pb-5 pt-1 grid grid-cols-3 gap-4">
                   {addon.unit !== 'flat' && (
                     <Input label="Quantity" type="number" min="1"
                       value={sel.quantity}
                       onChange={e => { const n = Number(e.target.value); if (n > 0) updateQty(addon.id, n); }}
                       onKeyDown={e => e.stopPropagation()} />
                   )}
-                  <div className="relative">
-                    <label className="text-xs text-neutral-500 mb-1.5 block">
+                  <div>
+                    <label className="text-sm text-neutral-500 mb-2 block">
                       Custom Price {addon.unit !== 'flat' ? `(${UNIT_LABELS[addon.unit]})` : ''}
                     </label>
-                    <span className="absolute left-3 bottom-2.5 text-neutral-500 text-sm">$</span>
-                    <input type="number" min="0"
-                      placeholder={String(globalPrice ?? addon.basePrice)}
-                      value={sel.customPrice ?? ''}
-                      onChange={e => updateCustomPrice(addon.id, e.target.value)}
-                      className={cn('w-full pl-7 pr-3 py-2.5 rounded-lg bg-c-input border text-sm text-c-text focus:outline-none focus:ring-1 focus:ring-accent/30',
-                        sel.customPrice !== undefined ? 'border-accent/40 bg-accent/5' : 'border-c-border-input'
-                      )}
-                    />
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 text-base">$</span>
+                      <input type="number" min="0"
+                        placeholder={String(globalPrice ?? addon.basePrice)}
+                        value={sel.customPrice ?? ''}
+                        onChange={e => updateCustomPrice(addon.id, e.target.value)}
+                        className={cn('w-full h-14 pl-8 pr-4 rounded-2xl bg-c-input border text-base text-c-text focus:outline-none focus:ring-1 focus:ring-accent/30',
+                          sel.customPrice !== undefined ? 'border-accent/40 bg-accent/5' : 'border-c-border-input'
+                        )}
+                      />
+                    </div>
                     {isGlobalOverride && sel.customPrice === undefined && (
-                      <div className="text-[10px] text-accent/50 mt-0.5">Using global override: ${globalPrice}</div>
+                      <div className="text-xs text-accent/50 mt-1">Using global override: ${globalPrice}</div>
                     )}
                   </div>
                   <Input label="Notes" placeholder="Specification notes..."
