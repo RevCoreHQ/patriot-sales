@@ -23,13 +23,13 @@ export default function EditQuotePage({ params }: { params: Promise<{ id: string
     if (!quote) return;
     // Convert existing materialSelections to manualLineItems so they're editable
     const fromMaterials = buildLineItems(
-      quote.materialSelections, [], { demo: false, squareFootage: 0, shape: 'rectangle', slope: 'flat', access: 'easy' },
+      quote.materialSelections, [], { tearOff: false, roofArea: 0, pitch: 'moderate', stories: 1, currentMaterial: 'asphalt', access: 'easy' },
       0, settings.pricing.materialPrices, {}
     );
-    // Also include any stored lineItems that aren't from addons/pool (misc/material/labor categories)
+    // Also include any stored lineItems that aren't from addons (misc/material/labor categories)
     // For fresh quotes built with the new flow, lineItems already has the manual items
     const manualLineItems = fromMaterials.length > 0 ? fromMaterials
-      : quote.lineItems.filter(i => i.category !== 'addon' && !(i.description.startsWith('Pool Construction') || i.description.startsWith('Depth Upgrade') || i.description.startsWith('Interior Finish') || i.description.startsWith('Coping Upgrade')));
+      : quote.lineItems.filter(i => i.category !== 'addon');
     setInitialState({
       quoteId: quote.id,
       client: quote.client,
@@ -38,7 +38,6 @@ export default function EditQuotePage({ params }: { params: Promise<{ id: string
       manualLineItems,
       materialSelections: [],
       addonSelections: quote.addonSelections,
-      poolConfig: quote.poolConfig,
       discountPercent: quote.discountPercent,
       discountName: quote.discountName ?? '',
       notes: quote.notes ?? '',

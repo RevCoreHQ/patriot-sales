@@ -12,7 +12,7 @@ import {
   CreditCard, MapPin, Layers,
 } from 'lucide-react';
 
-const LOGO_URL = 'https://assets.cdn.filesafe.space/9Er0a3QxE3UXUVoCQNyS/media/699191dd24813c44b3afb6e9.webp';
+const LOGO_URL = '';
 
 // ─── Inline signature canvas ───────────────────────────────────────────────────
 function ClientSignature({ quote, onSigned }: {
@@ -161,7 +161,7 @@ function ClientSignature({ quote, onSigned }: {
           disabled={!hasSignature}
           className={`flex items-center gap-2 h-12 px-7 rounded-xl text-sm font-bold transition-all ${
             hasSignature
-              ? 'bg-amber-500 hover:bg-amber-400 text-black'
+              ? 'bg-[#fb8e28] hover:bg-[#fb8e28] text-black'
               : 'bg-gray-100 text-gray-300 cursor-not-allowed'
           }`}
         >
@@ -194,12 +194,12 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
   if (notFound) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6">
-        <img src={LOGO_URL} alt="Rock N Roll Stoneworks" className="h-16 mb-6 object-contain" />
+        {LOGO_URL && <img src={LOGO_URL} alt="Patriot Roofing" className="h-16 mb-6 object-contain" />}
         <div className="text-gray-400 text-center">
           <div className="text-lg font-semibold text-gray-700 mb-2">Quote not found</div>
           <div className="text-sm">This link may have expired. Please contact us for a new copy.</div>
-          <a href="tel:3035873035" className="mt-4 inline-flex items-center gap-2 text-amber-600 font-medium text-sm">
-            <Phone className="w-4 h-4" /> 303-587-3035
+          <a href="tel:3364796059" className="mt-4 inline-flex items-center gap-2 text-[#e67a1f] font-medium text-sm">
+            <Phone className="w-4 h-4" /> 336-479-6059
           </a>
         </div>
       </div>
@@ -209,7 +209,7 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
   if (!quote) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-[#fb8e28] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -229,10 +229,10 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
       {/* ── Company header ── */}
       <header className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
-          <img src={LOGO_URL} alt="Rock N Roll Stoneworks" className="h-12 object-contain" />
+          {LOGO_URL ? <img src={LOGO_URL} alt="Patriot Roofing" className="h-12 object-contain" /> : <span className="text-lg font-bold text-gray-900">Patriot Roofing &amp; Home Repairs</span>}
           <a
             href={`tel:${effectiveSettings.company.phone.replace(/\D/g, '')}`}
-            className="flex items-center gap-2 h-9 px-4 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium hover:bg-amber-100 transition-colors"
+            className="flex items-center gap-2 h-9 px-4 rounded-full bg-orange-50 border border-orange-200 text-[#d4700f] text-sm font-medium hover:bg-orange-100 transition-colors"
           >
             <Phone className="w-3.5 h-3.5" />
             {effectiveSettings.company.phone}
@@ -245,21 +245,21 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
         {/* ── Hero section ── */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-6 pt-6 pb-5" style={{ background: 'linear-gradient(135deg, #fffbeb 0%, #fff 60%)' }}>
-            <div className="text-xs font-bold text-amber-600 tracking-widest uppercase mb-3">
+            <div className="text-xs font-bold text-[#e67a1f] tracking-widest uppercase mb-3">
               Custom Project Quote
             </div>
             <h1 className="text-2xl font-bold text-gray-900 leading-tight">
               Hello, {quote.client.name.split(' ')[0]}!
             </h1>
             <p className="text-sm text-gray-500 mt-1">
-              Here&apos;s your personalized estimate from Rock N Roll Stoneworks.
+              Here&apos;s your personalized estimate from Patriot Roofing &amp; Home Repairs.
             </p>
 
             {/* Project tags */}
             {quote.projectTypes.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-4">
                 {quote.projectTypes.map(pt => (
-                  <span key={pt} className="text-xs bg-amber-500/10 text-amber-700 px-2.5 py-1 rounded-full capitalize font-medium">
+                  <span key={pt} className="text-xs bg-[#fb8e28]/10 text-[#d4700f] px-2.5 py-1 rounded-full capitalize font-medium">
                     {pt.replace(/-/g, ' ')}
                   </span>
                 ))}
@@ -371,7 +371,7 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-6 py-5">
               <div className="flex items-center gap-2 mb-4">
-                <CreditCard className="w-4.5 h-4.5 text-amber-500" />
+                <CreditCard className="w-4.5 h-4.5 text-[#fb8e28]" />
                 <h2 className="text-base font-bold text-gray-800">Financing Options</h2>
               </div>
               <p className="text-sm text-gray-500 mb-4">
@@ -386,8 +386,8 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
                     onClick={() => setSelectedTerm(i)}
                     className={`h-9 px-4 rounded-full text-xs font-semibold border transition-all ${
                       selectedTerm === i
-                        ? 'bg-amber-500 text-black border-amber-500'
-                        : 'bg-gray-50 text-gray-600 border-gray-200 hover:border-amber-300'
+                        ? 'bg-[#fb8e28] text-black border-[#fb8e28]'
+                        : 'bg-gray-50 text-gray-600 border-gray-200 hover:border-[#fcad55]'
                     }`}
                   >
                     {opt.termMonths}mo @ {opt.apr}%
@@ -396,25 +396,25 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
               </div>
 
               {financing && (
-                <div className="bg-amber-50 border border-amber-100 rounded-xl p-4">
-                  <div className="text-3xl font-bold text-amber-700 mb-1">
+                <div className="bg-orange-50 border border-orange-100 rounded-xl p-4">
+                  <div className="text-3xl font-bold text-[#d4700f] mb-1">
                     {formatCurrency(financing.monthlyPayment)}
-                    <span className="text-base font-medium text-amber-500">/mo</span>
+                    <span className="text-base font-medium text-[#fb8e28]">/mo</span>
                   </div>
-                  <div className="text-xs text-amber-600 mb-3">
+                  <div className="text-xs text-[#e67a1f] mb-3">
                     {financingOption.termMonths} months · {financingOption.apr}% APR · 20% down ({formatCurrency(financing.downPayment)})
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <div className="text-xs text-amber-500">Amount Financed</div>
-                      <div className="text-sm font-semibold text-amber-700">{formatCurrency(financing.financed)}</div>
+                      <div className="text-xs text-[#fb8e28]">Amount Financed</div>
+                      <div className="text-sm font-semibold text-[#d4700f]">{formatCurrency(financing.financed)}</div>
                     </div>
                     <div>
-                      <div className="text-xs text-amber-500">Total Cost</div>
-                      <div className="text-sm font-semibold text-amber-700">{formatCurrency(financing.totalCost)}</div>
+                      <div className="text-xs text-[#fb8e28]">Total Cost</div>
+                      <div className="text-sm font-semibold text-[#d4700f]">{formatCurrency(financing.totalCost)}</div>
                     </div>
                   </div>
-                  <p className="text-[10px] text-amber-500 mt-3">
+                  <p className="text-[10px] text-[#fb8e28] mt-3">
                     *Financing subject to credit approval. Contact us for details.
                   </p>
                 </div>
@@ -423,18 +423,18 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
           </div>
         )}
 
-        {/* ── Why RNR ── */}
+        {/* ── Why Patriot ── */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5">
-          <h2 className="text-base font-bold text-gray-800 mb-4">Why Rock N Roll Stoneworks?</h2>
+          <h2 className="text-base font-bold text-gray-800 mb-4">Why Patriot Roofing?</h2>
           <div className="grid grid-cols-3 gap-4">
             {[
               { icon: Star, label: 'Top-Rated', sub: '5-star reviewed' },
               { icon: Shield, label: 'Licensed & Insured', sub: 'Full coverage' },
-              { icon: CheckCircle2, label: 'Local Colorado', sub: 'Lafayette, CO' },
+              { icon: CheckCircle2, label: 'Local NC', sub: 'Lexington, NC' },
             ].map(({ icon: Icon, label, sub }) => (
               <div key={label} className="flex flex-col items-center text-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-amber-500" />
+                <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center">
+                  <Icon className="w-5 h-5 text-[#fb8e28]" />
                 </div>
                 <div>
                   <div className="text-xs font-semibold text-gray-700">{label}</div>
@@ -449,17 +449,17 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
         {!isExpired && (
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/50 flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center">
-                <PenLine className="w-4.5 h-4.5 text-amber-500" />
+              <div className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center">
+                <PenLine className="w-4.5 h-4.5 text-[#fb8e28]" />
               </div>
               <div>
                 <div className="text-sm font-bold text-gray-800">Sign & Accept</div>
-                <div className="text-xs text-gray-400">Authorize Rock N Roll Stoneworks to proceed</div>
+                <div className="text-xs text-gray-400">Authorize Patriot Roofing &amp; Home Repairs to proceed</div>
               </div>
             </div>
             <div className="px-6 py-5">
               <p className="text-xs text-gray-400 leading-relaxed mb-5">
-                By signing, you authorize Rock N Roll Stoneworks to proceed with the described scope of work and agree to
+                By signing, you authorize Patriot Roofing &amp; Home Repairs to proceed with the described scope of work and agree to
                 the terms, payment schedule, and conditions outlined in this estimate. Total: <strong className="text-gray-700">{formatCurrency(quote.total)}</strong>.
               </p>
               <ClientSignature
@@ -479,19 +479,19 @@ export default function ClientQuotePage({ params }: { params: Promise<{ id: stri
         )}
 
         {/* ── Contact footer ── */}
-        <div className="rounded-2xl border border-amber-100 bg-amber-50 px-6 py-5 text-center">
-          <div className="text-sm font-semibold text-amber-800 mb-1">Questions? We&apos;re here to help.</div>
-          <div className="text-xs text-amber-600 mb-3">{effectiveSettings.company.address}</div>
+        <div className="rounded-2xl border border-orange-100 bg-orange-50 px-6 py-5 text-center">
+          <div className="text-sm font-semibold text-[#d4700f] mb-1">Questions? We&apos;re here to help.</div>
+          <div className="text-xs text-[#e67a1f] mb-3">{effectiveSettings.company.address}</div>
           <div className="flex items-center justify-center gap-4">
             <a
               href={`tel:${effectiveSettings.company.phone.replace(/\D/g, '')}`}
-              className="flex items-center gap-1.5 text-sm font-semibold text-amber-700 hover:text-amber-800 transition-colors"
+              className="flex items-center gap-1.5 text-sm font-semibold text-[#d4700f] hover:text-[#d4700f] transition-colors"
             >
               <Phone className="w-4 h-4" />
               {effectiveSettings.company.phone}
             </a>
           </div>
-          <div className="mt-4 pt-4 border-t border-amber-100 text-[10px] text-amber-400">
+          <div className="mt-4 pt-4 border-t border-orange-100 text-[10px] text-[#fb8e28]">
             Prepared by {effectiveSettings.salesRep.name} · {effectiveSettings.company.name}
           </div>
         </div>

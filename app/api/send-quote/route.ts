@@ -32,8 +32,8 @@ function buildEmailHtml(quote: Quote, settings: AppSettings): string {
 
     <!-- Header -->
     <div style="background:#0d0d15;border-radius:16px;overflow:hidden;margin-bottom:16px;border:1px solid #1e1e2a">
-      <div style="background:linear-gradient(135deg,#f59e0b,#d97706);padding:28px 32px;position:relative">
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;color:rgba(0,0,0,0.5);text-transform:uppercase;margin-bottom:4px">Rock N Roll Stoneworks · Pools &amp; Spas</div>
+      <div style="background:linear-gradient(135deg,#fb8e28,#e67a1f);padding:28px 32px;position:relative">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;color:rgba(0,0,0,0.5);text-transform:uppercase;margin-bottom:4px">Patriot Roofing & Home Repairs</div>
         <div style="font-size:24px;font-weight:800;color:#000;line-height:1.2">Your Custom Estimate</div>
         <div style="font-size:13px;color:rgba(0,0,0,0.55);margin-top:4px">${settings.company.tagline}</div>
       </div>
@@ -46,18 +46,18 @@ function buildEmailHtml(quote: Quote, settings: AppSettings): string {
 
     <!-- Project scope -->
     <div style="background:#0d0d15;border:1px solid #1e1e2a;border-radius:12px;padding:20px 24px;margin-bottom:12px">
-      <div style="font-size:10px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px">Project Scope</div>
+      <div style="font-size:10px;font-weight:700;color:#fb8e28;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px">Project Scope</div>
       <div>${projectTypes}</div>
       <div style="color:#6b7280;font-size:12px;margin-top:6px">
-        ${quote.siteConditions.squareFootage?.toLocaleString()} sq ft
-        ${quote.siteConditions.demo ? ' · Demolition included' : ''}
+        ${quote.siteConditions.roofArea?.toLocaleString()} sq ft
+        ${quote.siteConditions.tearOff ? ' · Tear-off included' : ''}
       </div>
     </div>
 
     <!-- Line items -->
     <div style="background:#0d0d15;border:1px solid #1e1e2a;border-radius:12px;overflow:hidden;margin-bottom:12px">
       <div style="padding:14px 16px;border-bottom:1px solid #1e1e26">
-        <div style="font-size:10px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:0.1em">Scope of Work</div>
+        <div style="font-size:10px;font-weight:700;color:#fb8e28;text-transform:uppercase;letter-spacing:0.1em">Scope of Work</div>
       </div>
       <table style="width:100%;border-collapse:collapse">
         <thead>
@@ -79,7 +79,7 @@ function buildEmailHtml(quote: Quote, settings: AppSettings): string {
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0 4px;border-top:1px solid #252530;margin-top:8px">
           <span style="font-size:15px;font-weight:700;color:#fff">Total Investment</span>
-          <span style="font-size:22px;font-weight:800;color:#f59e0b">${fmtCurrency(quote.total)}</span>
+          <span style="font-size:22px;font-weight:800;color:#fb8e28">${fmtCurrency(quote.total)}</span>
         </div>
       </div>
     </div>
@@ -87,13 +87,13 @@ function buildEmailHtml(quote: Quote, settings: AppSettings): string {
     ${quote.notes ? `
     <!-- Notes -->
     <div style="background:#0d0d15;border:1px solid #1e1e2a;border-radius:12px;padding:20px 24px;margin-bottom:12px">
-      <div style="font-size:10px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">Project Notes</div>
+      <div style="font-size:10px;font-weight:700;color:#fb8e28;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">Project Notes</div>
       <p style="color:#d1d5db;font-size:13px;line-height:1.7;margin:0">${quote.notes}</p>
     </div>` : ''}
 
     <!-- Financing callout -->
-    <div style="background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(245,158,11,0.04));border:1px solid rgba(245,158,11,0.25);border-radius:12px;padding:20px 24px;margin-bottom:12px">
-      <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:4px">Flexible Financing Available</div>
+    <div style="background:linear-gradient(135deg,rgba(251,142,40,0.1),rgba(251,142,40,0.04));border:1px solid rgba(251,142,40,0.25);border-radius:12px;padding:20px 24px;margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;color:#fb8e28;margin-bottom:4px">Flexible Financing Available</div>
       <div style="font-size:12px;color:#9ca3af;line-height:1.6">Finance your project through our partner Lyon Financial — competitive rates, no home equity required. Ask your sales rep for personalized financing options.</div>
     </div>
 
@@ -105,10 +105,10 @@ function buildEmailHtml(quote: Quote, settings: AppSettings): string {
 
     <!-- Footer -->
     <div style="text-align:center;padding:0 0 8px;color:#4b5563;font-size:12px;line-height:2">
-      <div style="color:#f59e0b;font-weight:700;font-size:14px;margin-bottom:4px">${settings.company.name}</div>
+      <div style="color:#fb8e28;font-weight:700;font-size:14px;margin-bottom:4px">${settings.company.name}</div>
       <div>${settings.company.phone} · ${settings.company.email}</div>
       <div>${settings.company.address}</div>
-      <div style="margin-top:8px;font-size:11px;color:#374151">ICPI Certified · Belgard Authorized · 2-Year Workmanship Guarantee</div>
+      <div style="margin-top:8px;font-size:11px;color:#374151">Licensed & Insured · GAF Certified · Workmanship Guarantee</div>
     </div>
   </div>
 </body>
@@ -132,7 +132,7 @@ export async function POST(req: NextRequest) {
     const clientSlug = quote.client.name.replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-');
 
     const emailPayload: Parameters<typeof resend.emails.send>[0] = {
-      from: `${settings.company.name} <quotes@rnrstoneworks.com>`,
+      from: `${settings.company.name} <quotes@patriotroofingandhomerepair.com>`,
       to: [quote.client.email],
       subject: `Your Estimate from ${settings.company.name} — ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(quote.total)}`,
       html,
@@ -141,7 +141,7 @@ export async function POST(req: NextRequest) {
     if (pdfBase64) {
       emailPayload.attachments = [
         {
-          filename: `RNR-Estimate-${clientSlug}.pdf`,
+          filename: `Patriot-Estimate-${clientSlug}.pdf`,
           content: Buffer.from(pdfBase64, 'base64'),
         },
       ];

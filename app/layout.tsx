@@ -13,13 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RNR Stoneworks — Sales",
-  description: "Sales presentation and quoting tool for Rock N Roll Stoneworks",
+  title: "Patriot Roofing — Sales",
+  description: "Sales and quoting tool for Patriot Roofing & Home Repairs",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "RNR Sales",
+    title: "Patriot Sales",
   },
   other: {
     "mobile-web-app-capable": "yes",
@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <head>
-        <meta name="theme-color" content="#f59e0b" />
+        <meta name="theme-color" content="#fb8e28" />
         <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>

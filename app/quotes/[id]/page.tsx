@@ -142,7 +142,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                       <CheckCircle2 className="w-3 h-3" />Signed
                     </span>
                   )}
-                  {!isExpired && daysLeft <= 10 && !isSigned && <span className="flex items-center gap-1 text-xs font-medium text-amber-400"><Clock className="w-3.5 h-3.5" />{daysLeft}d left</span>}
+                  {!isExpired && daysLeft <= 10 && !isSigned && <span className="flex items-center gap-1 text-xs font-medium text-[#fb8e28]"><Clock className="w-3.5 h-3.5" />{daysLeft}d left</span>}
                   {isExpired && !isSigned && <span className="flex items-center gap-1 text-xs font-medium text-red-400"><AlertTriangle className="w-3.5 h-3.5" />Expired</span>}
                   <span className="text-xs text-c-text-4">{formatDateShort(quote.createdAt)}</span>
                 </div>
@@ -192,7 +192,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                               key={opt.value}
                               onClick={() => { updateStatus(id, opt.value); setMenuOpen(false); }}
                               className={`flex-1 py-2 rounded-xl text-[11px] font-semibold text-center transition-all ${
-                                quote.status === opt.value ? 'bg-amber-500/15 text-amber-400 border border-amber-500/25' : 'bg-c-elevated text-c-text-3 active:bg-c-surface'
+                                quote.status === opt.value ? 'bg-[#fb8e28]/15 text-[#fb8e28] border border-[#fb8e28]/25' : 'bg-c-elevated text-c-text-3 active:bg-c-surface'
                               }`}
                             >
                               {opt.label}
@@ -261,8 +261,8 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
               {/* Stat bar */}
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { label: 'Quote Total', value: formatCurrency(quote.total), color: 'text-amber-400' },
-                  { label: 'Valid Until', value: formatDateShort(quote.validUntil), color: isExpired ? 'text-red-400' : daysLeft <= 7 ? 'text-amber-400' : 'text-c-text' },
+                  { label: 'Quote Total', value: formatCurrency(quote.total), color: 'text-[#fb8e28]' },
+                  { label: 'Valid Until', value: formatDateShort(quote.validUntil), color: isExpired ? 'text-red-400' : daysLeft <= 7 ? 'text-[#fb8e28]' : 'text-c-text' },
                 ].map(s => (
                   <div key={s.label} className="rounded-2xl border border-c-border bg-c-card px-5 py-4">
                     <div className="text-[10px] text-c-text-4 uppercase tracking-wider font-medium mb-1.5">{s.label}</div>
@@ -312,7 +312,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                   <div className="px-6 py-3 flex justify-between text-sm"><span className="text-c-text-3">Sales Tax ({quote.taxRate}%)</span><span className="text-c-text">{formatCurrency(quote.taxAmount)}</span></div>
                   <div className="px-6 py-4 flex justify-between items-center">
                     <span className="font-bold text-c-text text-base">Total Investment</span>
-                    <span className="font-bold text-2xl text-amber-400">{formatCurrency(quote.total)}</span>
+                    <span className="font-bold text-2xl text-[#fb8e28]">{formatCurrency(quote.total)}</span>
                   </div>
                 </div>
               </div>
@@ -325,8 +325,8 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                 </div>
               )}
               {quote.internalNotes && (
-                <div className="rounded-2xl border border-amber-500/15 p-6 bg-amber-500/5">
-                  <div className="text-xs font-bold text-amber-500/60 uppercase tracking-widest mb-2">Internal Notes</div>
+                <div className="rounded-2xl border border-[#fb8e28]/15 p-6 bg-[#fb8e28]/5">
+                  <div className="text-xs font-bold text-[#fb8e28]/60 uppercase tracking-widest mb-2">Internal Notes</div>
                   <p className="text-sm text-c-text-2 leading-relaxed">{quote.internalNotes}</p>
                 </div>
               )}
@@ -354,15 +354,15 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                 <div className="text-[10px] font-bold text-c-text-4 uppercase tracking-widest">Project</div>
                 <div className="flex flex-wrap gap-1.5">
                   {quote.projectTypes.map(pt => (
-                    <span key={pt} className="text-[11px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full capitalize font-medium">
+                    <span key={pt} className="text-[11px] bg-[#fb8e28]/10 text-[#fb8e28] border border-[#fb8e28]/20 px-2.5 py-1 rounded-full capitalize font-medium">
                       {pt.replace(/-/g, ' ')}
                     </span>
                   ))}
                 </div>
                 <div className="text-xs text-c-text-4 space-y-1">
-                  <div>{quote.siteConditions.squareFootage?.toLocaleString()} sq ft</div>
-                  <div className="capitalize">{quote.siteConditions.slope} slope · {quote.siteConditions.access} access</div>
-                  {quote.siteConditions.demo && <div className="text-amber-400/60 font-medium">Demo required</div>}
+                  <div>{quote.siteConditions.roofArea?.toLocaleString()} sq ft</div>
+                  <div className="capitalize">{quote.siteConditions.pitch} pitch · {quote.siteConditions.stories} {quote.siteConditions.stories === 1 ? 'story' : 'stories'} · {quote.siteConditions.access} access</div>
+                  {quote.siteConditions.tearOff && <div className="text-[#fb8e28]/60 font-medium">Tear-off required{quote.siteConditions.layers && quote.siteConditions.layers > 1 ? ` (${quote.siteConditions.layers} layers)` : ''}</div>}
                 </div>
               </div>
 
@@ -383,22 +383,22 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
               )}
 
               {/* Financing */}
-              <div className="rounded-2xl border border-amber-500/20 overflow-hidden" style={{ background: 'linear-gradient(160deg, rgba(245,158,11,0.07), rgba(245,158,11,0.03))' }}>
+              <div className="rounded-2xl border border-[#fb8e28]/20 overflow-hidden" style={{ background: 'linear-gradient(160deg, rgba(251,142,40,0.07), rgba(251,142,40,0.03))' }}>
                 <button onClick={() => setShowFinancing(!showFinancing)} className="w-full flex items-center justify-between px-5 py-4 text-left">
                   <div className="flex items-center gap-3">
-                    <CreditCard className="w-4.5 h-4.5 text-amber-400/70" />
+                    <CreditCard className="w-4.5 h-4.5 text-[#fb8e28]/70" />
                     <div>
-                      <div className="text-sm font-bold text-amber-400">Financing Available</div>
+                      <div className="text-sm font-bold text-[#fb8e28]">Financing Available</div>
                       {financing && !showFinancing && <div className="text-xs text-c-text-3 mt-0.5">From {formatCurrency(financing.monthlyPayment)}/mo</div>}
                     </div>
                   </div>
-                  {showFinancing ? <ChevronUp className="w-4 h-4 text-amber-400/50" /> : <ChevronDown className="w-4 h-4 text-amber-400/50" />}
+                  {showFinancing ? <ChevronUp className="w-4 h-4 text-[#fb8e28]/50" /> : <ChevronDown className="w-4 h-4 text-[#fb8e28]/50" />}
                 </button>
                 {showFinancing && (
-                  <div className="px-5 pb-5 border-t border-amber-500/15 pt-4 space-y-3">
+                  <div className="px-5 pb-5 border-t border-[#fb8e28]/15 pt-4 space-y-3">
                     <div className="grid grid-cols-4 gap-2">
                       {settings.financing.map((opt, i) => (
-                        <button key={opt.id} onClick={() => setSelectedTerm(i)} className={`py-2.5 rounded-xl text-xs font-semibold text-center transition-all ${selectedTerm === i ? 'bg-amber-500 text-black' : 'bg-c-elevated text-c-text-3 active:bg-c-tag'}`}>
+                        <button key={opt.id} onClick={() => setSelectedTerm(i)} className={`py-2.5 rounded-xl text-xs font-semibold text-center transition-all ${selectedTerm === i ? 'bg-[#fb8e28] text-black' : 'bg-c-elevated text-c-text-3 active:bg-c-tag'}`}>
                           {opt.label}
                         </button>
                       ))}
@@ -430,17 +430,17 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                   )}
                 </div>
               ) : (
-                <button onClick={() => setShowSignature(true)} className="w-full flex items-center justify-between px-5 py-5 rounded-2xl border border-c-border bg-c-card active:border-amber-500/30 active:bg-amber-500/5 transition-all group">
+                <button onClick={() => setShowSignature(true)} className="w-full flex items-center justify-between px-5 py-5 rounded-2xl border border-c-border bg-c-card active:border-[#fb8e28]/30 active:bg-[#fb8e28]/5 transition-all group">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-c-elevated flex items-center justify-center group-active:bg-amber-500/10 transition-all">
-                      <PenLine className="w-4.5 h-4.5 text-c-text-4 group-active:text-amber-400 transition-colors" />
+                    <div className="w-10 h-10 rounded-xl bg-c-elevated flex items-center justify-center group-active:bg-[#fb8e28]/10 transition-all">
+                      <PenLine className="w-4.5 h-4.5 text-c-text-4 group-active:text-[#fb8e28] transition-colors" />
                     </div>
                     <div className="text-left">
                       <div className="text-sm font-semibold text-c-text-2 group-active:text-c-text transition-colors">Sign & Accept</div>
                       <div className="text-xs text-c-text-4 mt-0.5">Capture client signature</div>
                     </div>
                   </div>
-                  <ChevronDown className="w-4 h-4 text-c-text-4 group-active:text-amber-400 transition-colors rotate-[-90deg]" />
+                  <ChevronDown className="w-4 h-4 text-c-text-4 group-active:text-[#fb8e28] transition-colors rotate-[-90deg]" />
                 </button>
               )}
             </div>

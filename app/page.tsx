@@ -17,7 +17,7 @@ import {
   Target, DollarSign, FolderOpen,
 } from 'lucide-react';
 
-const LOGO_URL = 'https://assets.cdn.filesafe.space/9Er0a3QxE3UXUVoCQNyS/media/699191dd24813c44b3afb6e9.webp';
+const LOGO_URL = '';
 
 function daysSince(dateStr: string) {
   return Math.floor((Date.now() - new Date(dateStr).getTime()) / 86_400_000);
@@ -79,7 +79,7 @@ export default function HomePage() {
   const today = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
   const metrics = [
-    { label: 'Open Pipeline', value: pipeline, format: fmtCurrency, icon: DollarSign, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+    { label: 'Open Pipeline', value: pipeline, format: fmtCurrency, icon: DollarSign, color: 'text-[#fb8e28]', bg: 'bg-[#fb8e28]/10' },
     { label: 'Won This Month', value: thisMonthWon.length, format: fmtInt, icon: TrendingUp, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
     { label: 'Close Rate', value: closeRate, format: fmtPercent, icon: Target, color: 'text-blue-400', bg: 'bg-blue-500/10' },
     { label: 'Active Jobs', value: activeProjects, format: fmtInt, icon: Hammer, color: 'text-purple-400', bg: 'bg-purple-500/10' },
@@ -93,7 +93,7 @@ export default function HomePage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={LOGO_URL} alt="RNR" className="h-11 w-auto object-contain" />
+            <img src={LOGO_URL} alt="Patriot Roofing" className="h-11 w-auto object-contain" />
             <div>
               <h1 className="text-2xl font-bold text-c-text tracking-tight">
                 {greeting}
@@ -103,8 +103,8 @@ export default function HomePage() {
           </div>
           <Link
             href="/quotes/new"
-            className="flex items-center gap-2.5 h-14 px-7 rounded-2xl bg-amber-500 active:bg-amber-400 text-black font-bold text-base active:scale-[0.97] transition-all"
-            style={{ boxShadow: '0 0 24px rgba(245,158,11,0.25)' }}
+            className="flex items-center gap-2.5 h-14 px-7 rounded-2xl bg-[#fb8e28] active:bg-[#fb8e28] text-black font-bold text-base active:scale-[0.97] transition-all"
+            style={{ boxShadow: '0 0 24px rgba(251,142,40,0.25)' }}
           >
             <Plus className="w-5 h-5" />
             New Quote
@@ -157,10 +157,10 @@ export default function HomePage() {
           <Link
             href="/projects"
             className="flex items-center justify-between px-5 py-4 bg-c-card border border-c-border rounded-2xl active:bg-c-surface transition-colors"
-            style={{ borderLeftColor: 'rgba(245,158,11,0.4)', borderLeftWidth: 3 }}
+            style={{ borderLeftColor: 'rgba(251,142,40,0.4)', borderLeftWidth: 3 }}
           >
             <div className="flex items-center gap-3">
-              <Hammer className="w-4.5 h-4.5 text-amber-400 shrink-0" />
+              <Hammer className="w-4.5 h-4.5 text-[#fb8e28] shrink-0" />
               <div>
                 <div className="text-sm font-semibold text-c-text">
                   {activeProjects} active project{activeProjects !== 1 ? 's' : ''} in progress
@@ -184,7 +184,7 @@ export default function HomePage() {
               </div>
               <Link
                 href="/quotes"
-                className="text-xs font-semibold text-amber-400 active:text-amber-300 transition-colors"
+                className="text-xs font-semibold text-[#fb8e28] active:text-[#fcad55] transition-colors"
               >
                 View all
               </Link>
@@ -218,8 +218,8 @@ export default function HomePage() {
         {/* Empty state */}
         {quotes.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 border border-c-border bg-c-card rounded-2xl text-center">
-            <div className="w-16 h-16 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-5">
-              <Plus className="w-7 h-7 text-amber-400" />
+            <div className="w-16 h-16 rounded-2xl bg-[#fb8e28]/10 flex items-center justify-center mb-5">
+              <Plus className="w-7 h-7 text-[#fb8e28]" />
             </div>
             <div className="text-lg font-semibold text-c-text mb-1">Create your first quote</div>
             <div className="text-sm text-c-text-3 mb-6 max-w-xs">
@@ -227,7 +227,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/quotes/new"
-              className="flex items-center gap-2 h-14 px-8 rounded-2xl bg-amber-500 text-black font-bold text-base active:scale-[0.97] transition-all"
+              className="flex items-center gap-2 h-14 px-8 rounded-2xl bg-[#fb8e28] text-black font-bold text-base active:scale-[0.97] transition-all"
             >
               <Plus className="w-5 h-5" />
               New Quote

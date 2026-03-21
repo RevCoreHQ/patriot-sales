@@ -7,28 +7,40 @@ const CATEGORY_STYLE: Record<string, {
   label: string;
   pattern: string;
 }> = {
-  pavers: {
+  'asphalt-shingles': {
     bg: 'linear-gradient(145deg, #1e1608 0%, #130e05 100%)',
-    label: 'PAVER',
-    // Running-bond brick grid
+    label: 'ASPHALT',
+    // Shingle tab pattern
     pattern: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='40'%3E%3Crect fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1' x='1' y='1' width='38' height='18' rx='1'/%3E%3Crect fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1' x='41' y='1' width='38' height='18' rx='1'/%3E%3Crect fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1' x='-19' y='21' width='38' height='18' rx='1'/%3E%3Crect fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1' x='21' y='21' width='38' height='18' rx='1'/%3E%3Crect fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1' x='61' y='21' width='18' height='18' rx='1'/%3E%3C/svg%3E")`,
   },
-  'natural-stone': {
+  'architectural-shingles': {
     bg: 'linear-gradient(145deg, #1b1410 0%, #120e0a 100%)',
-    label: 'STONE',
-    // Irregular flagstone shapes
+    label: 'ARCHITECTURAL',
+    // Dimensional shingle pattern
     pattern: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='60'%3E%3Cpolygon fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1' points='5,5 45,3 48,30 42,38 8,35'/%3E%3Cpolygon fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1' points='50,2 88,5 85,28 52,32'/%3E%3Cpolygon fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1' points='3,40 40,40 44,57 2,58'/%3E%3Cpolygon fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1' points='46,35 87,30 88,58 44,58'/%3E%3C/svg%3E")`,
   },
-  concrete: {
+  'metal-roofing': {
     bg: 'linear-gradient(145deg, #141418 0%, #0d0d11 100%)',
-    label: 'CONCRETE',
+    label: 'METAL',
+    // Standing seam pattern
+    pattern: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cline x1='15' y1='0' x2='15' y2='60' stroke='rgba(255,255,255,0.07)' stroke-width='1.5'/%3E%3Cline x1='45' y1='0' x2='45' y2='60' stroke='rgba(255,255,255,0.07)' stroke-width='1.5'/%3E%3C/svg%3E")`,
+  },
+  'flat-roofing': {
+    bg: 'linear-gradient(145deg, #121215 0%, #0a0a0e 100%)',
+    label: 'FLAT',
     // Fine aggregate dots
     pattern: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='10' cy='10' r='1.5' fill='rgba(255,255,255,0.05)'/%3E%3Ccircle cx='30' cy='8' r='1' fill='rgba(255,255,255,0.04)'/%3E%3Ccircle cx='50' cy='12' r='1.5' fill='rgba(255,255,255,0.05)'/%3E%3Ccircle cx='18' cy='28' r='1' fill='rgba(255,255,255,0.04)'/%3E%3Ccircle cx='42' cy='25' r='1.5' fill='rgba(255,255,255,0.05)'/%3E%3Ccircle cx='8' cy='45' r='1' fill='rgba(255,255,255,0.04)'/%3E%3Ccircle cx='55' cy='40' r='1' fill='rgba(255,255,255,0.04)'/%3E%3Ccircle cx='28' cy='50' r='1.5' fill='rgba(255,255,255,0.05)'/%3E%3C/svg%3E")`,
   },
-  turf: {
-    bg: 'linear-gradient(145deg, #0a1409 0%, #060d06 100%)',
-    label: 'TURF',
-    // Grass blade verticals
+  'underlayment': {
+    bg: 'linear-gradient(145deg, #0f1210 0%, #090d09 100%)',
+    label: 'UNDERLAYMENT',
+    // Rolled material lines
+    pattern: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cline x1='0' y1='10' x2='40' y2='10' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3Cline x1='0' y1='20' x2='40' y2='20' stroke='rgba(255,255,255,0.04)' stroke-width='1'/%3E%3Cline x1='0' y1='30' x2='40' y2='30' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3C/svg%3E")`,
+  },
+  'flashing': {
+    bg: 'linear-gradient(145deg, #16161a 0%, #0e0e12 100%)',
+    label: 'FLASHING',
+    // Angular metal pattern
     pattern: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cline x1='5' y1='40' x2='7' y2='20' stroke='rgba(255,255,255,0.06)' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='12' y1='40' x2='14' y2='15' stroke='rgba(255,255,255,0.05)' stroke-width='1' stroke-linecap='round'/%3E%3Cline x1='20' y1='40' x2='18' y2='22' stroke='rgba(255,255,255,0.06)' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='28' y1='40' x2='30' y2='18' stroke='rgba(255,255,255,0.05)' stroke-width='1' stroke-linecap='round'/%3E%3Cline x1='35' y1='40' x2='33' y2='24' stroke='rgba(255,255,255,0.06)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")`,
   },
 };
@@ -47,7 +59,7 @@ interface Props {
 }
 
 export function MaterialSwatch({ category, tier, name, className }: Props) {
-  const style = CATEGORY_STYLE[category] ?? CATEGORY_STYLE.concrete;
+  const style = CATEGORY_STYLE[category] ?? CATEGORY_STYLE['asphalt-shingles'];
   const accent = TIER_ACCENT[tier];
 
   return (

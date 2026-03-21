@@ -9,14 +9,14 @@ import { X } from 'lucide-react';
 
 const CAT_LABELS: Record<GalleryCategory, string> = {
   all: 'All Projects',
-  patio: 'Patios',
-  'fire-pit': 'Fire Features',
-  'outdoor-kitchen': 'Outdoor Kitchens',
-  deck: 'Decks & Pergolas',
-  'pool-deck': 'Pool Decks',
+  'roof-replacement': 'Roof Replacement',
+  'roof-repair': 'Roof Repair',
+  'gutter': 'Gutters',
+  'siding': 'Siding',
+  'home-repair': 'Home Repair',
 };
 
-const CATEGORIES: GalleryCategory[] = ['all', 'patio', 'fire-pit', 'outdoor-kitchen', 'deck', 'pool-deck'];
+const CATEGORIES: GalleryCategory[] = ['all', 'roof-replacement', 'roof-repair', 'gutter', 'siding', 'home-repair'];
 
 export default function GalleryPage() {
   const [filter, setFilter] = useState<GalleryCategory>('all');
@@ -30,7 +30,7 @@ export default function GalleryPage() {
       <div className="p-6 max-w-6xl mx-auto">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-c-text">Project Gallery</h1>
-          <p className="text-sm text-neutral-500 mt-0.5">Completed projects by Rock N Roll Stoneworks</p>
+          <p className="text-sm text-neutral-500 mt-0.5">Completed projects by Patriot Roofing & Home Repairs</p>
         </div>
 
         {/* Filter */}
@@ -41,7 +41,7 @@ export default function GalleryPage() {
               onClick={() => setFilter(c)}
               className={cn(
                 'h-11 px-5 rounded-xl text-sm font-medium border transition-all cursor-pointer',
-                filter === c ? 'border-amber-500/50 bg-amber-500/10 text-amber-400' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
+                filter === c ? 'border-[#fb8e28]/50 bg-[#fb8e28]/10 text-[#fb8e28]' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
               )}
             >
               {CAT_LABELS[c]}

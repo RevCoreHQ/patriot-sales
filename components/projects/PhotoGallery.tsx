@@ -58,7 +58,7 @@ export function PhotoGallery({ projectId }: { projectId: string }) {
             onClick={() => setPhaseFilter(t.value)}
             className={`h-10 px-3 text-xs font-semibold rounded-xl transition-all ${
               phaseFilter === t.value
-                ? 'bg-amber-500/12 text-amber-400 border border-amber-500/25'
+                ? 'bg-[#fb8e28]/12 text-[#fb8e28] border border-[#fb8e28]/25'
                 : 'bg-c-card text-c-text-4 border border-c-border active:bg-c-surface'
             }`}
           >
@@ -84,7 +84,7 @@ export function PhotoGallery({ projectId }: { projectId: string }) {
         <button
           onClick={() => fileRef.current?.click()}
           disabled={uploading}
-          className="flex items-center gap-2 h-10 px-4 bg-amber-500 text-black text-xs font-bold rounded-xl active:bg-amber-400 active:scale-[0.97] transition-all disabled:opacity-50"
+          className="flex items-center gap-2 h-10 px-4 bg-[#fb8e28] text-black text-xs font-bold rounded-xl active:bg-[#fb8e28] active:scale-[0.97] transition-all disabled:opacity-50"
         >
           <Camera className="w-3.5 h-3.5" />
           {uploading ? 'Processing...' : 'Add Photo'}

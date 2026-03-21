@@ -9,7 +9,6 @@ import { LiveQuoteSummary } from './LiveQuoteSummary';
 import { Step0ClientInfo } from './steps/Step0ClientInfo';
 import { Step1ProjectTypes } from './steps/Step1ProjectTypes';
 import { Step2SiteConditions } from './steps/Step2SiteConditions';
-import { StepPoolConfig } from './steps/StepPoolConfig';
 import { StepLineItems } from './steps/StepLineItems';
 import { Step4Addons } from './steps/Step4Addons';
 import { Step5Pricing } from './steps/Step5Pricing';
@@ -23,7 +22,7 @@ interface StepDef {
   render: () => React.ReactNode;
 }
 
-function buildSteps(hasPool: boolean, editingId?: string): StepDef[] {
+function buildSteps(editingId?: string): StepDef[] {
   return [
     {
       label: 'Client & Project',
@@ -40,12 +39,6 @@ function buildSteps(hasPool: boolean, editingId?: string): StepDef[] {
       render: () => (
         <div className="space-y-8">
           <Step2SiteConditions />
-          {hasPool && (
-            <>
-              <div className="h-px bg-c-border-inner" />
-              <StepPoolConfig />
-            </>
-          )}
         </div>
       ),
     },
@@ -97,8 +90,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const hasPool = wizard.projectTypes.includes('pool-construction');
-  const steps = useMemo(() => buildSteps(hasPool, editingId), [hasPool, editingId]);
+  const steps = useMemo(() => buildSteps(editingId), [editingId]);
 
   const currentStep = Math.min(wizard.currentStep, steps.length - 1);
   const isLastStep = currentStep === steps.length - 1;
@@ -129,9 +121,9 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
                   <span className={cn(
                     'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-all',
                     isActive
-                      ? 'bg-amber-500 text-black shadow-[0_0_16px_rgba(245,158,11,0.35)]'
+                      ? 'bg-[#fb8e28] text-black shadow-[0_0_16px_rgba(251,142,40,0.35)]'
                       : isDone
-                      ? 'bg-amber-500/20 text-amber-400'
+                      ? 'bg-[#fb8e28]/20 text-[#fb8e28]'
                       : 'bg-c-elevated text-c-text-4'
                   )}>
                     {isDone ? <Check className="w-3.5 h-3.5" strokeWidth={3} /> : idx + 1}
@@ -146,7 +138,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
                 {idx < steps.length - 1 && (
                   <div className={cn(
                     'flex-1 h-px mx-2 transition-all',
-                    isDone ? 'bg-amber-500/40' : 'bg-c-border-inner'
+                    isDone ? 'bg-[#fb8e28]/40' : 'bg-c-border-inner'
                   )} />
                 )}
               </div>

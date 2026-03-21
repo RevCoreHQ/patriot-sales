@@ -1,9 +1,8 @@
 import { jsPDF } from 'jspdf';
-import type { Quote } from '@/types';
-import type { AppSettings } from '@/types';
+import type { Quote, AppSettings } from '@/types';
 
 // ─── Constants ──────────────────────────────────────────────────────────────
-const LOGO_URL = 'https://assets.cdn.filesafe.space/9Er0a3QxE3UXUVoCQNyS/media/699191dd24813c44b3afb6e9.webp';
+const LOGO_URL = '';
 const PAGE_W = 215.9;   // Letter width mm
 const PAGE_H = 279.4;   // Letter height mm
 const M = 14;           // Margin mm
@@ -12,7 +11,7 @@ const FOOTER_H = 14;    // Footer band height mm
 const CONTENT_BOTTOM = PAGE_H - FOOTER_H - 4;
 
 // Brand colors (RGB)
-const AMBER: [number, number, number] = [245, 158, 11];
+const AMBER: [number, number, number] = [251, 142, 40];
 const DARK: [number, number, number] = [18, 18, 22];
 const DARK2: [number, number, number] = [30, 30, 36];
 const GRAY: [number, number, number] = [100, 100, 112];
@@ -103,7 +102,7 @@ async function buildPDF(quote: Quote, settings: AppSettings): Promise<jsPDF> {
 export async function generateQuotePDF(quote: Quote, settings: AppSettings): Promise<void> {
   const doc = await buildPDF(quote, settings);
   const clientSlug = quote.client.name.replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-');
-  doc.save(`RNR-Estimate-${clientSlug}.pdf`);
+  doc.save(`Patriot-Estimate-${clientSlug}.pdf`);
 }
 
 export async function getQuotePDFBase64(quote: Quote, settings: AppSettings): Promise<string> {
@@ -141,12 +140,12 @@ function drawHeader(doc: jsPDF, settings: AppSettings, logoBase64: string | null
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(17);
   doc.setTextColor(...WHITE);
-  doc.text('ROCK N ROLL', M + 3, 14);
+  doc.text('PATRIOT ROOFING', M + 3, 14);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(11);
   doc.setTextColor(...AMBER);
-  doc.text('STONEWORKS · POOLS & SPAS', M + 3, 22);
+  doc.text('& HOME REPAIRS', M + 3, 22);
 
   // Tagline
   doc.setFont('helvetica', 'italic');
@@ -158,7 +157,7 @@ function drawHeader(doc: jsPDF, settings: AppSettings, logoBase64: string | null
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.5);
   doc.setTextColor(130, 130, 150);
-  doc.text('ICPI Certified  ·  Belgard Authorized  ·  2-Year Installation Guarantee', M + 3, 37);
+  doc.text('Licensed & Insured  ·  GAF Certified  ·  Workmanship Guarantee', M + 3, 37);
 
   // Contact info — to the left of the logo
   const rx = logoX - 4;
@@ -293,17 +292,17 @@ function drawClientAndProject(doc: jsPDF, quote: Quote, y: number): number {
   doc.setFontSize(7.5);
   doc.setTextColor(...GRAY);
   const siteY = y + 12 + wrappedTypes.length * 4;
-  const sqft = quote.siteConditions.squareFootage?.toLocaleString() ?? '0';
-  doc.text(`${sqft} sq ft  ·  ${titleCase(quote.siteConditions.slope ?? 'flat')} slope  ·  ${titleCase(quote.siteConditions.access ?? 'easy')} access`, PX + 4, siteY);
+  const sqft = quote.siteConditions.roofArea?.toLocaleString() ?? '0';
+  doc.text(`${sqft} sq ft  ·  ${titleCase(quote.siteConditions.pitch ?? 'moderate')} pitch  ·  ${titleCase(quote.siteConditions.access ?? 'easy')} access`, PX + 4, siteY);
 
-  if (quote.siteConditions.demo) {
+  if (quote.siteConditions.tearOff) {
     doc.setTextColor(200, 100, 20);
-    doc.text('Demolition required', PX + 4, siteY + 5);
+    doc.text('Tear-off required', PX + 4, siteY + 5);
   }
 
   if (quote.client.projectAddress) {
     doc.setTextColor(...GRAY);
-    doc.text(`Project: ${quote.client.projectAddress}`, PX + 4, siteY + (quote.siteConditions.demo ? 10 : 5));
+    doc.text(`Project: ${quote.client.projectAddress}`, PX + 4, siteY + (quote.siteConditions.tearOff ? 10 : 5));
   }
 
   return y + BOX_H + 8;
@@ -477,7 +476,7 @@ function drawSmallHeader(doc: jsPDF, settings: AppSettings): number {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(...WHITE);
-  doc.text('ROCK N ROLL STONEWORKS', M + 3, 10);
+  doc.text('PATRIOT ROOFING & HOME REPAIRS', M + 3, 10);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
@@ -510,11 +509,11 @@ function drawTermsSection(doc: jsPDF, settings: AppSettings, y: number): number 
   const terms = [
     `This estimate is valid for ${settings.pricing.quoteValidDays} days from the date of issue.`,
     'A 50% deposit is required to confirm your project start date. Balance is due upon completion.',
-    'Rock N Roll Stoneworks provides a 2-year workmanship installation guarantee on all projects.',
-    'Belgard-certified installations qualify for Belgard\'s lifetime limited product warranty.',
-    'Pricing does not include HOA permits, engineering reports, or utility relocation unless specified.',
+    'Patriot Roofing & Home Repairs provides a workmanship guarantee on all projects.',
+    'Manufacturer warranties apply based on selected materials (GAF, Owens Corning, CertainTeed).',
+    'Pricing does not include permits, engineering reports, or structural repairs unless specified.',
     'Scope changes after signing may result in a revised estimate and/or change order.',
-    'All work performed by our own ICPI-certified crew — zero subcontractors, ever.',
+    'All work performed by our own licensed and insured crew.',
   ];
 
   doc.setFont('helvetica', 'normal');
@@ -551,7 +550,7 @@ function drawSignatureBlock(doc: jsPDF, quote: Quote, y: number): void {
   doc.setFontSize(8.5);
   doc.setTextColor(...GRAY);
   const msg =
-    'By signing below, you authorize Rock N Roll Stoneworks to proceed with the described scope of work ' +
+    'By signing below, you authorize Patriot Roofing & Home Repairs to proceed with the described scope of work ' +
     'and agree to the terms and payment schedule outlined in this estimate.';
   const msgLines = doc.splitTextToSize(msg, CW);
   doc.text(msgLines, M, y);
@@ -597,7 +596,7 @@ function drawSignatureBlock(doc: jsPDF, quote: Quote, y: number): void {
   doc.setTextColor(...GRAY);
   doc.text(quote.client.name || 'Printed Name', M + 4, y + 38);
 
-  // Right box — RNR rep
+  // Right box — Patriot rep
   const RX = M + BOX_W + 8;
   doc.setFillColor(...PANEL);
   doc.roundedRect(RX, y, BOX_W, BOX_H, 2, 2, 'F');
@@ -608,7 +607,7 @@ function drawSignatureBlock(doc: jsPDF, quote: Quote, y: number): void {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(6.5);
   doc.setTextColor(...AMBER);
-  doc.text('ROCK N ROLL STONEWORKS', RX + 4, y + 5);
+  doc.text('PATRIOT ROOFING & HOME REPAIRS', RX + 4, y + 5);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
@@ -617,7 +616,7 @@ function drawSignatureBlock(doc: jsPDF, quote: Quote, y: number): void {
 
   doc.setFontSize(7);
   doc.setTextColor(...GRAY);
-  doc.text('Outdoor Living Specialist', RX + 4, y + 18);
+  doc.text('Roofing Specialist', RX + 4, y + 18);
 
   // Rep signature line
   doc.setDrawColor(...DARK);
@@ -638,7 +637,7 @@ function drawSignatureBlock(doc: jsPDF, quote: Quote, y: number): void {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(...GRAY);
-  doc.text('We look forward to transforming your outdoor space.', PAGE_W / 2, thankY + 6, { align: 'center' });
+  doc.text('We look forward to protecting your home.', PAGE_W / 2, thankY + 6, { align: 'center' });
 }
 
 // ─── Section header helper ────────────────────────────────────────────────────
@@ -672,13 +671,13 @@ function drawFooter(doc: jsPDF, settings: AppSettings, page: number, total: numb
   doc.setFontSize(6.5);
   doc.setTextColor(130, 130, 150);
   doc.text(
-    `Rock N Roll Stoneworks  ·  Lafayette, CO  ·  ${settings.company.phone}  ·  ${settings.company.website}`,
+    `Patriot Roofing & Home Repairs  ·  Lexington, NC  ·  ${settings.company.phone}  ·  ${settings.company.website}`,
     PAGE_W / 2, FY + 5, { align: 'center' }
   );
   doc.setFontSize(6);
   doc.setTextColor(100, 100, 120);
   doc.text(
-    'ICPI Certified  ·  Belgard Authorized Contractor  ·  2-Year Workmanship Guarantee  ·  Belgard Lifetime Product Warranty',
+    'Licensed & Insured  ·  GAF Certified  ·  Workmanship Guarantee',
     PAGE_W / 2, FY + 9, { align: 'center' }
   );
   doc.text(`Page ${page} of ${total}`, PAGE_W - M, FY + 7, { align: 'right' });

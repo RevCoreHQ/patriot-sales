@@ -1,11 +1,11 @@
 {
-  "name": "RNR Stoneworks Sales",
-  "short_name": "RNR Sales",
-  "description": "Professional quoting & project management for Rock N Roll Stoneworks",
+  "name": "Patriot Roofing — Sales",
+  "short_name": "Patriot Sales",
+  "description": "Sales and quoting tool for Patriot Roofing & Home Repairs",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#050508",
-  "theme_color": "#f59e0b",
+  "theme_color": "#fb8e28",
   "orientation": "any",
   "icons": [
     {

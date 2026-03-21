@@ -12,15 +12,16 @@ const TIER_LABELS: Record<MaterialTier, string> = { good: 'Good', better: 'Bette
 const TIER_COLORS: Record<MaterialTier, string> = {
   good: 'bg-neutral-500/15 text-neutral-400 border-neutral-500/20',
   better: 'bg-blue-500/15 text-blue-400 border-blue-500/20',
-  best: 'bg-amber-500/15 text-amber-400 border-amber-500/20',
+  best: 'bg-[#fb8e28]/15 text-[#fb8e28] border-[#fb8e28]/20',
 };
 
 const CAT_LABELS: Record<MaterialCategory, string> = {
-  pavers: 'Pavers',
-  'natural-stone': 'Natural Stone',
-  concrete: 'Concrete',
-  turf: 'Artificial Turf',
-  gravel: 'Gravel',
+  'asphalt-shingles': 'Asphalt Shingles',
+  'architectural-shingles': 'Architectural Shingles',
+  'metal-roofing': 'Metal Roofing',
+  'flat-roofing': 'Flat Roofing',
+  'underlayment': 'Underlayment',
+  'flashing': 'Flashing',
 };
 
 export default function CatalogPage() {
@@ -53,7 +54,7 @@ export default function CatalogPage() {
                 onClick={() => setTier(t)}
                 className={cn(
                   'h-11 px-4 rounded-xl text-sm font-medium border transition-all cursor-pointer capitalize',
-                  tier === t ? 'border-amber-500/50 bg-amber-500/10 text-amber-400' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
+                  tier === t ? 'border-[#fb8e28]/50 bg-[#fb8e28]/10 text-[#fb8e28]' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
                 )}
               >
                 {t === 'all' ? 'All Tiers' : TIER_LABELS[t as MaterialTier]}
@@ -63,13 +64,13 @@ export default function CatalogPage() {
           <div className="flex gap-1 flex-wrap">
             <button
               onClick={() => setCat('all')}
-              className={cn('h-11 px-4 rounded-xl text-sm font-medium border transition-all cursor-pointer', cat === 'all' ? 'border-amber-500/50 bg-amber-500/10 text-amber-400' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300')}
+              className={cn('h-11 px-4 rounded-xl text-sm font-medium border transition-all cursor-pointer', cat === 'all' ? 'border-[#fb8e28]/50 bg-[#fb8e28]/10 text-[#fb8e28]' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300')}
             >All Categories</button>
             {categories.map(c => (
               <button
                 key={c}
                 onClick={() => setCat(c)}
-                className={cn('h-11 px-4 rounded-xl text-sm font-medium border transition-all cursor-pointer', cat === c ? 'border-amber-500/50 bg-amber-500/10 text-amber-400' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300')}
+                className={cn('h-11 px-4 rounded-xl text-sm font-medium border transition-all cursor-pointer', cat === c ? 'border-[#fb8e28]/50 bg-[#fb8e28]/10 text-[#fb8e28]' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300')}
               >
                 {CAT_LABELS[c]}
               </button>
@@ -86,7 +87,7 @@ export default function CatalogPage() {
                 onClick={() => setSelected(m.id === selected ? null : m.id)}
                 className={cn(
                   'text-left rounded-xl border overflow-hidden transition-all cursor-pointer',
-                  m.id === selected ? 'border-amber-500/50 ring-1 ring-amber-500/20' : 'border-c-border-inner hover:border-c-border-hover'
+                  m.id === selected ? 'border-[#fb8e28]/50 ring-1 ring-[#fb8e28]/20' : 'border-c-border-inner hover:border-c-border-hover'
                 )}
               >
                 <div className="relative">
@@ -100,7 +101,7 @@ export default function CatalogPage() {
                   <div className="text-xs text-neutral-500">{m.brand}</div>
                   <div className="flex items-center justify-between mt-2">
                     <span className="text-xs text-neutral-400 capitalize">{CAT_LABELS[m.category as MaterialCategory]}</span>
-                    <span className="text-xs font-semibold text-amber-400">${m.pricePerSqFt + m.laborPerSqFt}/sf installed</span>
+                    <span className="text-xs font-semibold text-[#fb8e28]">${m.pricePerSqFt + m.laborPerSqFt}/sf installed</span>
                   </div>
                 </div>
               </button>
@@ -145,7 +146,7 @@ export default function CatalogPage() {
                   <div className="space-y-1">
                     {selectedMaterial.features.map(f => (
                       <div key={f} className="flex items-center gap-1.5 text-xs text-c-text-2">
-                        <div className="w-1 h-1 rounded-full bg-amber-500 shrink-0" />
+                        <div className="w-1 h-1 rounded-full bg-[#fb8e28] shrink-0" />
                         {f}
                       </div>
                     ))}

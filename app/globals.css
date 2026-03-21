@@ -9,8 +9,10 @@
   --surface: #101018;
   --surface-2: #161622;
   --input-bg: #0c0c14;
-  --accent: #f59e0b;
-  --accent-glow: rgba(245,158,11,0.15);
+  --accent: #fb8e28;
+  --accent-glow: rgba(251,142,40,0.15);
+  --accent-secondary: #1f67e7;
+  --accent-secondary-glow: rgba(31,103,231,0.15);
   --muted: #6b7280;
   --muted-text: rgba(255,255,255,0.35);
   --scrollbar: rgba(255,255,255,0.08);

@@ -5,20 +5,19 @@ import { useWizardStore } from '@/store/wizard';
 import { useSettingsStore } from '@/store/settings';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Input';
-import { buildLineItems, buildPoolLineItems, calculateTotals } from '@/lib/pricing';
+import { buildLineItems, calculateTotals } from '@/lib/pricing';
 import { formatCurrency } from '@/lib/utils';
 import { Lock } from 'lucide-react';
 
 export function Step5Pricing() {
-  const { manualLineItems, addonSelections, siteConditions, projectTypes, poolConfig, discountPercent, setDiscountPercent, discountName, setDiscountName, priceOverride, setPriceOverride, notes, setNotes, internalNotes, setInternalNotes, updateManualLineItem } = useWizardStore();
+  const { manualLineItems, addonSelections, siteConditions, discountPercent, setDiscountPercent, discountName, setDiscountName, priceOverride, setPriceOverride, notes, setNotes, internalNotes, setInternalNotes, updateManualLineItem } = useWizardStore();
   const { settings } = useSettingsStore();
   const isAdmin = true;
   const [overrideEnabled, setOverrideEnabled] = useState(priceOverride !== undefined);
 
-  // addons + demo from site conditions; manual items handle everything else
+  // addons + tear-off from site conditions; manual items handle everything else
   const addonItems = buildLineItems([], addonSelections, siteConditions, settings.pricing.demolitionRate, {}, settings.pricing.addonPrices);
-  const poolItems = projectTypes.includes('pool-construction') && poolConfig ? buildPoolLineItems(poolConfig) : [];
-  const lineItems = [...manualLineItems, ...addonItems, ...poolItems];
+  const lineItems = [...manualLineItems, ...addonItems];
   const { subtotal, discountAmount, taxAmount, total } = calculateTotals(lineItems, discountPercent, settings.pricing.taxRate);
 
   // Margin calculations
@@ -29,7 +28,7 @@ export function Step5Pricing() {
   const hasCosts = lineItems.some(item => item.costPerUnit !== undefined && item.costPerUnit > 0);
   const overallMarginPct = hasCosts && subtotal > 0 ? ((subtotal - totalCost) / subtotal * 100) : null;
   const overallMarginColor = overallMarginPct !== null
-    ? overallMarginPct >= 30 ? 'text-emerald-400' : overallMarginPct >= 15 ? 'text-amber-400' : 'text-red-400'
+    ? overallMarginPct >= 30 ? 'text-emerald-400' : overallMarginPct >= 15 ? 'text-[#fb8e28]' : 'text-red-400'
     : '';
 
   const categoryColor = (cat: string) => {
@@ -59,7 +58,7 @@ export function Step5Pricing() {
               ? ((item.unitPrice - item.costPerUnit) / item.unitPrice * 100)
               : null;
             const marginColor = itemMargin !== null
-              ? itemMargin >= 30 ? 'text-emerald-400' : itemMargin >= 15 ? 'text-amber-400' : 'text-red-400'
+              ? itemMargin >= 30 ? 'text-emerald-400' : itemMargin >= 15 ? 'text-[#fb8e28]' : 'text-red-400'
               : '';
             return (
               <div key={item.id} className="px-4 py-2.5 flex items-center gap-4">
@@ -84,7 +83,7 @@ export function Step5Pricing() {
                       placeholder="Cost"
                       value={item.costPerUnit ?? ''}
                       onChange={e => updateManualLineItem(item.id, { costPerUnit: e.target.value === '' ? undefined : Number(e.target.value) })}
-                      className="w-full bg-c-input border border-c-border-input rounded-lg px-2 py-1 text-xs text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-amber-500/50 tabular-nums"
+                      className="w-full bg-c-input border border-c-border-input rounded-lg px-2 py-1 text-xs text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-[#fb8e28]/50 tabular-nums"
                     />
                   </div>
                 )}
@@ -129,7 +128,7 @@ export function Step5Pricing() {
           <div className="px-4 py-3 flex justify-between">
             <span className="font-bold text-c-text">Total</span>
             <div className="text-right">
-              <span className={cn('font-bold text-xl', priceOverride !== undefined ? 'text-amber-400' : 'text-amber-400')}>
+              <span className="font-bold text-xl text-[#fb8e28]">
                 {formatCurrency(priceOverride !== undefined ? priceOverride : total)}
               </span>
               {priceOverride !== undefined && (
@@ -155,7 +154,7 @@ export function Step5Pricing() {
 
       {/* ── Admin Override ── */}
       {isAdmin && (
-        <div className="border border-amber-500/20 rounded-xl overflow-hidden">
+        <div className="border border-[#fb8e28]/20 rounded-xl overflow-hidden">
           <button
             type="button"
             onClick={() => {
@@ -163,16 +162,16 @@ export function Step5Pricing() {
               setOverrideEnabled(next);
               if (!next) setPriceOverride(undefined);
             }}
-            className="w-full flex items-center gap-3 px-4 py-3 bg-amber-500/5 text-left hover:bg-amber-500/8 transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-3 bg-[#fb8e28]/5 text-left hover:bg-[#fb8e28]/8 transition-colors"
           >
-            <Lock className="w-3.5 h-3.5 text-amber-500/70 shrink-0" />
-            <span className="text-xs font-bold text-amber-500/80 uppercase tracking-widest flex-1">Admin Price Controls</span>
-            <div className={cn('w-8 h-[18px] rounded-full flex items-center px-0.5 transition-colors', overrideEnabled ? 'bg-amber-500' : 'bg-c-border-input')}>
+            <Lock className="w-3.5 h-3.5 text-[#fb8e28]/70 shrink-0" />
+            <span className="text-xs font-bold text-[#fb8e28]/80 uppercase tracking-widest flex-1">Admin Price Controls</span>
+            <div className={cn('w-8 h-[18px] rounded-full flex items-center px-0.5 transition-colors', overrideEnabled ? 'bg-[#fb8e28]' : 'bg-c-border-input')}>
               <div className={cn('w-3.5 h-3.5 rounded-full bg-white shadow transition-transform', overrideEnabled ? 'translate-x-3.5' : 'translate-x-0')} />
             </div>
           </button>
           {overrideEnabled && (
-            <div className="px-4 py-4 space-y-4 border-t border-amber-500/15">
+            <div className="px-4 py-4 space-y-4 border-t border-[#fb8e28]/15">
               <div className="flex gap-4 items-end">
                 <div className="w-48">
                   <Input

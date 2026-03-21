@@ -10,8 +10,8 @@ import { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 
 const CATEGORY_LABELS: Record<AddonCategory, string> = {
-  structures: 'Structures', fire: 'Fire Features', lighting: 'Lighting',
-  water: 'Water Features', drainage: 'Drainage', planting: 'Planting', finishing: 'Finishing',
+  protection: 'Protection', ventilation: 'Ventilation', gutters: 'Gutters',
+  structural: 'Structural', insulation: 'Insulation', finishing: 'Finishing',
 };
 const UNIT_LABELS: Record<string, string> = {
   flat: 'flat rate', 'linear-ft': 'per linear ft', 'sq-ft': 'per sq ft', each: 'each',
@@ -59,12 +59,12 @@ export function Step4Addons() {
       <div className="flex flex-wrap gap-1">
         <button type="button" onClick={() => setFilter('all')}
           className={cn('px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer',
-            filter === 'all' ? 'bg-amber-500/15 border-amber-500/40 text-amber-400' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
+            filter === 'all' ? 'bg-[#fb8e28]/15 border-[#fb8e28]/40 text-[#fb8e28]' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
           )}>All</button>
         {categories.map(cat => (
           <button key={cat} type="button" onClick={() => setFilter(cat)}
             className={cn('px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer',
-              filter === cat ? 'bg-amber-500/15 border-amber-500/40 text-amber-400' : 'border-c-border-inner text-c-text-3 hover:text-c-text-2'
+              filter === cat ? 'bg-[#fb8e28]/15 border-[#fb8e28]/40 text-[#fb8e28]' : 'border-c-border-inner text-c-text-3 hover:text-c-text-2'
             )}>
             {CATEGORY_LABELS[cat]}
           </button>
@@ -81,21 +81,21 @@ export function Step4Addons() {
 
           return (
             <div key={addon.id} className={cn('border rounded-xl transition-all',
-              sel ? 'border-amber-500/30 bg-amber-500/5' : 'border-c-border-inner bg-c-surface'
+              sel ? 'border-[#fb8e28]/30 bg-[#fb8e28]/5' : 'border-c-border-inner bg-c-surface'
             )}>
               <div className="flex items-center gap-3 p-4">
                 <div className="text-xl w-8 text-center shrink-0">{addon.icon}</div>
                 <div className="flex-1 min-w-0">
-                  <div className={cn('text-sm font-medium', sel ? 'text-amber-400' : 'text-c-text')}>{addon.name}</div>
+                  <div className={cn('text-sm font-medium', sel ? 'text-[#fb8e28]' : 'text-c-text')}>{addon.name}</div>
                   <div className="text-xs text-neutral-500 mt-0.5">{addon.description}</div>
                 </div>
                 <div className="text-right shrink-0 mr-2">
-                  <div className={cn('text-sm font-semibold', isCustom ? 'text-amber-400' : isGlobalOverride ? 'text-amber-300/70' : 'text-c-text')}>
+                  <div className={cn('text-sm font-semibold', isCustom ? 'text-[#fb8e28]' : isGlobalOverride ? 'text-[#fcad55]/70' : 'text-c-text')}>
                     ${displayPrice.toLocaleString()}
                   </div>
                   <div className="text-[10px] text-neutral-500">{UNIT_LABELS[addon.unit]}</div>
                   {(isCustom || isGlobalOverride) && !isCustom && (
-                    <div className="text-[9px] text-amber-500/50">global override</div>
+                    <div className="text-[9px] text-[#fb8e28]/50">global override</div>
                   )}
                   {addon.basePrice !== displayPrice && !isCustom && (
                     <div className="text-[9px] text-neutral-600 line-through">${addon.basePrice.toLocaleString()}</div>
@@ -103,8 +103,8 @@ export function Step4Addons() {
                 </div>
                 <button type="button" onClick={() => toggle(addon.id)}
                   className={cn('w-8 h-8 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer',
-                    sel ? 'bg-amber-500 border-amber-500 text-black hover:bg-amber-400'
-                       : 'border-c-border-input text-neutral-500 hover:border-amber-500/50 hover:text-amber-400 bg-transparent'
+                    sel ? 'bg-[#fb8e28] border-[#fb8e28] text-black hover:bg-[#fb8e28]'
+                       : 'border-c-border-input text-neutral-500 hover:border-[#fb8e28]/50 hover:text-[#fb8e28] bg-transparent'
                   )}>
                   {sel ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
                 </button>
@@ -127,12 +127,12 @@ export function Step4Addons() {
                       placeholder={String(globalPrice ?? addon.basePrice)}
                       value={sel.customPrice ?? ''}
                       onChange={e => updateCustomPrice(addon.id, e.target.value)}
-                      className={cn('w-full pl-7 pr-3 py-2.5 rounded-lg bg-c-input border text-sm text-c-text focus:outline-none focus:ring-1 focus:ring-amber-500/30',
-                        sel.customPrice !== undefined ? 'border-amber-500/40 bg-amber-500/5' : 'border-c-border-input'
+                      className={cn('w-full pl-7 pr-3 py-2.5 rounded-lg bg-c-input border text-sm text-c-text focus:outline-none focus:ring-1 focus:ring-[#fb8e28]/30',
+                        sel.customPrice !== undefined ? 'border-[#fb8e28]/40 bg-[#fb8e28]/5' : 'border-c-border-input'
                       )}
                     />
                     {isGlobalOverride && sel.customPrice === undefined && (
-                      <div className="text-[10px] text-amber-500/50 mt-0.5">Using global override: ${globalPrice}</div>
+                      <div className="text-[10px] text-[#fb8e28]/50 mt-0.5">Using global override: ${globalPrice}</div>
                     )}
                   </div>
                   <Input label="Notes" placeholder="Specification notes..."
@@ -145,7 +145,7 @@ export function Step4Addons() {
       </div>
 
       {addonSelections.length > 0 && (
-        <div className="text-xs text-amber-400 text-right">
+        <div className="text-xs text-[#fb8e28] text-right">
           {addonSelections.length} add-on{addonSelections.length !== 1 ? 's' : ''} selected
         </div>
       )}

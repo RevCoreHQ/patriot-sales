@@ -11,17 +11,15 @@ export interface Client {
 
 // ─── Project Types ────────────────────────────────────────────────────────────
 export type ProjectTypeId =
-  | 'patio'
-  | 'fire-pit'
-  | 'outdoor-kitchen'
-  | 'deck-pergola'
-  | 'pool-deck'
-  | 'outdoor-lighting'
-  | 'artificial-grass'
-  | 'seating-wall'
-  | 'driveway'
-  | 'walkway'
-  | 'pool-construction';
+  | 'roof-replacement'
+  | 'roof-repair'
+  | 'new-roof'
+  | 'gutter-install'
+  | 'gutter-repair'
+  | 'siding'
+  | 'home-repair'
+  | 'bathroom-renovation'
+  | 'kitchen-renovation';
 
 export interface ProjectType {
   id: ProjectTypeId;
@@ -34,11 +32,12 @@ export interface ProjectType {
 
 // ─── Materials ────────────────────────────────────────────────────────────────
 export type MaterialCategory =
-  | 'pavers'
-  | 'natural-stone'
-  | 'concrete'
-  | 'turf'
-  | 'gravel';
+  | 'asphalt-shingles'
+  | 'architectural-shingles'
+  | 'metal-roofing'
+  | 'flat-roofing'
+  | 'underlayment'
+  | 'flashing';
 
 export type MaterialTier = 'good' | 'better' | 'best';
 
@@ -58,12 +57,11 @@ export interface Material {
 
 // ─── Add-ons ──────────────────────────────────────────────────────────────────
 export type AddonCategory =
-  | 'structures'
-  | 'fire'
-  | 'lighting'
-  | 'water'
-  | 'drainage'
-  | 'planting'
+  | 'protection'
+  | 'ventilation'
+  | 'gutters'
+  | 'structural'
+  | 'insulation'
   | 'finishing';
 
 export interface Addon {
@@ -110,13 +108,14 @@ export interface AddonSelection {
 
 // ─── Site Conditions ──────────────────────────────────────────────────────────
 export interface SiteConditions {
-  squareFootage: number;
-  shape: 'rectangle' | 'irregular' | 'l-shape' | 'curved';
-  slope: 'flat' | 'slight' | 'moderate' | 'steep';
+  roofArea: number;
+  pitch: 'flat' | 'low' | 'moderate' | 'steep';
+  stories: 1 | 2 | 3;
+  currentMaterial: 'asphalt' | 'metal' | 'tile' | 'wood' | 'flat' | 'other';
   access: 'easy' | 'moderate' | 'difficult';
-  demo: boolean;
-  demoDescription?: string;
-  soilType?: string;
+  tearOff: boolean;
+  tearOffDescription?: string;
+  layers?: number;
   notes?: string;
 }
 
@@ -133,7 +132,6 @@ export interface Quote {
   materialSelections: MaterialSelection[];
   addonSelections: AddonSelection[];
   lineItems: LineItem[];
-  poolConfig?: PoolConfig;
   subtotal: number;
   discountPercent: number;
   discountName?: string;
@@ -219,31 +217,6 @@ export interface AppSettings {
   };
 }
 
-// ─── Pool Configuration ───────────────────────────────────────────────────────
-export type PoolShape = 'rectangle' | 'l-shape' | 'kidney' | 'freeform' | 'roman';
-export type PoolSizePreset = 'small' | 'medium' | 'large' | 'xlarge' | 'custom';
-export type PoolDepth = 'shallow' | 'standard' | 'deep' | 'sport';
-export type PoolFinish = 'plaster' | 'quartz' | 'pebble-tec' | 'glass-tile';
-export type PoolCoping = 'bullnose-paver' | 'travertine' | 'flagstone' | 'cantilever';
-
-export interface PoolConfig {
-  shape: PoolShape;
-  sizePreset: PoolSizePreset;
-  customLength?: number;
-  customWidth?: number;
-  depth: PoolDepth;
-  finish: PoolFinish;
-  coping: PoolCoping;
-  features: {
-    tanningLedge: boolean;
-    attachedSpa: boolean;
-    waterfall: boolean;
-    autoCover: boolean;
-    deckLighting: boolean;
-    heating: boolean;
-  };
-}
-
 // ─── Payment Tracking ────────────────────────────────────────────────────────
 export type PaymentType = 'deposit' | 'stage-1' | 'stage-2' | 'stage-3' | 'final' | 'other';
 export type PaymentMethod = 'cash' | 'check' | 'credit-card' | 'ach' | 'zelle' | 'venmo';
@@ -287,11 +260,11 @@ export interface CloseoutItem {
 }
 
 export const DEFAULT_CLOSEOUT_CHECKLIST: Omit<CloseoutItem, 'id'>[] = [
-  { label: 'Final walkthrough completed with client', completed: false },
-  { label: 'All job site debris removed', completed: false },
-  { label: 'Edging and sealing finalized', completed: false },
-  { label: 'Drainage check passed', completed: false },
-  { label: 'Client instructed on maintenance', completed: false },
+  { label: 'Final roof inspection completed', completed: false },
+  { label: 'All debris and old materials removed', completed: false },
+  { label: 'Gutters cleaned and flushed', completed: false },
+  { label: 'Flashing and drip edge verified sealed', completed: false },
+  { label: 'Client walkthrough completed', completed: false },
   { label: 'Before & after photos taken', completed: false },
   { label: 'Final payment collected in full', completed: false },
   { label: 'Warranty documents provided to client', completed: false },
@@ -351,11 +324,11 @@ export interface AppUser {
 
 // ─── Gallery Photo ────────────────────────────────────────────────────────────
 export type GalleryCategory =
-  | 'patio'
-  | 'fire-pit'
-  | 'outdoor-kitchen'
-  | 'deck'
-  | 'pool-deck'
+  | 'roof-replacement'
+  | 'roof-repair'
+  | 'gutter'
+  | 'siding'
+  | 'home-repair'
   | 'all';
 
 export interface GalleryPhoto {
@@ -378,7 +351,6 @@ export interface WizardState {
   manualLineItems: LineItem[];
   materialSelections: MaterialSelection[]; // legacy – kept for backward compat
   addonSelections: AddonSelection[];
-  poolConfig?: PoolConfig;
   discountPercent: number;
   discountName: string;
   priceOverride?: number;

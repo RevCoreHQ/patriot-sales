@@ -111,12 +111,12 @@ export function SignaturePad({ clientName, total, onSave, onCancel }: Props) {
         {/* Header */}
         <div className="px-6 py-5 flex items-start justify-between border-b border-c-border-inner">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center">
-              <PenLine className="w-5 h-5 text-amber-400" />
+            <div className="w-10 h-10 rounded-xl bg-[#fb8e28]/15 flex items-center justify-center">
+              <PenLine className="w-5 h-5 text-[#fb8e28]" />
             </div>
             <div>
               <div className="text-base font-bold text-c-text">Sign & Accept</div>
-              <div className="text-xs text-c-text-3 mt-0.5">Authorizes Rock N Roll Stoneworks to proceed</div>
+              <div className="text-xs text-c-text-3 mt-0.5">Authorizes Patriot Roofing & Home Repairs to proceed</div>
             </div>
           </div>
           <button
@@ -135,7 +135,7 @@ export function SignaturePad({ clientName, total, onSave, onCancel }: Props) {
           </div>
           <div className="text-right">
             <div className="text-xs text-c-text-4">Total Investment</div>
-            <div className="text-xl font-bold text-amber-400 mt-0.5">{total}</div>
+            <div className="text-xl font-bold text-[#fb8e28] mt-0.5">{total}</div>
           </div>
         </div>
 
@@ -173,7 +173,7 @@ export function SignaturePad({ clientName, total, onSave, onCancel }: Props) {
         {/* Legal line */}
         <div className="px-6 pt-3 pb-1">
           <p className="text-[11px] text-c-text-4 leading-relaxed">
-            By signing, you authorize Rock N Roll Stoneworks to proceed with the described scope of work and agree to
+            By signing, you authorize Patriot Roofing & Home Repairs to proceed with the described scope of work and agree to
             the terms, payment schedule, and conditions outlined in this estimate.
           </p>
         </div>

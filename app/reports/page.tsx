@@ -159,7 +159,7 @@ export default function ReportsPage() {
 
   const metrics = [
     { label: 'Total Revenue', value: formatCurrency(totalRevenue), icon: DollarSign, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-    { label: 'Open Pipeline', value: formatCurrency(pipeline), icon: TrendingUp, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+    { label: 'Open Pipeline', value: formatCurrency(pipeline), icon: TrendingUp, color: 'text-[#fb8e28]', bg: 'bg-[#fb8e28]/10' },
     { label: 'Quotes Created', value: String(filtered.length), icon: FileText, color: 'text-blue-400', bg: 'bg-blue-500/10' },
     { label: 'Close Rate', value: `${closeRate}%`, icon: Target, color: 'text-purple-400', bg: 'bg-purple-500/10' },
     { label: 'Avg Deal Size', value: formatCurrency(avgDeal), icon: BarChart3, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
@@ -192,7 +192,7 @@ export default function ReportsPage() {
                 onClick={() => setPreset(p)}
                 className={`h-9 px-3.5 rounded-lg text-xs font-semibold transition-all ${
                   preset === p
-                    ? 'bg-amber-500 text-black'
+                    ? 'bg-[#fb8e28] text-black'
                     : 'text-c-text-3 hover:text-c-text hover:bg-c-elevated'
                 }`}
               >
@@ -273,7 +273,7 @@ export default function ReportsPage() {
                     className="w-full flex items-center gap-4 px-5 py-3.5 hover:bg-c-surface transition-colors text-left"
                   >
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                      i === 0 ? 'bg-amber-500/15 text-amber-400' : 'bg-c-elevated text-c-text-4'
+                      i === 0 ? 'bg-[#fb8e28]/15 text-[#fb8e28]' : 'bg-c-elevated text-c-text-4'
                     }`}>
                       {i + 1}
                     </div>
@@ -337,7 +337,7 @@ export default function ReportsPage() {
                     </div>
                     <div className="w-full flex items-end" style={{ height: '100px' }}>
                       <div
-                        className="w-full bg-gradient-to-t from-amber-500/80 to-amber-400/40 rounded-t-lg transition-all duration-500"
+                        className="w-full bg-gradient-to-t from-[#fb8e28]/80 to-[#fb8e28]/40 rounded-t-lg transition-all duration-500"
                         style={{ height: `${Math.max((m.revenue / maxMonthly) * 100, 4)}%` }}
                       />
                     </div>

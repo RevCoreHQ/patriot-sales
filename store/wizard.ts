@@ -1,7 +1,7 @@
 'use client';
 
 import { create } from 'zustand';
-import type { WizardState, ProjectTypeId, MaterialSelection, AddonSelection, SiteConditions, Client, PoolConfig, LineItem } from '@/types';
+import type { WizardState, ProjectTypeId, MaterialSelection, AddonSelection, SiteConditions, Client, LineItem } from '@/types';
 
 const TOTAL_STEPS = 4;
 
@@ -11,16 +11,16 @@ const INITIAL_STATE: WizardState = {
   client: {},
   projectTypes: [],
   siteConditions: {
-    squareFootage: 400,
-    shape: 'rectangle',
-    slope: 'flat',
+    roofArea: 2000,
+    pitch: 'moderate',
+    stories: 1,
+    currentMaterial: 'asphalt',
     access: 'easy',
-    demo: false,
+    tearOff: false,
   },
   manualLineItems: [],
   materialSelections: [],
   addonSelections: [],
-  poolConfig: undefined,
   discountPercent: 0,
   discountName: '',
   priceOverride: undefined,
@@ -42,7 +42,6 @@ interface WizardStore extends WizardState {
   removeManualLineItem: (id: string) => void;
   setMaterialSelections: (selections: MaterialSelection[]) => void;
   setAddonSelections: (selections: AddonSelection[]) => void;
-  setPoolConfig: (config: PoolConfig) => void;
   setDiscountPercent: (discount: number) => void;
   setDiscountName: (name: string) => void;
   setPriceOverride: (price: number | undefined) => void;
@@ -80,7 +79,6 @@ export const useWizardStore = create<WizardStore>((set) => ({
   removeManualLineItem: (id) => set((s) => ({ manualLineItems: s.manualLineItems.filter(i => i.id !== id) })),
   setMaterialSelections: (materialSelections) => set({ materialSelections }),
   setAddonSelections: (addonSelections) => set({ addonSelections }),
-  setPoolConfig: (poolConfig) => set({ poolConfig }),
   setDiscountPercent: (discountPercent) => set({ discountPercent }),
   setDiscountName: (discountName) => set({ discountName }),
   setPriceOverride: (priceOverride) => set({ priceOverride }),

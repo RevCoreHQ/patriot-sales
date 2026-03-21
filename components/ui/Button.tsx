@@ -19,11 +19,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           loading && 'pointer-events-none',
           {
             // Variants
-            'bg-amber-500 active:bg-amber-400 text-black': variant === 'primary',
+            'bg-[#fb8e28] active:bg-[#fb8e28] text-black': variant === 'primary',
             'bg-c-elevated active:bg-c-surface text-c-text border border-c-border-inner': variant === 'secondary',
             'active:bg-c-elevated text-c-text-3 active:text-c-text': variant === 'ghost',
             'bg-red-500/10 active:bg-red-500/20 text-red-400 border border-red-500/20': variant === 'danger',
-            'border border-c-border-inner active:border-amber-500/50 text-c-text active:text-amber-400 bg-transparent': variant === 'outline',
+            'border border-c-border-inner active:border-[#fb8e28]/50 text-c-text active:text-[#fb8e28] bg-transparent': variant === 'outline',
             // Sizes — 48px minimum touch targets
             'h-12 px-5 text-sm': size === 'sm',
             'h-13 px-6 text-sm': size === 'md',

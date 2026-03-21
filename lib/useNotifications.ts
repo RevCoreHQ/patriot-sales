@@ -6,7 +6,7 @@ import { useSettingsStore } from '@/store/settings';
 import { checkFollowUps, checkExpiring } from '@/lib/notifications';
 
 const CHECK_INTERVAL = 60 * 60 * 1000; // 1 hour
-const LAST_CHECK_KEY = 'rnr:notifications:lastCheck';
+const LAST_CHECK_KEY = 'patriot:notifications:lastCheck';
 
 export function useNotifications() {
   const { quotes } = useQuotesStore();

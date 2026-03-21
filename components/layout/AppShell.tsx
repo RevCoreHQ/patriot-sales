@@ -105,17 +105,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 href={tab.href}
                 className={cn(
                   'flex-1 flex flex-col items-center justify-center gap-1 relative transition-colors active:scale-[0.95]',
-                  active ? 'text-amber-400' : 'text-white/30'
+                  active ? 'text-[#fb8e28]' : 'text-white/30'
                 )}
               >
                 {/* Active indicator bar */}
                 {active && (
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[3px] rounded-full bg-amber-400" />
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[3px] rounded-full bg-[#fb8e28]" />
                 )}
                 <tab.icon className="w-5 h-5" strokeWidth={active ? 2.2 : 1.8} />
                 <span className={cn(
                   'text-[10px] font-semibold tracking-wide',
-                  active ? 'text-amber-400' : 'text-white/25'
+                  active ? 'text-[#fb8e28]' : 'text-white/25'
                 )}>
                   {tab.label}
                 </span>

@@ -27,8 +27,8 @@ export default function SettingsPage() {
 
   const handleClearAllData = () => {
     if (!confirm('Clear all estimates and jobs? This cannot be undone.')) return;
-    localStorage.removeItem('rnr:quotes');
-    localStorage.removeItem('rnr:projects');
+    localStorage.removeItem('patriot:quotes');
+    localStorage.removeItem('patriot:projects');
     initQuotes();
     initProjects();
     setDataAction('cleared');
@@ -74,7 +74,7 @@ export default function SettingsPage() {
   const handleTestNotification = async () => {
     const granted = await requestPermission();
     if (granted) {
-      sendNotification('RNR Sales', 'Notifications are working! You\'ll get reminders for follow-ups and expiring quotes.');
+      sendNotification('Patriot Sales', 'Notifications are working! You\'ll get reminders for follow-ups and expiring quotes.');
       setNotifStatus('sent');
     } else {
       setNotifStatus('denied');
@@ -137,11 +137,11 @@ export default function SettingsPage() {
           <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-semibold text-c-text flex items-center gap-2">
-                <UsersRound className="w-4 h-4 text-amber-500" /> Team Members
+                <UsersRound className="w-4 h-4 text-[#fb8e28]" /> Team Members
               </h2>
               <button
                 onClick={addTeamMember}
-                className="flex items-center gap-1.5 h-8 px-3 rounded-xl text-xs font-semibold bg-amber-500/10 border border-amber-500/25 text-amber-400 hover:bg-amber-500/15 active:scale-[0.98] transition-all"
+                className="flex items-center gap-1.5 h-8 px-3 rounded-xl text-xs font-semibold bg-[#fb8e28]/10 border border-[#fb8e28]/25 text-[#fb8e28] hover:bg-[#fb8e28]/15 active:scale-[0.98] transition-all"
               >
                 <Plus className="w-3.5 h-3.5" /> Add
               </button>
@@ -202,7 +202,7 @@ export default function SettingsPage() {
                 onChange={e => setPricing({ taxRate: Number(e.target.value) })}
               />
               <Input
-                label="Demo Rate ($/sf)"
+                label="Tear-Off Rate ($/sf)"
                 type="number"
                 step="0.5"
                 value={form.pricing.demolitionRate}
@@ -270,7 +270,7 @@ export default function SettingsPage() {
                 </div>
                 <button
                   onClick={() => setPresentation({ showFinancing: !form.presentation.showFinancing })}
-                  className={`w-14 h-8 rounded-full transition-colors cursor-pointer flex items-center px-1 ${form.presentation.showFinancing ? 'bg-amber-500' : 'bg-c-elevated'}`}
+                  className={`w-14 h-8 rounded-full transition-colors cursor-pointer flex items-center px-1 ${form.presentation.showFinancing ? 'bg-[#fb8e28]' : 'bg-c-elevated'}`}
                 >
                   <div className={`w-6 h-6 rounded-full bg-white transition-transform ${form.presentation.showFinancing ? 'translate-x-6' : 'translate-x-0'}`} />
                 </button>
@@ -289,7 +289,7 @@ export default function SettingsPage() {
           {/* Notifications */}
           <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-c-text mb-4 flex items-center gap-2">
-              <Bell className="w-4 h-4 text-amber-500" /> Notifications
+              <Bell className="w-4 h-4 text-[#fb8e28]" /> Notifications
             </h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -299,7 +299,7 @@ export default function SettingsPage() {
                 </div>
                 <button
                   onClick={() => setNotifications({ enabled: !form.notifications.enabled })}
-                  className={`w-14 h-8 rounded-full transition-colors cursor-pointer flex items-center px-1 ${form.notifications.enabled ? 'bg-amber-500' : 'bg-c-elevated'}`}
+                  className={`w-14 h-8 rounded-full transition-colors cursor-pointer flex items-center px-1 ${form.notifications.enabled ? 'bg-[#fb8e28]' : 'bg-c-elevated'}`}
                 >
                   <div className={`w-6 h-6 rounded-full bg-white transition-transform ${form.notifications.enabled ? 'translate-x-6' : 'translate-x-0'}`} />
                 </button>
@@ -324,7 +324,7 @@ export default function SettingsPage() {
                   </div>
                   <button
                     onClick={handleTestNotification}
-                    className="flex items-center gap-2.5 h-10 px-4 rounded-xl text-sm font-medium bg-amber-500/10 border border-amber-500/25 text-amber-400 hover:bg-amber-500/15 active:scale-[0.98] transition-all"
+                    className="flex items-center gap-2.5 h-10 px-4 rounded-xl text-sm font-medium bg-[#fb8e28]/10 border border-[#fb8e28]/25 text-[#fb8e28] hover:bg-[#fb8e28]/15 active:scale-[0.98] transition-all"
                   >
                     <Bell className="w-3.5 h-3.5" />
                     {notifStatus === 'sent' ? 'Notification Sent!' : notifStatus === 'denied' ? 'Permission Denied' : 'Test Notification'}
@@ -337,7 +337,7 @@ export default function SettingsPage() {
           {/* Install App */}
           <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-c-text mb-4 flex items-center gap-2">
-              <Smartphone className="w-4 h-4 text-amber-500" /> Install App
+              <Smartphone className="w-4 h-4 text-[#fb8e28]" /> Install App
             </h2>
             {isStandalone ? (
               <div className="flex items-center gap-2 text-sm text-emerald-400">
@@ -346,18 +346,18 @@ export default function SettingsPage() {
               </div>
             ) : (
               <div className="space-y-3">
-                <p className="text-sm text-c-text-3">Install RNR Sales on your device for fullscreen access and faster loading.</p>
+                <p className="text-sm text-c-text-3">Install Patriot Sales on your device for fullscreen access and faster loading.</p>
                 <div className="bg-c-elevated rounded-xl p-4 space-y-2">
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-amber-500/15 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</div>
+                    <div className="w-6 h-6 rounded-full bg-[#fb8e28]/15 text-[#fb8e28] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</div>
                     <p className="text-sm text-c-text-3">Tap the <strong className="text-c-text">Share</strong> button in Safari (square with arrow)</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-amber-500/15 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</div>
+                    <div className="w-6 h-6 rounded-full bg-[#fb8e28]/15 text-[#fb8e28] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</div>
                     <p className="text-sm text-c-text-3">Scroll down and tap <strong className="text-c-text">Add to Home Screen</strong></p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-amber-500/15 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</div>
+                    <div className="w-6 h-6 rounded-full bg-[#fb8e28]/15 text-[#fb8e28] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</div>
                     <p className="text-sm text-c-text-3">Tap <strong className="text-c-text">Add</strong> to install</p>
                   </div>
                 </div>
@@ -372,7 +372,7 @@ export default function SettingsPage() {
             <div className="flex gap-3">
               <button
                 onClick={handleLoadSampleData}
-                className="flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm font-semibold bg-amber-500/10 border border-amber-500/25 text-amber-400 hover:bg-amber-500/15 active:scale-[0.98] transition-all"
+                className="flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm font-semibold bg-[#fb8e28]/10 border border-[#fb8e28]/25 text-[#fb8e28] hover:bg-[#fb8e28]/15 active:scale-[0.98] transition-all"
               >
                 <Database className="w-4 h-4" />
                 {dataAction === 'loaded' ? 'Sample Data Loaded!' : 'Load Sample Data'}

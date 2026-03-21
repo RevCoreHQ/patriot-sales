@@ -5,7 +5,7 @@ import type { Project, ProjectPhase, ProjectUpdate, ProjectTodo, CloseoutItem, P
 import { DEFAULT_CLOSEOUT_CHECKLIST } from '@/types';
 import { generateId } from '@/lib/utils';
 
-const PROJECTS_KEY = 'rnr:projects';
+const PROJECTS_KEY = 'patriot:projects';
 
 function isClient() { return typeof window !== 'undefined'; }
 

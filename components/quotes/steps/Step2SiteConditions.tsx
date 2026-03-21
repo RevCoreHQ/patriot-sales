@@ -28,11 +28,11 @@ function OptionGroup<T extends string>({
             className={cn(
               'flex flex-col items-center justify-center text-center min-h-[56px] px-3 py-3 rounded-xl border transition-all active:scale-[0.96] cursor-pointer',
               value === opt.value
-                ? 'border-amber-500/60 bg-amber-500/10 text-amber-400'
+                ? 'border-[#fb8e28]/60 bg-[#fb8e28]/10 text-[#fb8e28]'
                 : 'border-c-border bg-c-card text-c-text-3 active:border-c-border-hover'
             )}
           >
-            <span className={cn('text-sm font-semibold', value === opt.value ? 'text-amber-400' : 'text-c-text')}>{opt.label}</span>
+            <span className={cn('text-sm font-semibold', value === opt.value ? 'text-[#fb8e28]' : 'text-c-text')}>{opt.label}</span>
             {opt.sub && <span className="text-[11px] text-c-text-4 mt-0.5 leading-tight">{opt.sub}</span>}
           </button>
         ))}
@@ -48,42 +48,56 @@ export function Step2SiteConditions() {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-c-text">Site Conditions</h2>
-        <p className="text-sm text-c-text-3 mt-1">Describe the job site to calculate accurate pricing.</p>
+        <p className="text-sm text-c-text-3 mt-1">Describe the roof and job site for accurate pricing.</p>
       </div>
 
-      {/* Square footage */}
+      {/* Roof area */}
       <Input
-        label="Total Square Footage"
+        label="Roof Area (sq ft)"
         type="number"
         min="1"
-        placeholder="e.g. 500"
-        value={siteConditions.squareFootage ?? ''}
-        onChange={e => setSiteConditions({ squareFootage: Number(e.target.value) })}
+        placeholder="e.g. 2000"
+        value={siteConditions.roofArea ?? ''}
+        onChange={e => setSiteConditions({ roofArea: Number(e.target.value) })}
       />
 
-      {/* Shape */}
+      {/* Pitch */}
       <OptionGroup
-        label="Site Shape"
-        value={siteConditions.shape ?? 'rectangle'}
-        onChange={v => setSiteConditions({ shape: v })}
+        label="Roof Pitch"
+        value={siteConditions.pitch ?? 'moderate'}
+        onChange={v => setSiteConditions({ pitch: v })}
         options={[
-          { value: 'rectangle', label: 'Rectangle' },
-          { value: 'l-shape',   label: 'L-Shape' },
-          { value: 'irregular', label: 'Irregular' },
-          { value: 'curved',    label: 'Curved' },
+          { value: 'flat',     label: 'Flat',     sub: '0–2/12' },
+          { value: 'low',      label: 'Low',      sub: '3–5/12' },
+          { value: 'moderate', label: 'Moderate', sub: '6–9/12' },
+          { value: 'steep',    label: 'Steep',    sub: '10+/12' },
         ]}
       />
 
-      {/* Slope */}
+      {/* Stories */}
       <OptionGroup
-        label="Slope / Grade"
-        value={siteConditions.slope ?? 'flat'}
-        onChange={v => setSiteConditions({ slope: v })}
+        label="Number of Stories"
+        value={String(siteConditions.stories ?? 1) as '1' | '2' | '3'}
+        onChange={v => setSiteConditions({ stories: Number(v) as 1 | 2 | 3 })}
         options={[
-          { value: 'flat',     label: 'Flat',     sub: 'Level site' },
-          { value: 'slight',   label: 'Slight',   sub: '< 5% grade' },
-          { value: 'moderate', label: 'Moderate', sub: '5–15%' },
-          { value: 'steep',    label: 'Steep',    sub: 'Needs grading' },
+          { value: '1', label: '1 Story',  sub: 'Ranch / single' },
+          { value: '2', label: '2 Stories', sub: 'Standard home' },
+          { value: '3', label: '3 Stories', sub: 'Multi-level' },
+        ]}
+      />
+
+      {/* Current Material */}
+      <OptionGroup
+        label="Current Roof Material"
+        value={siteConditions.currentMaterial ?? 'asphalt'}
+        onChange={v => setSiteConditions({ currentMaterial: v })}
+        options={[
+          { value: 'asphalt', label: 'Asphalt' },
+          { value: 'metal',   label: 'Metal' },
+          { value: 'tile',    label: 'Tile' },
+          { value: 'wood',    label: 'Wood' },
+          { value: 'flat',    label: 'Flat' },
+          { value: 'other',   label: 'Other' },
         ]}
       />
 
@@ -94,26 +108,26 @@ export function Step2SiteConditions() {
         onChange={v => setSiteConditions({ access: v })}
         options={[
           { value: 'easy',     label: 'Easy',     sub: 'Open access' },
-          { value: 'moderate', label: 'Moderate', sub: 'Side gate' },
+          { value: 'moderate', label: 'Moderate', sub: 'Side access' },
           { value: 'difficult',label: 'Difficult', sub: 'Limited access' },
         ]}
       />
 
-      {/* Demolition */}
+      {/* Tear-Off */}
       <div className="space-y-3">
-        <div className="text-sm font-semibold text-c-text-2 tracking-wide">Demolition Required?</div>
+        <div className="text-sm font-semibold text-c-text-2 tracking-wide">Tear-Off Required?</div>
         <div className="grid grid-cols-2 gap-3">
           {[
-            { val: true,  label: 'Yes — Demo Needed' },
-            { val: false, label: 'No — Clean Site' },
+            { val: true,  label: 'Yes — Tear-Off Needed' },
+            { val: false, label: 'No — New Install' },
           ].map(({ val, label }) => (
             <button
               key={String(val)}
               type="button"
-              onClick={() => setSiteConditions({ demo: val })}
+              onClick={() => setSiteConditions({ tearOff: val })}
               className={cn(
                 'h-14 rounded-xl border text-sm font-semibold transition-all active:scale-[0.97] cursor-pointer',
-                siteConditions.demo === val
+                siteConditions.tearOff === val
                   ? val ? 'border-orange-500/60 bg-orange-500/10 text-orange-400' : 'border-emerald-500/60 bg-emerald-500/10 text-emerald-400'
                   : 'border-c-border bg-c-card text-c-text-3 active:border-c-border-hover'
               )}
@@ -122,18 +136,30 @@ export function Step2SiteConditions() {
             </button>
           ))}
         </div>
-        {siteConditions.demo && (
-          <Input
-            placeholder="Describe what needs to be removed (e.g. existing concrete slab, old pavers)"
-            value={siteConditions.demoDescription ?? ''}
-            onChange={e => setSiteConditions({ demoDescription: e.target.value })}
-          />
+        {siteConditions.tearOff && (
+          <div className="space-y-3">
+            <OptionGroup
+              label="Number of Existing Layers"
+              value={String(siteConditions.layers ?? 1)}
+              onChange={v => setSiteConditions({ layers: Number(v) })}
+              options={[
+                { value: '1', label: '1 Layer' },
+                { value: '2', label: '2 Layers' },
+                { value: '3', label: '3 Layers' },
+              ]}
+            />
+            <Input
+              placeholder="Describe existing roof condition (optional)"
+              value={siteConditions.tearOffDescription ?? ''}
+              onChange={e => setSiteConditions({ tearOffDescription: e.target.value })}
+            />
+          </div>
         )}
       </div>
 
       <Textarea
         label="Site Notes (optional)"
-        placeholder="Drainage concerns, soil conditions, special access restrictions..."
+        placeholder="Drainage concerns, chimney flashing, skylights, special access restrictions..."
         rows={3}
         value={siteConditions.notes ?? ''}
         onChange={e => setSiteConditions({ notes: e.target.value })}

@@ -3,13 +3,13 @@
 import { useWizardStore } from '@/store/wizard';
 import { useSettingsStore } from '@/store/settings';
 import { useQuotesStore } from '@/store/quotes';
-import { buildLineItems, buildPoolLineItems, calculateTotals, POOL_PRICING } from '@/lib/pricing';
+import { buildLineItems, calculateTotals } from '@/lib/pricing';
 import { formatCurrency, formatDate, generateId, addDays } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import type { Quote } from '@/types';
 import { useRouter } from 'next/navigation';
 import {
-  CheckCircle2, User, MapPin, Layers, Sparkles, Waves,
+  CheckCircle2, User, MapPin, Layers, Sparkles,
   Phone, Mail, Tag, DollarSign,
 } from 'lucide-react';
 
@@ -26,7 +26,7 @@ function GlassCard({ children, className = '' }: { children: React.ReactNode; cl
 function SectionLabel({ icon: Icon, label }: { icon: React.ComponentType<{ className?: string }>; label: string }) {
   return (
     <div className="flex items-center gap-2 px-4 py-3 border-b border-c-border-inner">
-      <Icon className="w-3.5 h-3.5 text-amber-500/70" />
+      <Icon className="w-3.5 h-3.5 text-[#fb8e28]/70" />
       <span className="text-[11px] font-bold text-c-text-4 uppercase tracking-widest">{label}</span>
     </div>
   );
@@ -38,10 +38,8 @@ export function Step6Review({ editingId }: Step6ReviewProps) {
   const { settings } = useSettingsStore();
   const { save } = useQuotesStore();
 
-  const hasPool = wizard.projectTypes.includes('pool-construction');
   const addonItems = buildLineItems([], wizard.addonSelections, wizard.siteConditions, settings.pricing.demolitionRate, {}, settings.pricing.addonPrices);
-  const poolItems = hasPool && wizard.poolConfig ? buildPoolLineItems(wizard.poolConfig) : [];
-  const lineItems = [...wizard.manualLineItems, ...addonItems, ...poolItems];
+  const lineItems = [...wizard.manualLineItems, ...addonItems];
   const { subtotal, discountAmount, taxAmount, total } = calculateTotals(lineItems, wizard.discountPercent, settings.pricing.taxRate);
 
   const saveQuote = () => {
@@ -60,17 +58,18 @@ export function Step6Review({ editingId }: Step6ReviewProps) {
       status: 'draft',
       projectTypes: wizard.projectTypes,
       siteConditions: {
-        squareFootage: wizard.siteConditions.squareFootage ?? 0,
-        shape: wizard.siteConditions.shape ?? 'rectangle',
-        slope: wizard.siteConditions.slope ?? 'flat',
+        roofArea: wizard.siteConditions.roofArea ?? 0,
+        pitch: wizard.siteConditions.pitch ?? 'moderate',
+        stories: wizard.siteConditions.stories ?? 1,
+        currentMaterial: wizard.siteConditions.currentMaterial ?? 'asphalt',
         access: wizard.siteConditions.access ?? 'easy',
-        demo: wizard.siteConditions.demo ?? false,
-        demoDescription: wizard.siteConditions.demoDescription,
+        tearOff: wizard.siteConditions.tearOff ?? false,
+        tearOffDescription: wizard.siteConditions.tearOffDescription,
+        layers: wizard.siteConditions.layers,
         notes: wizard.siteConditions.notes,
       },
       materialSelections: [],
       addonSelections: wizard.addonSelections,
-      poolConfig: wizard.poolConfig,
       lineItems,
       subtotal,
       discountPercent: wizard.discountPercent,
@@ -132,49 +131,27 @@ export function Step6Review({ editingId }: Step6ReviewProps) {
           <div className="px-4 py-3 space-y-2">
             <div className="flex flex-wrap gap-1.5">
               {wizard.projectTypes.map(pt => (
-                <span key={pt} className="text-[11px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-0.5 rounded-full capitalize font-medium">
+                <span key={pt} className="text-[11px] bg-[#fb8e28]/10 text-[#fb8e28] border border-[#fb8e28]/20 px-2.5 py-0.5 rounded-full capitalize font-medium">
                   {pt.replace(/-/g, ' ')}
                 </span>
               ))}
             </div>
             <div className="text-xs text-c-text-3 space-y-0.5">
-              <div>{wizard.siteConditions.squareFootage?.toLocaleString()} sq ft</div>
+              <div>{wizard.siteConditions.roofArea?.toLocaleString()} sq ft</div>
               <div className="capitalize">
-                {wizard.siteConditions.shape?.replace(/-/g, ' ')} ·{' '}
-                {wizard.siteConditions.slope} slope ·{' '}
+                {wizard.siteConditions.pitch} pitch ·{' '}
+                {wizard.siteConditions.stories} {wizard.siteConditions.stories === 1 ? 'story' : 'stories'} ·{' '}
                 {wizard.siteConditions.access} access
               </div>
-              {wizard.siteConditions.demo && (
-                <div className="text-orange-400 font-medium">Demo required</div>
+              {wizard.siteConditions.tearOff && (
+                <div className="text-orange-400 font-medium">
+                  Tear-off required{wizard.siteConditions.layers && wizard.siteConditions.layers > 1 ? ` (${wizard.siteConditions.layers} layers)` : ''}
+                </div>
               )}
             </div>
           </div>
         </GlassCard>
       </div>
-
-      {/* Pool config */}
-      {hasPool && wizard.poolConfig && (
-        <GlassCard>
-          <SectionLabel icon={Waves} label="Pool Configuration" />
-          <div className="px-4 py-3 grid grid-cols-3 gap-x-6 gap-y-1.5">
-            {[
-              ['Shape', wizard.poolConfig.shape.replace(/-/g, ' ')],
-              ['Size', POOL_PRICING.sizes[wizard.poolConfig.sizePreset].label],
-              ['Depth', POOL_PRICING.depths[wizard.poolConfig.depth].label],
-              ['Finish', POOL_PRICING.finishes[wizard.poolConfig.finish].label],
-              ['Coping', POOL_PRICING.copings[wizard.poolConfig.coping].label],
-              Object.values(wizard.poolConfig.features).some(Boolean)
-                ? ['Features', `${Object.values(wizard.poolConfig.features).filter(Boolean).length} add-ons`]
-                : null,
-            ].filter(Boolean).map((item) => { const [label, value] = item as [string, string]; return (
-              <div key={label} className="flex justify-between text-xs">
-                <span className="text-c-text-3">{label}</span>
-                <span className="text-c-text capitalize font-medium">{value}</span>
-              </div>
-            ); })}
-          </div>
-        </GlassCard>
-      )}
 
       {/* Line Items */}
       {wizard.manualLineItems.length > 0 && (
@@ -240,7 +217,7 @@ export function Step6Review({ editingId }: Step6ReviewProps) {
           <div className="flex justify-between items-center mt-2 pt-3 border-t border-c-border-inner">
             <span className="text-sm font-bold text-c-text">Total Investment</span>
             <div className="text-right">
-              <span className="text-2xl font-bold text-amber-400">{formatCurrency(wizard.priceOverride ?? total)}</span>
+              <span className="text-2xl font-bold text-[#fb8e28]">{formatCurrency(wizard.priceOverride ?? total)}</span>
               {wizard.priceOverride !== undefined && (
                 <div className="text-xs text-neutral-500 line-through">{formatCurrency(total)}</div>
               )}

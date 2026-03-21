@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
 import { Delete } from 'lucide-react';
 
-const LOGO_URL = 'https://assets.cdn.filesafe.space/9Er0a3QxE3UXUVoCQNyS/media/699191dd24813c44b3afb6e9.webp';
+const LOGO_URL = '';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -65,8 +65,8 @@ export default function LoginPage() {
 
         {/* Logo */}
         <div className="flex flex-col items-center mb-10">
-          <img src={LOGO_URL} alt="RNR Stoneworks" className="h-24 w-auto object-contain mb-4" />
-          <div className="text-xs tracking-widest uppercase text-c-text-4 font-medium">Stoneworks · Pools &amp; Spas</div>
+          <img src={LOGO_URL} alt="Patriot Roofing" className="h-24 w-auto object-contain mb-4" />
+          <div className="text-xs tracking-widest uppercase text-c-text-4 font-medium">Roofing & Home Repairs</div>
         </div>
 
         {step === 'name' ? (
@@ -81,13 +81,13 @@ export default function LoginPage() {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="Your name"
-                className="w-full h-14 bg-c-input border border-c-border-input rounded-xl px-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-amber-500/50 transition-colors"
+                className="w-full h-14 bg-c-input border border-c-border-input rounded-xl px-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-[#fb8e28]/50 transition-colors"
               />
             </div>
             <button
               type="submit"
               disabled={!name.trim()}
-              className="w-full h-14 bg-amber-500 text-black text-base font-bold rounded-xl hover:bg-amber-400 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full h-14 bg-[#fb8e28] text-black text-base font-bold rounded-xl hover:bg-[#fb8e28] active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Continue
             </button>
@@ -110,7 +110,7 @@ export default function LoginPage() {
                 <div
                   key={i}
                   className={`w-4 h-4 rounded-full transition-all duration-150 ${
-                    i < pin.length ? 'bg-amber-400 scale-110 shadow-[0_0_12px_rgba(245,158,11,0.5)]' : 'bg-c-border-inner'
+                    i < pin.length ? 'bg-[#fb8e28] scale-110 shadow-[0_0_12px_rgba(251,142,40,0.5)]' : 'bg-c-border-inner'
                   }`}
                 />
               ))}
@@ -142,7 +142,7 @@ export default function LoginPage() {
         )}
 
         <div className="mt-6 text-center text-xs text-c-text-5">
-          Rock N Roll Stoneworks · Internal Portal
+          Patriot Roofing · Internal Portal
         </div>
       </div>
 

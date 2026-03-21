@@ -131,13 +131,13 @@ function FilterTab({ label, count, active, onClick }: { label: string; count: nu
       onClick={onClick}
       className={`flex items-center gap-2 h-12 px-5 rounded-2xl text-sm font-semibold transition-all active:scale-[0.97] ${
         active
-          ? 'bg-amber-500/12 text-amber-400 border border-amber-500/25'
+          ? 'bg-[#fb8e28]/12 text-[#fb8e28] border border-[#fb8e28]/25'
           : 'bg-c-card text-c-text-3 border border-c-border active:bg-c-surface'
       }`}
     >
       {label}
       <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-        active ? 'bg-amber-500/20 text-amber-400' : 'bg-c-elevated text-c-text-5'
+        active ? 'bg-[#fb8e28]/20 text-[#fb8e28]' : 'bg-c-elevated text-c-text-5'
       }`}>
         {count}
       </span>
@@ -217,7 +217,7 @@ export default function QuotesDashboardPage() {
         <div className="grid grid-cols-4 gap-3">
           {[
             { label: 'This Month', value: stats.thisMonth, format: (n: number) => String(n), icon: TrendingUp, color: 'text-blue-400' },
-            { label: 'Pipeline', value: stats.pipeline, format: (n: number) => formatCurrency(n), icon: DollarSign, color: 'text-amber-400' },
+            { label: 'Pipeline', value: stats.pipeline, format: (n: number) => formatCurrency(n), icon: DollarSign, color: 'text-[#fb8e28]' },
             { label: 'Close Rate', value: stats.closeRate, format: (n: number) => `${n}%`, icon: Target, color: 'text-emerald-400' },
             { label: 'Won Revenue', value: stats.wonRevenue, format: (n: number) => formatCurrency(n), icon: Percent, color: 'text-purple-400' },
           ].map(m => (
@@ -239,7 +239,7 @@ export default function QuotesDashboardPage() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search clients, addresses, project types…"
-              className="w-full h-12 pl-11 pr-10 bg-c-card border border-c-border rounded-2xl text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-amber-500/40 transition-colors"
+              className="w-full h-12 pl-11 pr-10 bg-c-card border border-c-border rounded-2xl text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-[#fb8e28]/40 transition-colors"
             />
             {search && (
               <button

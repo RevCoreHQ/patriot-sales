@@ -4,8 +4,8 @@ import { create } from 'zustand';
 import type { AppUser, UserRole } from '@/types';
 import { generateId } from '@/lib/utils';
 
-const USERS_KEY = 'rnr:users';
-const SESSION_KEY = 'rnr:session';
+const USERS_KEY = 'patriot:users';
+const SESSION_KEY = 'patriot:session';
 
 function isClient() { return typeof window !== 'undefined'; }
 

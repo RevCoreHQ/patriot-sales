@@ -5,27 +5,25 @@ import { PROJECT_TYPES } from '@/data/project-types';
 import { cn } from '@/lib/utils';
 import type { ProjectTypeId } from '@/types';
 import {
-  Waves, Grid3X3, Flame, ChefHat, TreePine, Lightbulb,
-  Leaf, Layers, Car, Route, LayoutGrid,
+  Home, Wrench, Construction, Droplets, PenTool, PanelTop,
+  Hammer, Bath, ChefHat,
 } from 'lucide-react';
 
 const TYPE_ICONS: Record<ProjectTypeId, React.ElementType> = {
-  'pool-construction': Waves,
-  'pool-deck':         Grid3X3,
-  'patio':             LayoutGrid,
-  'driveway':          Car,
-  'walkway':           Route,
-  'seating-wall':      Layers,
-  'deck-pergola':      TreePine,
-  'fire-pit':          Flame,
-  'outdoor-kitchen':   ChefHat,
-  'outdoor-lighting':  Lightbulb,
-  'artificial-grass':  Leaf,
+  'roof-replacement':      Home,
+  'roof-repair':           Wrench,
+  'new-roof':              Construction,
+  'gutter-install':        Droplets,
+  'gutter-repair':         PenTool,
+  'siding':                PanelTop,
+  'home-repair':           Hammer,
+  'bathroom-renovation':   Bath,
+  'kitchen-renovation':    ChefHat,
 };
 
-const POOL_IDS: ProjectTypeId[] = ['pool-construction', 'pool-deck'];
-const HARDSCAPE_IDS: ProjectTypeId[] = ['patio', 'driveway', 'walkway', 'seating-wall', 'deck-pergola'];
-const OUTDOOR_IDS: ProjectTypeId[] = ['fire-pit', 'outdoor-kitchen', 'outdoor-lighting', 'artificial-grass'];
+const ROOFING_IDS: ProjectTypeId[] = ['roof-replacement', 'roof-repair', 'new-roof'];
+const EXTERIOR_IDS: ProjectTypeId[] = ['gutter-install', 'gutter-repair', 'siding'];
+const INTERIOR_IDS: ProjectTypeId[] = ['home-repair', 'bathroom-renovation', 'kitchen-renovation'];
 
 const byId = (ids: ProjectTypeId[]) => ids.map(id => PROJECT_TYPES.find(p => p.id === id)!).filter(Boolean);
 
@@ -43,10 +41,10 @@ interface CategoryConfig {
   iconColor: string;
 }
 
-const CATEGORY_STYLES: Record<'pool' | 'hardscape' | 'outdoor', CategoryConfig> = {
-  pool:      { dotColor: 'bg-blue-500',    iconBg: 'bg-blue-500/12',    iconColor: 'text-blue-400' },
-  hardscape: { dotColor: 'bg-orange-500',  iconBg: 'bg-orange-500/12',  iconColor: 'text-orange-400' },
-  outdoor:   { dotColor: 'bg-emerald-500', iconBg: 'bg-emerald-500/12', iconColor: 'text-emerald-400' },
+const CATEGORY_STYLES: Record<'roofing' | 'exterior' | 'interior', CategoryConfig> = {
+  roofing:  { dotColor: 'bg-[#fb8e28]',    iconBg: 'bg-[#fb8e28]/12',    iconColor: 'text-[#fb8e28]' },
+  exterior: { dotColor: 'bg-blue-500',      iconBg: 'bg-blue-500/12',     iconColor: 'text-blue-400' },
+  interior: { dotColor: 'bg-emerald-500',   iconBg: 'bg-emerald-500/12',  iconColor: 'text-emerald-400' },
 };
 
 function CategoryLabel({ label, dotColor }: { label: string; dotColor: string }) {
@@ -80,14 +78,14 @@ function TypeCard({
       className={cn(
         'relative flex flex-col gap-3 p-4 rounded-2xl border text-left transition-all active:scale-[0.97] cursor-pointer',
         selected
-          ? 'border-amber-500/50 bg-amber-500/8 ring-1 ring-amber-500/20'
+          ? 'border-[#fb8e28]/50 bg-[#fb8e28]/8 ring-1 ring-[#fb8e28]/20'
           : 'border-c-border bg-c-card hover:border-c-border-hover hover:bg-c-elevated'
       )}
     >
       {/* Checkmark */}
       <div className={cn(
         'absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center transition-all',
-        selected ? 'bg-amber-500' : 'border-2 border-c-border-hover'
+        selected ? 'bg-[#fb8e28]' : 'border-2 border-c-border-hover'
       )}>
         {selected && <Checkmark />}
       </div>
@@ -95,14 +93,14 @@ function TypeCard({
       {/* Icon */}
       <div className={cn(
         'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all',
-        selected ? 'bg-amber-500/20' : iconBg
+        selected ? 'bg-[#fb8e28]/20' : iconBg
       )}>
-        <Icon className={cn('w-5 h-5', selected ? 'text-amber-400' : iconColor)} />
+        <Icon className={cn('w-5 h-5', selected ? 'text-[#fb8e28]' : iconColor)} />
       </div>
 
       {/* Text */}
       <div>
-        <div className={cn('text-sm font-semibold leading-snug', selected ? 'text-amber-400' : 'text-c-text')}>
+        <div className={cn('text-sm font-semibold leading-snug', selected ? 'text-[#fb8e28]' : 'text-c-text')}>
           {pt.label}
         </div>
         <div className="text-xs text-c-text-4 mt-0.5">
@@ -116,13 +114,13 @@ function TypeCard({
 export function Step1ProjectTypes() {
   const { projectTypes, toggleProjectType } = useWizardStore();
 
-  const hardscapeTypes = byId(HARDSCAPE_IDS);
-  const outdoorTypes = byId(OUTDOOR_IDS);
-  const poolDeck = PROJECT_TYPES.find(p => p.id === 'pool-deck')!;
+  const exteriorTypes = byId(EXTERIOR_IDS);
+  const interiorTypes = byId(INTERIOR_IDS);
 
-  const poolConstruction = PROJECT_TYPES.find(p => p.id === 'pool-construction')!;
-  const poolConstructionSelected = projectTypes.includes('pool-construction');
-  const poolDeckSelected = projectTypes.includes('pool-deck');
+  const roofReplacement = PROJECT_TYPES.find(p => p.id === 'roof-replacement')!;
+  const roofReplacementSelected = projectTypes.includes('roof-replacement');
+
+  const otherRoofing = byId(ROOFING_IDS).filter(p => p.id !== 'roof-replacement');
 
   return (
     <div className="space-y-8 pb-2">
@@ -131,113 +129,104 @@ export function Step1ProjectTypes() {
         <p className="text-sm text-c-text-3 mt-1">Select all that apply — you can choose multiple.</p>
       </div>
 
-      {/* ── Pools & Spas ── */}
+      {/* ── Roofing ── */}
       <div>
-        <CategoryLabel label="Pools & Spas" dotColor={CATEGORY_STYLES.pool.dotColor} />
+        <CategoryLabel label="Roofing" dotColor={CATEGORY_STYLES.roofing.dotColor} />
         <div className="space-y-2.5">
 
-          {/* Pool construction — hero card */}
+          {/* Roof Replacement — hero card */}
           <button
             type="button"
-            onClick={() => toggleProjectType('pool-construction')}
+            onClick={() => toggleProjectType('roof-replacement')}
             className={cn(
               'w-full flex items-center gap-5 p-5 rounded-2xl border text-left transition-all active:scale-[0.98] cursor-pointer',
-              poolConstructionSelected
-                ? 'border-amber-500/60 bg-amber-500/8 ring-1 ring-amber-500/25'
-                : 'border-blue-500/20 bg-blue-500/5 hover:border-blue-500/35 hover:bg-blue-500/8'
+              roofReplacementSelected
+                ? 'border-[#fb8e28]/60 bg-[#fb8e28]/8 ring-1 ring-[#fb8e28]/25'
+                : 'border-[#fb8e28]/20 bg-[#fb8e28]/5 hover:border-[#fb8e28]/35 hover:bg-[#fb8e28]/8'
             )}
           >
             <div className={cn(
               'w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 transition-all',
-              poolConstructionSelected ? 'bg-amber-500/20' : 'bg-blue-500/15'
+              roofReplacementSelected ? 'bg-[#fb8e28]/20' : 'bg-[#fb8e28]/15'
             )}>
-              {(() => { const Icon = TYPE_ICONS['pool-construction']; return <Icon className={cn('w-7 h-7', poolConstructionSelected ? 'text-amber-400' : 'text-blue-400')} />; })()}
+              <Home className={cn('w-7 h-7', roofReplacementSelected ? 'text-[#fb8e28]' : 'text-[#fb8e28]/70')} />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className={cn('text-base font-bold', poolConstructionSelected ? 'text-amber-400' : 'text-c-text')}>
-                  {poolConstruction.label}
+                <span className={cn('text-base font-bold', roofReplacementSelected ? 'text-[#fb8e28]' : 'text-c-text')}>
+                  {roofReplacement.label}
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25">
-                  Signature Service
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#fb8e28]/15 text-[#fb8e28] border border-[#fb8e28]/25">
+                  Most Popular
                 </span>
               </div>
-              <p className="text-xs text-c-text-3 mt-1.5 leading-relaxed">{poolConstruction.description}</p>
+              <p className="text-xs text-c-text-3 mt-1.5 leading-relaxed">{roofReplacement.description}</p>
               <div className="text-xs text-c-text-4 mt-1.5">
-                From ${poolConstruction.basePrice.toLocaleString()} / {poolConstruction.unit}
+                From ${roofReplacement.basePrice.toLocaleString()} / {roofReplacement.unit}
               </div>
             </div>
             <div className={cn(
               'w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all ml-2',
-              poolConstructionSelected ? 'bg-amber-500' : 'border-2 border-c-border-hover'
+              roofReplacementSelected ? 'bg-[#fb8e28]' : 'border-2 border-c-border-hover'
             )}>
-              {poolConstructionSelected && <Checkmark />}
+              {roofReplacementSelected && <Checkmark />}
             </div>
           </button>
 
-          {/* Pool deck — compact row */}
-          <button
-            type="button"
-            onClick={() => toggleProjectType('pool-deck')}
-            className={cn(
-              'w-full flex items-center gap-4 px-5 py-4 rounded-xl border text-left transition-all active:scale-[0.98] cursor-pointer',
-              poolDeckSelected
-                ? 'border-amber-500/40 bg-amber-500/5'
-                : 'border-c-border bg-c-card hover:border-c-border-hover hover:bg-c-elevated'
-            )}
-          >
-            <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all', poolDeckSelected ? 'bg-amber-500/20' : CATEGORY_STYLES.pool.iconBg)}>
-              {(() => { const Icon = TYPE_ICONS['pool-deck']; return <Icon className={cn('w-5 h-5', poolDeckSelected ? 'text-amber-400' : CATEGORY_STYLES.pool.iconColor)} />; })()}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className={cn('text-sm font-semibold', poolDeckSelected ? 'text-amber-400' : 'text-c-text')}>{poolDeck.label}</div>
-              <div className="text-xs text-c-text-4 mt-0.5">From ${poolDeck.basePrice.toLocaleString()} / {poolDeck.unit}</div>
-            </div>
-            <div className={cn('w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all', poolDeckSelected ? 'bg-amber-500' : 'border-2 border-c-border-hover')}>
-              {poolDeckSelected && <Checkmark />}
-            </div>
-          </button>
+          {/* Other roofing — compact cards */}
+          <div className="grid grid-cols-2 gap-3">
+            {otherRoofing.map(pt => (
+              <TypeCard
+                key={pt.id}
+                pt={pt}
+                selected={projectTypes.includes(pt.id)}
+                onToggle={() => toggleProjectType(pt.id)}
+                iconBg={CATEGORY_STYLES.roofing.iconBg}
+                iconColor={CATEGORY_STYLES.roofing.iconColor}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* ── Hardscaping ── */}
+      {/* ── Exterior ── */}
       <div>
-        <CategoryLabel label="Hardscaping" dotColor={CATEGORY_STYLES.hardscape.dotColor} />
+        <CategoryLabel label="Exterior" dotColor={CATEGORY_STYLES.exterior.dotColor} />
         <div className="grid grid-cols-2 gap-3">
-          {hardscapeTypes.map(pt => (
+          {exteriorTypes.map(pt => (
             <TypeCard
               key={pt.id}
               pt={pt}
               selected={projectTypes.includes(pt.id)}
               onToggle={() => toggleProjectType(pt.id)}
-              iconBg={CATEGORY_STYLES.hardscape.iconBg}
-              iconColor={CATEGORY_STYLES.hardscape.iconColor}
+              iconBg={CATEGORY_STYLES.exterior.iconBg}
+              iconColor={CATEGORY_STYLES.exterior.iconColor}
             />
           ))}
         </div>
       </div>
 
-      {/* ── Outdoor Living ── */}
+      {/* ── Interior / Home ── */}
       <div>
-        <CategoryLabel label="Outdoor Living" dotColor={CATEGORY_STYLES.outdoor.dotColor} />
+        <CategoryLabel label="Interior & Home" dotColor={CATEGORY_STYLES.interior.dotColor} />
         <div className="grid grid-cols-2 gap-3">
-          {outdoorTypes.map(pt => (
+          {interiorTypes.map(pt => (
             <TypeCard
               key={pt.id}
               pt={pt}
               selected={projectTypes.includes(pt.id)}
               onToggle={() => toggleProjectType(pt.id)}
-              iconBg={CATEGORY_STYLES.outdoor.iconBg}
-              iconColor={CATEGORY_STYLES.outdoor.iconColor}
+              iconBg={CATEGORY_STYLES.interior.iconBg}
+              iconColor={CATEGORY_STYLES.interior.iconColor}
             />
           ))}
         </div>
       </div>
 
       {projectTypes.length > 0 && (
-        <div className="flex items-center gap-2 py-2.5 px-4 bg-amber-500/8 border border-amber-500/20 rounded-xl">
-          <div className="w-2 h-2 rounded-full bg-amber-500" />
-          <p className="text-sm text-amber-400 font-medium">
+        <div className="flex items-center gap-2 py-2.5 px-4 bg-[#fb8e28]/8 border border-[#fb8e28]/20 rounded-xl">
+          <div className="w-2 h-2 rounded-full bg-[#fb8e28]" />
+          <p className="text-sm text-[#fb8e28] font-medium">
             {projectTypes.length} project type{projectTypes.length !== 1 ? 's' : ''} selected
           </p>
         </div>
