@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useThemeStore } from '@/store/theme';
+import { useSettingsStore } from '@/store/settings';
 import { useQuotesStore } from '@/store/quotes';
 import { useProjectsStore } from '@/store/projects';
 import { useNotifications } from '@/lib/useNotifications';
@@ -13,7 +13,6 @@ import {
   FileText,
   Hammer,
   Users,
-  BarChart3,
   Settings,
 } from 'lucide-react';
 
@@ -50,51 +49,38 @@ const TABS: Tab[] = [
     match: (p) => p.startsWith('/clients'),
   },
   {
-    href: '/reports',
-    label: 'Reports',
-    icon: BarChart3,
-    match: (p) => p.startsWith('/reports'),
-  },
-  {
     href: '/settings',
     label: 'Settings',
     icon: Settings,
-    match: (p) => p.startsWith('/settings'),
+    match: (p) => p.startsWith('/settings') || p.startsWith('/reports'),
   },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { init: initTheme } = useThemeStore();
+  const { init: initSettings } = useSettingsStore();
   const { init: initQuotes } = useQuotesStore();
   const { init: initProjects } = useProjectsStore();
   useNotifications();
 
   useEffect(() => {
-    initTheme();
+    initSettings();
     initQuotes();
     initProjects();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Hide tab bar on presentation (fullscreen) routes
-  const hideTabBar = pathname.startsWith('/presentation');
+  // Hide sidebar on presentation (fullscreen) routes
+  const hideSidebar = pathname.startsWith('/presentation');
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden" style={{ background: 'var(--background)' }}>
-      {/* Content */}
-      <main className="flex-1 overflow-y-auto">
-        {children}
-      </main>
-
-      {/* Bottom Tab Bar */}
-      {!hideTabBar && (
+    <div className="flex h-screen overflow-hidden" style={{ background: 'var(--background)' }}>
+      {/* iPadOS-style sidebar rail */}
+      {!hideSidebar && (
         <nav
-          className="h-16 shrink-0 border-t flex items-stretch pb-safe"
+          className="w-[72px] shrink-0 flex flex-col items-center pt-6 pb-4 gap-1 border-r"
           style={{
-            background: 'rgba(8,8,14,0.85)',
-            borderColor: 'rgba(255,255,255,0.08)',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
+            background: 'var(--c-surface)',
+            borderColor: 'var(--c-border-inner)',
           }}
         >
           {TABS.map((tab) => {
@@ -104,18 +90,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 key={tab.href}
                 href={tab.href}
                 className={cn(
-                  'flex-1 flex flex-col items-center justify-center gap-1 relative transition-colors active:scale-[0.95]',
-                  active ? 'text-[#C62828]' : 'text-white/30'
+                  'flex flex-col items-center justify-center w-[56px] h-[52px] rounded-2xl gap-0.5 transition-all active:scale-[0.92]',
+                  active
+                    ? 'bg-[#C62828]/12 text-[#C62828]'
+                    : 'text-c-text-3 hover:text-c-text-2 hover:bg-c-elevated'
                 )}
               >
-                {/* Active indicator bar */}
-                {active && (
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[3px] rounded-full bg-[#C62828]" />
-                )}
-                <tab.icon className="w-5 h-5" strokeWidth={active ? 2.2 : 1.8} />
+                <tab.icon className="w-[22px] h-[22px]" strokeWidth={active ? 2.2 : 1.6} />
                 <span className={cn(
-                  'text-[10px] font-semibold tracking-wide',
-                  active ? 'text-[#C62828]' : 'text-white/25'
+                  'text-[10px] font-semibold leading-tight',
+                  active ? 'text-[#C62828]' : ''
                 )}>
                   {tab.label}
                 </span>
@@ -124,6 +108,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
       )}
+
+      {/* Content */}
+      <main className="flex-1 overflow-y-auto">
+        {children}
+      </main>
     </div>
   );
 }

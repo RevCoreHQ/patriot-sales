@@ -11,7 +11,8 @@ import { seedSampleData } from '@/lib/storage';
 import type { AppSettings, TeamMember, TeamRole } from '@/types';
 import { requestPermission, sendNotification } from '@/lib/notifications';
 import { generateId } from '@/lib/utils';
-import { CheckCircle2, Trash2, Database, Bell, Smartphone, Plus, X, UsersRound, Sun, Moon } from 'lucide-react';
+import { CheckCircle2, Trash2, Database, Bell, Smartphone, Plus, X, UsersRound, Sun, Moon, BarChart3, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 const ROLE_LABELS: Record<TeamRole, string> = { admin: 'Admin', closer: 'Closer', setter: 'Setter' };
 
@@ -130,6 +131,23 @@ export default function SettingsPage() {
               </div>
             </div>
           </section>
+
+          {/* Reports & Analytics */}
+          <Link
+            href="/reports"
+            className="flex items-center justify-between bg-c-card border border-c-border-inner rounded-2xl p-5 active:bg-c-elevated transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#1565C0]/10 flex items-center justify-center">
+                <BarChart3 className="w-5 h-5 text-[#1565C0]" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-c-text">Reports & Analytics</div>
+                <div className="text-xs text-c-text-4">Revenue, pipeline, close rate, team leaderboard</div>
+              </div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-c-text-4" />
+          </Link>
 
           {/* Company */}
           <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">

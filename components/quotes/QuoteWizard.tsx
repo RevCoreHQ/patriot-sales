@@ -136,7 +136,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: directionRef.current * -20 }}
               transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-              className="px-6 py-5 max-w-2xl"
+              className="px-6 py-5 max-w-2xl mx-auto"
             >
               {steps[currentStep]?.render()}
             </motion.div>
