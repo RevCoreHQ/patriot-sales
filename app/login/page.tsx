@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
 import { Delete } from 'lucide-react';
 
-const LOGO_URL = 'https://assets.cdn.filesafe.space/UrIbmSbNwH6Sfvb4CBZw/media/69be15640d1cfcbcd90ec244.png';
+const LOGO_URL = 'https://assets.cdn.filesafe.space/UrIbmSbNwH6Sfvb4CBZw/media/69be3176402511cd924021b3.png';
 
 export default function LoginPage() {
   const router = useRouter();

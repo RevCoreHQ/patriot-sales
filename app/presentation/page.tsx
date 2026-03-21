@@ -30,7 +30,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const LOGO_URL = 'https://assets.cdn.filesafe.space/UrIbmSbNwH6Sfvb4CBZw/media/69be15640d1cfcbcd90ec244.png';
+const LOGO_URL = 'https://assets.cdn.filesafe.space/UrIbmSbNwH6Sfvb4CBZw/media/69be3176402511cd924021b3.png';
 
 /* ─── Slide definitions ────────────────────────────────────────────────────── */
 const ALL_SLIDES = [
