@@ -105,7 +105,7 @@ export function StepLineItems() {
               value={form.description}
               onChange={e => setForm(p => ({ ...p, description: e.target.value }))}
               placeholder="e.g. GAF Timberline HDZ — Main Roof"
-              className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl px-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50"
+              className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl px-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent-secondary/50"
               onKeyDown={e => e.key === 'Enter' && handleAdd()}
             />
           </div>
@@ -118,7 +118,7 @@ export function StepLineItems() {
                 <button key={cat.value} type="button" onClick={() => setForm(p => ({ ...p, category: cat.value }))}
                   className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
                     form.category === cat.value
-                      ? 'border-accent/40 bg-accent/10 text-accent'
+                      ? 'border-accent-secondary/40 bg-accent-secondary/10 text-accent-secondary'
                       : 'border-c-border-inner text-c-text-3 hover:border-c-border-hover'
                   }`}>
                   {cat.label}
@@ -131,14 +131,14 @@ export function StepLineItems() {
           <div className="grid grid-cols-4 gap-4">
             <div>
               <label className="text-sm text-c-text-3 mb-2 block">Qty</label>
-              <input type="number" min="0" step="1" value={form.quantity}
-                onChange={e => setForm(p => ({ ...p, quantity: Number(e.target.value) || 1 }))}
-                className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl px-4 text-base text-c-text focus:outline-none focus:border-accent/50" />
+              <input type="number" min="0" step="1" value={form.quantity || ''}
+                onChange={e => setForm(p => ({ ...p, quantity: e.target.value === '' ? 0 : Number(e.target.value) }))}
+                className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl px-4 text-base text-c-text focus:outline-none focus:border-accent-secondary/50" />
             </div>
             <div>
               <label className="text-sm text-c-text-3 mb-2 block">Unit</label>
               <select value={form.unit} onChange={e => setForm(p => ({ ...p, unit: e.target.value }))}
-                className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl px-4 text-base text-c-text focus:outline-none focus:border-accent/50">
+                className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl px-4 text-base text-c-text focus:outline-none focus:border-accent-secondary/50">
                 {COMMON_UNITS.map(u => <option key={u} value={u}>{u}</option>)}
               </select>
             </div>
@@ -149,7 +149,7 @@ export function StepLineItems() {
                 <input type="number" min="0" step="0.01" value={form.unitPrice || ''}
                   onChange={e => setForm(p => ({ ...p, unitPrice: Number(e.target.value) || 0 }))}
                   placeholder="0.00"
-                  className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl pl-8 pr-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50" />
+                  className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl pl-8 pr-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent-secondary/50" />
               </div>
             </div>
             <div>
@@ -159,7 +159,7 @@ export function StepLineItems() {
                 <input type="number" min="0" step="0.01" value={form.costPerUnit ?? ''}
                   onChange={e => setForm(p => ({ ...p, costPerUnit: e.target.value === '' ? undefined : Number(e.target.value) }))}
                   placeholder="—"
-                  className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl pl-8 pr-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50" />
+                  className="w-full h-14 bg-c-input border border-c-border-input rounded-2xl pl-8 pr-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent-secondary/50" />
               </div>
             </div>
           </div>
@@ -178,7 +178,7 @@ export function StepLineItems() {
               )}
               <button type="button" onClick={handleAdd}
                 disabled={!form.description.trim() || form.unitPrice <= 0}
-                className="flex items-center gap-2 px-5 py-2.5 bg-accent text-black text-sm font-bold rounded-xl hover:bg-accent transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-br from-accent-from to-accent-to text-white text-sm font-bold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed">
                 <Plus className="w-4 h-4" /> Add Item
               </button>
             </div>
@@ -189,7 +189,7 @@ export function StepLineItems() {
       {/* Show add form button */}
       {!showForm && (
         <button onClick={() => setShowForm(true)}
-          className="w-full py-4 border border-dashed border-c-border-inner rounded-xl text-c-text-3 text-base hover:border-c-border-hover hover:text-c-text-2 transition-all flex items-center justify-center gap-2">
+          className="w-full py-4 border border-dashed border-c-border-inner rounded-xl text-c-text-3 text-base hover:border-accent-secondary/40 hover:text-accent-secondary transition-all flex items-center justify-center gap-2">
           <Plus className="w-5 h-5" /> Add Line Item
         </button>
       )}

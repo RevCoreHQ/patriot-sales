@@ -37,7 +37,7 @@ export function Step4Addons() {
   };
 
   const updateQty = (addonId: string, qty: number) => {
-    if (qty <= 0) { setAddonSelections(addonSelections.filter(s => s.addonId !== addonId)); return; }
+    if (qty < 0) return;
     setAddonSelections(addonSelections.map(s => s.addonId === addonId ? { ...s, quantity: qty } : s));
   };
 
@@ -59,12 +59,12 @@ export function Step4Addons() {
       <div className="flex flex-wrap gap-1.5">
         <button type="button" onClick={() => setFilter('all')}
           className={cn('px-4 py-2 rounded-full text-sm font-medium border transition-all cursor-pointer',
-            filter === 'all' ? 'bg-accent/15 border-accent/40 text-accent' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
+            filter === 'all' ? 'bg-accent-secondary/15 border-accent-secondary/40 text-accent-secondary' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
           )}>All</button>
         {categories.map(cat => (
           <button key={cat} type="button" onClick={() => setFilter(cat)}
             className={cn('px-4 py-2 rounded-full text-sm font-medium border transition-all cursor-pointer',
-              filter === cat ? 'bg-accent/15 border-accent/40 text-accent' : 'border-c-border-inner text-c-text-3 hover:text-c-text-2'
+              filter === cat ? 'bg-accent-secondary/15 border-accent-secondary/40 text-accent-secondary' : 'border-c-border-inner text-c-text-3 hover:text-c-text-2'
             )}>
             {CATEGORY_LABELS[cat]}
           </button>
@@ -114,8 +114,9 @@ export function Step4Addons() {
                 <div className="px-5 pb-5 pt-1 grid grid-cols-3 gap-4">
                   {addon.unit !== 'flat' && (
                     <Input label="Quantity" type="number" min="1"
-                      value={sel.quantity}
-                      onChange={e => { const n = Number(e.target.value); if (n > 0) updateQty(addon.id, n); }}
+                      value={sel.quantity || ''}
+                      onChange={e => updateQty(addon.id, e.target.value === '' ? 0 : Number(e.target.value))}
+                      onBlur={e => { if (!e.target.value || Number(e.target.value) <= 0) updateQty(addon.id, 1); }}
                       onKeyDown={e => e.stopPropagation()} />
                   )}
                   <div>
@@ -128,7 +129,7 @@ export function Step4Addons() {
                         placeholder={String(globalPrice ?? addon.basePrice)}
                         value={sel.customPrice ?? ''}
                         onChange={e => updateCustomPrice(addon.id, e.target.value)}
-                        className={cn('w-full h-14 pl-8 pr-4 rounded-2xl bg-c-input border text-base text-c-text focus:outline-none focus:ring-1 focus:ring-accent/30',
+                        className={cn('w-full h-14 pl-8 pr-4 rounded-2xl bg-c-input border text-base text-c-text focus:outline-none focus:ring-1 focus:ring-accent-secondary/30',
                           sel.customPrice !== undefined ? 'border-accent/40 bg-accent/5' : 'border-c-border-input'
                         )}
                       />

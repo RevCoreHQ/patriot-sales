@@ -84,7 +84,7 @@ export function PhotoGallery({ projectId }: { projectId: string }) {
         <button
           onClick={() => fileRef.current?.click()}
           disabled={uploading}
-          className="flex items-center gap-2 h-10 px-4 bg-accent text-black text-xs font-bold rounded-xl active:bg-accent active:scale-[0.97] transition-all disabled:opacity-50"
+          className="flex items-center gap-2 h-10 px-4 bg-gradient-to-br from-accent-from to-accent-to text-white text-xs font-bold rounded-xl active:scale-[0.97] transition-all disabled:opacity-50"
         >
           <Camera className="w-3.5 h-3.5" />
           {uploading ? 'Processing...' : 'Add Photo'}

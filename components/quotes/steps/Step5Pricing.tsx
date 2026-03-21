@@ -83,7 +83,7 @@ export function Step5Pricing() {
                       placeholder="Cost"
                       value={item.costPerUnit ?? ''}
                       onChange={e => updateManualLineItem(item.id, { costPerUnit: e.target.value === '' ? undefined : Number(e.target.value) })}
-                      className="w-full bg-c-input border border-c-border-input rounded-lg px-2 py-1 text-xs text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50 tabular-nums"
+                      className="w-full bg-c-input border border-c-border-input rounded-lg px-2 py-1 text-xs text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent-secondary/50 tabular-nums"
                     />
                   </div>
                 )}

@@ -197,7 +197,7 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
               {payments.length === 0 && <div><label className="text-xs text-c-text-3 mb-1.5 block">Cash Collected ($)</label><input type="number" value={cash} onChange={e => setCash(e.target.value)} className="w-full bg-c-input border border-c-border-input rounded-xl px-3 py-2.5 text-sm text-c-text focus:outline-none focus:border-accent/60" /></div>}
               <div className={payments.length === 0 ? '' : 'col-span-2'}><label className="text-xs text-c-text-4 mb-1.5 flex items-center gap-1"><Link2 className="w-3 h-3" /> GHL Contact ID</label><input type="text" value={ghlId} onChange={e => setGhlId(e.target.value)} className="w-full bg-c-input border border-c-border-input rounded-xl px-3 py-2.5 text-sm text-c-text font-mono focus:outline-none focus:border-accent/60" /></div>
             </div>
-            <div className="flex gap-2"><button onClick={saveEdits} className="h-12 px-6 bg-accent text-black text-sm font-bold rounded-2xl active:bg-accent active:scale-[0.97] transition-all">Save</button><button onClick={() => setEditing(false)} className="h-12 px-5 bg-c-elevated text-c-text-3 text-sm rounded-2xl active:bg-c-surface transition-all">Cancel</button></div>
+            <div className="flex gap-2"><button onClick={saveEdits} className="h-12 px-6 bg-gradient-to-br from-accent-from to-accent-to text-white text-sm font-bold rounded-2xl active:bg-accent active:scale-[0.97] transition-all">Save</button><button onClick={() => setEditing(false)} className="h-12 px-5 bg-c-elevated text-c-text-3 text-sm rounded-2xl active:bg-c-surface transition-all">Cancel</button></div>
           </div>
         )}
 
@@ -212,7 +212,7 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
             {project.phase !== 'delivered' && (
               <div className="flex gap-2 mt-4 border-t border-c-border-inner pt-4">
                 <input value={noteText} onChange={e => setNoteText(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitNote()} placeholder="Add a project update note..." className="flex-1 h-12 bg-c-surface border border-c-border-inner rounded-2xl px-4 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50" />
-                <button onClick={submitNote} className="h-12 px-6 bg-accent text-black text-sm font-bold rounded-2xl active:bg-accent active:scale-[0.97] transition-all">Post</button>
+                <button onClick={submitNote} className="h-12 px-6 bg-gradient-to-br from-accent-from to-accent-to text-white text-sm font-bold rounded-2xl active:bg-accent active:scale-[0.97] transition-all">Post</button>
               </div>
             )}
           </div>
@@ -232,7 +232,7 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
             )}
             <div className="flex gap-2 border-t border-c-border-inner pt-4">
               <input value={todoText} onChange={e => setTodoText(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitTodo()} placeholder="Add a task..." className="flex-1 h-12 bg-c-surface border border-c-border-inner rounded-2xl px-4 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50" />
-              <button onClick={submitTodo} className="h-12 w-12 flex items-center justify-center bg-accent text-black font-bold rounded-2xl active:bg-accent active:scale-[0.97] transition-all"><Plus className="w-4 h-4" /></button>
+              <button onClick={submitTodo} className="h-12 w-12 flex items-center justify-center bg-gradient-to-br from-accent-from to-accent-to text-white font-bold rounded-2xl active:bg-accent active:scale-[0.97] transition-all"><Plus className="w-4 h-4" /></button>
             </div>
           </div>
         )}

@@ -87,7 +87,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={!name.trim()}
-              className="w-full h-14 bg-accent text-black text-base font-bold rounded-xl hover:bg-accent active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full h-14 bg-gradient-to-br from-accent-from to-accent-to text-white text-base font-bold rounded-xl active:scale-[0.98] transition-all shadow-lg shadow-accent/25 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Continue
             </button>

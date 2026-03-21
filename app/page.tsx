@@ -103,8 +103,7 @@ export default function HomePage() {
           </div>
           <Link
             href="/quotes/new"
-            className="flex items-center gap-2.5 h-14 px-7 rounded-2xl bg-accent active:bg-accent text-black font-bold text-base active:scale-[0.97] transition-all"
-            style={{ boxShadow: '0 0 24px rgba(198,40,40,0.25)' }}
+            className="flex items-center gap-2.5 h-14 px-7 rounded-2xl bg-gradient-to-br from-accent-from to-accent-to text-white font-bold text-base active:scale-[0.97] transition-all shadow-lg shadow-accent/25"
           >
             <Plus className="w-5 h-5" />
             New Quote
@@ -227,7 +226,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/quotes/new"
-              className="flex items-center gap-2 h-14 px-8 rounded-2xl bg-accent text-black font-bold text-base active:scale-[0.97] transition-all"
+              className="flex items-center gap-2 h-14 px-8 rounded-2xl bg-gradient-to-br from-accent-from to-accent-to text-white font-bold text-base active:scale-[0.97] transition-all shadow-lg shadow-accent/25"
             >
               <Plus className="w-5 h-5" />
               New Quote

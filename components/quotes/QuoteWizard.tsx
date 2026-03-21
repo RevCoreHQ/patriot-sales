@@ -109,13 +109,13 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
                     key={idx}
                     type="button"
                     onClick={() => wizard.setStep(idx)}
-                    className="w-1.5 h-1.5 rounded-full bg-accent/50 hover:bg-accent transition-colors cursor-pointer"
+                    className="w-1.5 h-1.5 rounded-full bg-accent-secondary/50 hover:bg-accent-secondary transition-colors cursor-pointer"
                   />
                 ))}
               </div>
             )}
           </div>
-          <span className="text-sm text-c-text-4 tabular-nums font-medium">
+          <span className="text-sm text-accent-secondary/60 tabular-nums font-medium">
             {currentStep + 1} / {steps.length}
           </span>
         </div>
@@ -196,6 +196,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
           </Button>
 
           <Button
+            variant="blue"
             size="md"
             onClick={goNext}
             disabled={!canNext}

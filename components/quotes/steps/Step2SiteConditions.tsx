@@ -28,11 +28,11 @@ function OptionGroup<T extends string>({
             className={cn(
               'flex flex-col items-center justify-center text-center min-h-[64px] px-4 py-4 rounded-xl border transition-all active:scale-[0.96] cursor-pointer',
               value === opt.value
-                ? 'border-accent/60 bg-accent/10 text-accent'
+                ? 'border-accent-secondary/60 bg-accent-secondary/10 text-accent-secondary'
                 : 'border-c-border bg-c-card text-c-text-3 active:border-c-border-hover'
             )}
           >
-            <span className={cn('text-base font-semibold', value === opt.value ? 'text-accent' : 'text-c-text')}>{opt.label}</span>
+            <span className={cn('text-base font-semibold', value === opt.value ? 'text-accent-secondary' : 'text-c-text')}>{opt.label}</span>
             {opt.sub && <span className="text-sm text-c-text-4 mt-0.5 leading-tight">{opt.sub}</span>}
           </button>
         ))}
@@ -58,7 +58,7 @@ export function Step2SiteConditions() {
         min="1"
         placeholder="e.g. 2000"
         value={siteConditions.roofArea ?? ''}
-        onChange={e => setSiteConditions({ roofArea: Number(e.target.value) })}
+        onChange={e => setSiteConditions({ roofArea: e.target.value === '' ? undefined : Number(e.target.value) })}
       />
 
       {/* Pitch */}

@@ -29,7 +29,7 @@ function MaterialPicker({ onSelect, selected }: { onSelect: (m: Material) => voi
         {(['all', 'good', 'better', 'best'] as const).map(t => (
           <button key={t} type="button" onClick={() => setTier(t)}
             className={cn('px-4 py-2 rounded-full text-sm font-medium border transition-all capitalize cursor-pointer',
-              tier === t ? 'bg-accent/15 border-accent/40 text-accent' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
+              tier === t ? 'bg-accent-secondary/15 border-accent-secondary/40 text-accent-secondary' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
             )}>
             {t === 'all' ? 'All' : TIER_LABELS[t]}
           </button>
@@ -133,7 +133,7 @@ export function Step3Materials() {
                     <Input label="Area Name" placeholder="e.g. Main Roof, Garage, Addition"
                       value={sel.area} onChange={e => updateArea(idx, { area: e.target.value })} />
                     <Input label="Square Footage" type="number" min="1"
-                      value={sel.squareFootage} onChange={e => updateArea(idx, { squareFootage: Number(e.target.value) })} />
+                      value={sel.squareFootage || ''} onChange={e => updateArea(idx, { squareFootage: e.target.value === '' ? 0 : Number(e.target.value) })} />
                   </div>
 
                   <div>
@@ -170,7 +170,7 @@ export function Step3Materials() {
                             placeholder={String(globalMat?.pricePerSqFt ?? sel.material.pricePerSqFt)}
                             value={sel.customPricePerSqFt ?? ''}
                             onChange={e => updateArea(idx, { customPricePerSqFt: e.target.value === '' ? undefined : Number(e.target.value) })}
-                            className={cn('w-full h-14 pl-8 pr-4 rounded-2xl bg-c-input border text-base text-c-text focus:outline-none focus:ring-1 focus:ring-accent/30',
+                            className={cn('w-full h-14 pl-8 pr-4 rounded-2xl bg-c-input border text-base text-c-text focus:outline-none focus:ring-1 focus:ring-accent-secondary/30',
                               sel.customPricePerSqFt !== undefined ? 'border-accent/40 bg-accent/5' : 'border-c-border-input'
                             )} />
                         </div>
@@ -183,7 +183,7 @@ export function Step3Materials() {
                             placeholder={String(globalMat?.laborPerSqFt ?? sel.material.laborPerSqFt)}
                             value={sel.customLaborPerSqFt ?? ''}
                             onChange={e => updateArea(idx, { customLaborPerSqFt: e.target.value === '' ? undefined : Number(e.target.value) })}
-                            className={cn('w-full h-14 pl-8 pr-4 rounded-2xl bg-c-input border text-base text-c-text focus:outline-none focus:ring-1 focus:ring-accent/30',
+                            className={cn('w-full h-14 pl-8 pr-4 rounded-2xl bg-c-input border text-base text-c-text focus:outline-none focus:ring-1 focus:ring-accent-secondary/30',
                               sel.customLaborPerSqFt !== undefined ? 'border-accent/40 bg-accent/5' : 'border-c-border-input'
                             )} />
                         </div>

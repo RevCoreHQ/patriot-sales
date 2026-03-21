@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline' | 'blue';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
 }
@@ -19,7 +19,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           loading && 'pointer-events-none',
           {
             // Variants
-            'bg-accent active:bg-accent text-black': variant === 'primary',
+            'bg-gradient-to-br from-accent-from to-accent-to text-white shadow-lg shadow-accent/25': variant === 'primary',
+            'bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-lg shadow-accent-secondary/25': variant === 'blue',
             'bg-c-elevated active:bg-c-surface text-c-text border border-c-border-inner': variant === 'secondary',
             'active:bg-c-elevated text-c-text-3 active:text-c-text': variant === 'ghost',
             'bg-red-500/10 active:bg-red-500/20 text-red-400 border border-red-500/20': variant === 'danger',

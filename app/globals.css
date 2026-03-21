@@ -4,6 +4,8 @@
 :root {
   --accent: #C62828;
   --accent-glow: rgba(198,40,40,0.15);
+  --accent-from: #EF4444;
+  --accent-to: #C62828;
   --accent-secondary: #2563EB;
   --accent-secondary-glow: rgba(37,99,235,0.15);
 }
@@ -97,6 +99,8 @@
   /* ── Accent color tokens ── */
   --color-accent: var(--accent);
   --color-accent-glow: var(--accent-glow);
+  --color-accent-from: var(--accent-from);
+  --color-accent-to: var(--accent-to);
   --color-accent-secondary: var(--accent-secondary);
   --color-accent-secondary-glow: var(--accent-secondary-glow);
 }
