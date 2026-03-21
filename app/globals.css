@@ -4,8 +4,8 @@
 :root {
   --accent: #C62828;
   --accent-glow: rgba(198,40,40,0.15);
-  --accent-secondary: #1565C0;
-  --accent-secondary-glow: rgba(21,101,192,0.15);
+  --accent-secondary: #2563EB;
+  --accent-secondary-glow: rgba(37,99,235,0.15);
 }
 
 /* ── Dark theme (default) ────────────────────────────────────────── */

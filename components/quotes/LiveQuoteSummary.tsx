@@ -37,7 +37,7 @@ export function LiveQuoteSummary() {
         {wizard.projectTypes.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2">
             {wizard.projectTypes.map(pt => (
-              <span key={pt} className="text-[10px] bg-[#C62828]/10 text-[#C62828] border border-[#C62828]/20 px-2 py-0.5 rounded-full capitalize font-medium">
+              <span key={pt} className="text-[10px] bg-accent/10 text-accent border border-accent/20 px-2 py-0.5 rounded-full capitalize font-medium">
                 {pt.replace(/-/g, ' ')}
               </span>
             ))}
@@ -102,7 +102,7 @@ export function LiveQuoteSummary() {
         <div className="h-px bg-c-border-inner" />
         <div className="flex justify-between items-center">
           <span className="text-sm font-bold text-c-text">Total</span>
-          <span className="text-2xl font-bold text-[#C62828] tabular-nums">
+          <span className="text-2xl font-bold text-accent tabular-nums">
             <AnimatedNumber value={total} format={(n) => formatCurrency(n)} />
           </span>
         </div>
@@ -110,7 +110,7 @@ export function LiveQuoteSummary() {
           const totalCost = allItems.reduce((s, item) => item.costPerUnit ? s + item.costPerUnit * item.quantity : s, 0);
           if (totalCost <= 0) return null;
           const marginPct = subtotal > 0 ? ((subtotal - totalCost) / subtotal * 100) : 0;
-          const color = marginPct >= 30 ? 'text-emerald-400' : marginPct >= 15 ? 'text-[#C62828]' : 'text-red-400';
+          const color = marginPct >= 30 ? 'text-emerald-400' : marginPct >= 15 ? 'text-accent' : 'text-red-400';
           return (
             <div className="flex justify-between text-xs mt-1">
               <span className="text-c-text-4">Margin</span>

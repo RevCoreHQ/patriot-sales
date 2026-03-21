@@ -28,7 +28,7 @@ export function Step5Pricing() {
   const hasCosts = lineItems.some(item => item.costPerUnit !== undefined && item.costPerUnit > 0);
   const overallMarginPct = hasCosts && subtotal > 0 ? ((subtotal - totalCost) / subtotal * 100) : null;
   const overallMarginColor = overallMarginPct !== null
-    ? overallMarginPct >= 30 ? 'text-emerald-400' : overallMarginPct >= 15 ? 'text-[#C62828]' : 'text-red-400'
+    ? overallMarginPct >= 30 ? 'text-emerald-400' : overallMarginPct >= 15 ? 'text-accent' : 'text-red-400'
     : '';
 
   const categoryColor = (cat: string) => {
@@ -58,7 +58,7 @@ export function Step5Pricing() {
               ? ((item.unitPrice - item.costPerUnit) / item.unitPrice * 100)
               : null;
             const marginColor = itemMargin !== null
-              ? itemMargin >= 30 ? 'text-emerald-400' : itemMargin >= 15 ? 'text-[#C62828]' : 'text-red-400'
+              ? itemMargin >= 30 ? 'text-emerald-400' : itemMargin >= 15 ? 'text-accent' : 'text-red-400'
               : '';
             return (
               <div key={item.id} className="px-4 py-2.5 flex items-center gap-4">
@@ -83,7 +83,7 @@ export function Step5Pricing() {
                       placeholder="Cost"
                       value={item.costPerUnit ?? ''}
                       onChange={e => updateManualLineItem(item.id, { costPerUnit: e.target.value === '' ? undefined : Number(e.target.value) })}
-                      className="w-full bg-c-input border border-c-border-input rounded-lg px-2 py-1 text-xs text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-[#C62828]/50 tabular-nums"
+                      className="w-full bg-c-input border border-c-border-input rounded-lg px-2 py-1 text-xs text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50 tabular-nums"
                     />
                   </div>
                 )}
@@ -128,7 +128,7 @@ export function Step5Pricing() {
           <div className="px-4 py-3 flex justify-between">
             <span className="font-bold text-c-text">Total</span>
             <div className="text-right">
-              <span className="font-bold text-xl text-[#C62828]">
+              <span className="font-bold text-xl text-accent">
                 {formatCurrency(priceOverride !== undefined ? priceOverride : total)}
               </span>
               {priceOverride !== undefined && (
@@ -154,7 +154,7 @@ export function Step5Pricing() {
 
       {/* ── Admin Override ── */}
       {isAdmin && (
-        <div className="border border-[#C62828]/20 rounded-xl overflow-hidden">
+        <div className="border border-accent/20 rounded-xl overflow-hidden">
           <button
             type="button"
             onClick={() => {
@@ -162,16 +162,16 @@ export function Step5Pricing() {
               setOverrideEnabled(next);
               if (!next) setPriceOverride(undefined);
             }}
-            className="w-full flex items-center gap-3 px-4 py-3 bg-[#C62828]/5 text-left hover:bg-[#C62828]/8 transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-3 bg-accent/5 text-left hover:bg-accent/8 transition-colors"
           >
-            <Lock className="w-3.5 h-3.5 text-[#C62828]/70 shrink-0" />
-            <span className="text-xs font-bold text-[#C62828]/80 uppercase tracking-widest flex-1">Admin Price Controls</span>
-            <div className={cn('w-8 h-[18px] rounded-full flex items-center px-0.5 transition-colors', overrideEnabled ? 'bg-[#C62828]' : 'bg-c-border-input')}>
+            <Lock className="w-3.5 h-3.5 text-accent/70 shrink-0" />
+            <span className="text-xs font-bold text-accent/80 uppercase tracking-widest flex-1">Admin Price Controls</span>
+            <div className={cn('w-8 h-[18px] rounded-full flex items-center px-0.5 transition-colors', overrideEnabled ? 'bg-accent' : 'bg-c-border-input')}>
               <div className={cn('w-3.5 h-3.5 rounded-full bg-white shadow transition-transform', overrideEnabled ? 'translate-x-3.5' : 'translate-x-0')} />
             </div>
           </button>
           {overrideEnabled && (
-            <div className="px-4 py-4 space-y-4 border-t border-[#C62828]/15">
+            <div className="px-4 py-4 space-y-4 border-t border-accent/15">
               <div className="flex gap-4 items-end">
                 <div className="w-48">
                   <Input

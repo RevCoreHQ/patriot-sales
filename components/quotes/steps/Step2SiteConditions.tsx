@@ -28,11 +28,11 @@ function OptionGroup<T extends string>({
             className={cn(
               'flex flex-col items-center justify-center text-center min-h-[56px] px-3 py-3 rounded-xl border transition-all active:scale-[0.96] cursor-pointer',
               value === opt.value
-                ? 'border-[#C62828]/60 bg-[#C62828]/10 text-[#C62828]'
+                ? 'border-accent/60 bg-accent/10 text-accent'
                 : 'border-c-border bg-c-card text-c-text-3 active:border-c-border-hover'
             )}
           >
-            <span className={cn('text-sm font-semibold', value === opt.value ? 'text-[#C62828]' : 'text-c-text')}>{opt.label}</span>
+            <span className={cn('text-sm font-semibold', value === opt.value ? 'text-accent' : 'text-c-text')}>{opt.label}</span>
             {opt.sub && <span className="text-[11px] text-c-text-4 mt-0.5 leading-tight">{opt.sub}</span>}
           </button>
         ))}

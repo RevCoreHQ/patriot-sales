@@ -15,7 +15,7 @@ const TIER_LABELS: Record<MaterialTier, string> = { good: 'Good', better: 'Bette
 const TIER_COLORS: Record<MaterialTier, string> = {
   good: 'text-neutral-400 border-neutral-400/30',
   better: 'text-blue-400 border-blue-400/30',
-  best: 'text-[#C62828] border-[#C62828]/30',
+  best: 'text-accent border-accent/30',
 };
 
 function MaterialPicker({ onSelect, selected }: { onSelect: (m: Material) => void; selected?: string }) {
@@ -29,7 +29,7 @@ function MaterialPicker({ onSelect, selected }: { onSelect: (m: Material) => voi
         {(['all', 'good', 'better', 'best'] as const).map(t => (
           <button key={t} type="button" onClick={() => setTier(t)}
             className={cn('px-3 py-1 rounded-full text-xs font-medium border transition-all capitalize cursor-pointer',
-              tier === t ? 'bg-[#C62828]/15 border-[#C62828]/40 text-[#C62828]' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
+              tier === t ? 'bg-accent/15 border-accent/40 text-accent' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
             )}>
             {t === 'all' ? 'All' : TIER_LABELS[t]}
           </button>
@@ -44,19 +44,19 @@ function MaterialPicker({ onSelect, selected }: { onSelect: (m: Material) => voi
           return (
             <button key={m.id} type="button" onClick={() => onSelect(m)}
               className={cn('flex items-center gap-3 p-3 rounded-lg border text-left transition-all cursor-pointer',
-                selected === m.id ? 'border-[#C62828]/50 bg-[#C62828]/8' : 'border-c-border-inner bg-c-surface hover:border-c-border-hover'
+                selected === m.id ? 'border-accent/50 bg-accent/8' : 'border-c-border-inner bg-c-surface hover:border-c-border-hover'
               )}>
               <MaterialSwatch category={m.category} tier={m.tier} name={m.name} className="w-10 h-10 rounded-md shrink-0" />
               <div className="min-w-0 flex-1">
-                <div className={cn('text-xs font-medium truncate', selected === m.id ? 'text-[#C62828]' : 'text-c-text')}>{m.name}</div>
+                <div className={cn('text-xs font-medium truncate', selected === m.id ? 'text-accent' : 'text-c-text')}>{m.name}</div>
                 <div className="text-[10px] text-neutral-500">{m.brand}</div>
                 <div className={cn('text-[10px] font-medium border rounded px-1 py-0.5 mt-1 w-fit', TIER_COLORS[m.tier])}>{TIER_LABELS[m.tier]}</div>
               </div>
               <div className="text-right shrink-0">
-                <div className={cn('text-xs font-semibold', isGlobalOverride ? 'text-[#C62828]' : 'text-neutral-300')}>
+                <div className={cn('text-xs font-semibold', isGlobalOverride ? 'text-accent' : 'text-neutral-300')}>
                   ${effectiveTotal}/sf
                 </div>
-                {isGlobalOverride && <div className="text-[9px] text-[#C62828]/60">custom</div>}
+                {isGlobalOverride && <div className="text-[9px] text-accent/60">custom</div>}
               </div>
             </button>
           );
@@ -106,13 +106,13 @@ export function Step3Materials() {
           const hasCustom = sel.customPricePerSqFt !== undefined || sel.customLaborPerSqFt !== undefined;
 
           return (
-            <div key={idx} className={cn('border rounded-xl overflow-hidden', hasCustom ? 'border-[#C62828]/30' : 'border-c-border-inner')}>
+            <div key={idx} className={cn('border rounded-xl overflow-hidden', hasCustom ? 'border-accent/30' : 'border-c-border-inner')}>
               <div className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-c-elevated transition-colors"
                 onClick={() => setExpandedIdx(expandedIdx === idx ? null : idx)}>
                 <div>
                   <div className="flex items-center gap-2">
                     <div className="text-sm font-medium text-c-text">{sel.area || `Area ${idx + 1}`}</div>
-                    {hasCustom && <span className="text-[10px] bg-[#C62828]/15 text-[#C62828] px-1.5 py-0.5 rounded-full">custom price</span>}
+                    {hasCustom && <span className="text-[10px] bg-accent/15 text-accent px-1.5 py-0.5 rounded-full">custom price</span>}
                   </div>
                   <div className="text-xs text-neutral-500 mt-0.5">
                     {sel.material.name} · {sel.squareFootage} sq ft · ${totalInstalled.toLocaleString()} installed
@@ -150,7 +150,7 @@ export function Step3Materials() {
                         <div className="text-[11px] text-neutral-600 mt-0.5">
                           Catalog: ${sel.material.pricePerSqFt} mat + ${sel.material.laborPerSqFt} labor
                           {(globalMat?.pricePerSqFt !== undefined || globalMat?.laborPerSqFt !== undefined) && (
-                            <span className="text-[#C62828]/70 ml-1">
+                            <span className="text-accent/70 ml-1">
                               · Global: ${globalMat?.pricePerSqFt ?? sel.material.pricePerSqFt} mat + ${globalMat?.laborPerSqFt ?? sel.material.laborPerSqFt} labor
                             </span>
                           )}
@@ -169,8 +169,8 @@ export function Step3Materials() {
                           placeholder={String(globalMat?.pricePerSqFt ?? sel.material.pricePerSqFt)}
                           value={sel.customPricePerSqFt ?? ''}
                           onChange={e => updateArea(idx, { customPricePerSqFt: e.target.value === '' ? undefined : Number(e.target.value) })}
-                          className={cn('w-full pl-7 pr-3 py-2.5 rounded-lg bg-c-input border text-sm text-c-text focus:outline-none focus:ring-1 focus:ring-[#C62828]/30',
-                            sel.customPricePerSqFt !== undefined ? 'border-[#C62828]/40 bg-[#C62828]/5' : 'border-c-border-input'
+                          className={cn('w-full pl-7 pr-3 py-2.5 rounded-lg bg-c-input border text-sm text-c-text focus:outline-none focus:ring-1 focus:ring-accent/30',
+                            sel.customPricePerSqFt !== undefined ? 'border-accent/40 bg-accent/5' : 'border-c-border-input'
                           )} />
                       </div>
                       <div className="relative">
@@ -180,8 +180,8 @@ export function Step3Materials() {
                           placeholder={String(globalMat?.laborPerSqFt ?? sel.material.laborPerSqFt)}
                           value={sel.customLaborPerSqFt ?? ''}
                           onChange={e => updateArea(idx, { customLaborPerSqFt: e.target.value === '' ? undefined : Number(e.target.value) })}
-                          className={cn('w-full pl-7 pr-3 py-2.5 rounded-lg bg-c-input border text-sm text-c-text focus:outline-none focus:ring-1 focus:ring-[#C62828]/30',
-                            sel.customLaborPerSqFt !== undefined ? 'border-[#C62828]/40 bg-[#C62828]/5' : 'border-c-border-input'
+                          className={cn('w-full pl-7 pr-3 py-2.5 rounded-lg bg-c-input border text-sm text-c-text focus:outline-none focus:ring-1 focus:ring-accent/30',
+                            sel.customLaborPerSqFt !== undefined ? 'border-accent/40 bg-accent/5' : 'border-c-border-input'
                           )} />
                       </div>
                     </div>

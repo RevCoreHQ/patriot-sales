@@ -34,8 +34,8 @@ interface CategoryConfig {
 }
 
 const CATEGORY_STYLES: Record<'roofing' | 'exterior' | 'interior', CategoryConfig> = {
-  roofing:  { dotColor: 'bg-[#C62828]',    iconBg: 'bg-[#C62828]/12',    iconColor: 'text-[#C62828]' },
-  exterior: { dotColor: 'bg-[#1565C0]',    iconBg: 'bg-[#1565C0]/12',    iconColor: 'text-[#1565C0]' },
+  roofing:  { dotColor: 'bg-accent',    iconBg: 'bg-accent/12',    iconColor: 'text-accent' },
+  exterior: { dotColor: 'bg-accent-secondary',    iconBg: 'bg-accent-secondary/12',    iconColor: 'text-accent-secondary' },
   interior: { dotColor: 'bg-emerald-500',   iconBg: 'bg-emerald-500/12',  iconColor: 'text-emerald-400' },
 };
 
@@ -70,18 +70,18 @@ function CompactCard({
       className={cn(
         'w-full flex items-center gap-3 px-3.5 py-3 rounded-xl border text-left transition-all active:scale-[0.97] cursor-pointer',
         selected
-          ? 'border-[#C62828]/50 bg-[#C62828]/8'
+          ? 'border-accent/50 bg-accent/8'
           : 'border-c-border bg-c-card hover:border-c-border-hover hover:bg-c-elevated'
       )}
     >
       <div className={cn(
         'w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-all',
-        selected ? 'bg-[#C62828]/20' : iconBg
+        selected ? 'bg-accent/20' : iconBg
       )}>
-        <Icon className={cn('w-4.5 h-4.5', selected ? 'text-[#C62828]' : iconColor)} />
+        <Icon className={cn('w-4.5 h-4.5', selected ? 'text-accent' : iconColor)} />
       </div>
       <div className="flex-1 min-w-0">
-        <div className={cn('text-sm font-semibold leading-tight', selected ? 'text-[#C62828]' : 'text-c-text')}>
+        <div className={cn('text-sm font-semibold leading-tight', selected ? 'text-accent' : 'text-c-text')}>
           {pt.label}
         </div>
         <div className="text-[11px] text-c-text-4">
@@ -90,7 +90,7 @@ function CompactCard({
       </div>
       <div className={cn(
         'w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all',
-        selected ? 'bg-[#C62828]' : 'border-2 border-c-border-hover'
+        selected ? 'bg-accent' : 'border-2 border-c-border-hover'
       )}>
         {selected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
       </div>
@@ -164,9 +164,9 @@ export function Step1ProjectTypes() {
       </div>
 
       {projectTypes.length > 0 && (
-        <div className="flex items-center gap-2 py-2 px-3.5 bg-[#C62828]/8 border border-[#C62828]/20 rounded-xl">
-          <div className="w-2 h-2 rounded-full bg-[#C62828]" />
-          <p className="text-sm text-[#C62828] font-medium">
+        <div className="flex items-center gap-2 py-2 px-3.5 bg-accent/8 border border-accent/20 rounded-xl">
+          <div className="w-2 h-2 rounded-full bg-accent" />
+          <p className="text-sm text-accent font-medium">
             {projectTypes.length} selected
           </p>
         </div>

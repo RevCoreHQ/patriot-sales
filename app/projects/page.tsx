@@ -53,8 +53,8 @@ function DatePickerInput({ label, value, onChange }: { label: string; value: str
       <label className="text-xs text-c-text-3 mb-1.5 block">{label}</label>
       <div className="relative">
         <input ref={ref} type="date" value={value} onChange={e => onChange(e.target.value)}
-          className="w-full bg-c-input border border-c-border-input rounded-xl pl-3 pr-9 py-2.5 text-sm text-c-text focus:outline-none focus:border-[#C62828]/60" />
-        <button type="button" onClick={() => ref.current?.showPicker?.()} className="absolute right-3 top-1/2 -translate-y-1/2 text-c-text-4 active:text-[#C62828] transition-colors">
+          className="w-full bg-c-input border border-c-border-input rounded-xl pl-3 pr-9 py-2.5 text-sm text-c-text focus:outline-none focus:border-accent/60" />
+        <button type="button" onClick={() => ref.current?.showPicker?.()} className="absolute right-3 top-1/2 -translate-y-1/2 text-c-text-4 active:text-accent transition-colors">
           <Calendar className="w-3.5 h-3.5" />
         </button>
       </div>
@@ -130,10 +130,10 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
             return (
               <div key={p.id} className="flex items-center flex-1">
                 <button onClick={() => updatePhase(project.id, p.id)} title={p.label} className="relative flex flex-col items-center group flex-1">
-                  <div className={`w-4 h-4 rounded-full border-2 transition-all ${done ? 'bg-[#C62828] border-[#C62828]' : active ? 'bg-[#C62828]/30 border-[#C62828] ring-2 ring-[#C62828]/20' : 'bg-transparent border-c-border-input group-active:border-c-border-hover'}`} />
-                  <span className={`text-[11px] mt-1 font-medium whitespace-nowrap transition-colors ${done ? 'text-[#C62828]' : active ? 'text-[#fcad55]' : 'text-c-text-5 group-active:text-c-text-4'}`}>{p.short}</span>
+                  <div className={`w-4 h-4 rounded-full border-2 transition-all ${done ? 'bg-accent border-accent' : active ? 'bg-accent/30 border-accent ring-2 ring-accent/20' : 'bg-transparent border-c-border-input group-active:border-c-border-hover'}`} />
+                  <span className={`text-[11px] mt-1 font-medium whitespace-nowrap transition-colors ${done ? 'text-accent' : active ? 'text-[#fcad55]' : 'text-c-text-5 group-active:text-c-text-4'}`}>{p.short}</span>
                 </button>
-                {!isLast && <div className={`h-0.5 flex-1 mx-0.5 rounded transition-all ${done ? 'bg-[#C62828]' : 'bg-c-border-inner'}`} />}
+                {!isLast && <div className={`h-0.5 flex-1 mx-0.5 rounded transition-all ${done ? 'bg-accent' : 'bg-c-border-inner'}`} />}
               </div>
             );
           })}
@@ -145,7 +145,7 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
         <div className="bg-c-surface border border-c-border-inner rounded-2xl p-4">
           <div className="text-xs text-c-text-4 mb-0.5">Cash Collected</div>
           <div className="text-lg font-bold text-c-text">{formatCurrency(project.cashCollected)}</div>
-          <div className="mt-2 h-1.5 rounded-full bg-c-border-inner"><div className="h-full rounded-full bg-[#C62828] transition-all" style={{ width: `${pct}%` }} /></div>
+          <div className="mt-2 h-1.5 rounded-full bg-c-border-inner"><div className="h-full rounded-full bg-accent transition-all" style={{ width: `${pct}%` }} /></div>
           <div className="text-xs text-c-text-4 mt-1">{pct.toFixed(0)}% of total</div>
         </div>
         <div className="bg-c-surface border border-c-border-inner rounded-2xl p-4">
@@ -156,7 +156,7 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
         <div className="bg-c-surface border border-c-border-inner rounded-2xl p-4">
           <div className="text-xs text-c-text-4 mb-0.5">Closeout</div>
           <div className="text-lg font-bold text-c-text">{closeoutDone}/{closeoutTotal}</div>
-          <div className="mt-2 h-1.5 rounded-full bg-c-border-inner"><div className={`h-full rounded-full transition-all ${closeoutDone === closeoutTotal ? 'bg-emerald-500' : 'bg-[#C62828]'}`} style={{ width: `${closeoutTotal > 0 ? (closeoutDone / closeoutTotal) * 100 : 0}%` }} /></div>
+          <div className="mt-2 h-1.5 rounded-full bg-c-border-inner"><div className={`h-full rounded-full transition-all ${closeoutDone === closeoutTotal ? 'bg-emerald-500' : 'bg-accent'}`} style={{ width: `${closeoutTotal > 0 ? (closeoutDone / closeoutTotal) * 100 : 0}%` }} /></div>
           <div className="text-xs text-c-text-4 mt-1">items complete</div>
         </div>
       </div>
@@ -176,12 +176,12 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
           </button>
         ))}
         <div className="flex-1" />
-        <button onClick={() => setEditing(!editing)} className={`flex items-center gap-1.5 h-12 px-4 rounded-2xl text-sm font-medium transition-all ${editing ? 'bg-[#C62828]/15 text-[#C62828]' : 'text-c-text-4 active:text-c-text-2'}`}>
+        <button onClick={() => setEditing(!editing)} className={`flex items-center gap-1.5 h-12 px-4 rounded-2xl text-sm font-medium transition-all ${editing ? 'bg-accent/15 text-accent' : 'text-c-text-4 active:text-c-text-2'}`}>
           <Calendar className="w-3.5 h-3.5" />Edit
         </button>
         {project.phase !== 'delivered' && (
           <button onClick={() => { if (project.phase === 'finishing' && !canDeliver) { alert('Complete all closeout items first.'); setTab('closeout'); return; } const idx = phaseIndex(project.phase); if (idx < PHASES.length - 1) updatePhase(project.id, PHASES[idx + 1].id); }}
-            className="flex items-center gap-1.5 h-12 px-5 rounded-2xl text-sm font-semibold bg-[#C62828]/15 text-[#C62828] active:bg-[#C62828]/25 transition-all">
+            className="flex items-center gap-1.5 h-12 px-5 rounded-2xl text-sm font-semibold bg-accent/15 text-accent active:bg-accent/25 transition-all">
             <ChevronDown className="w-3.5 h-3.5 rotate-[-90deg]" />Next Phase
           </button>
         )}
@@ -194,10 +194,10 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
           <div className="bg-c-surface border border-c-border-inner rounded-2xl p-5 mb-4 space-y-3">
             <div className="grid grid-cols-2 gap-3"><DatePickerInput label="Start Date" value={startDate} onChange={setStartDate} /><DatePickerInput label="Est. Completion" value={estDate} onChange={setEstDate} /></div>
             <div className="grid grid-cols-2 gap-3">
-              {payments.length === 0 && <div><label className="text-xs text-c-text-3 mb-1.5 block">Cash Collected ($)</label><input type="number" value={cash} onChange={e => setCash(e.target.value)} className="w-full bg-c-input border border-c-border-input rounded-xl px-3 py-2.5 text-sm text-c-text focus:outline-none focus:border-[#C62828]/60" /></div>}
-              <div className={payments.length === 0 ? '' : 'col-span-2'}><label className="text-xs text-c-text-4 mb-1.5 flex items-center gap-1"><Link2 className="w-3 h-3" /> GHL Contact ID</label><input type="text" value={ghlId} onChange={e => setGhlId(e.target.value)} className="w-full bg-c-input border border-c-border-input rounded-xl px-3 py-2.5 text-sm text-c-text font-mono focus:outline-none focus:border-[#C62828]/60" /></div>
+              {payments.length === 0 && <div><label className="text-xs text-c-text-3 mb-1.5 block">Cash Collected ($)</label><input type="number" value={cash} onChange={e => setCash(e.target.value)} className="w-full bg-c-input border border-c-border-input rounded-xl px-3 py-2.5 text-sm text-c-text focus:outline-none focus:border-accent/60" /></div>}
+              <div className={payments.length === 0 ? '' : 'col-span-2'}><label className="text-xs text-c-text-4 mb-1.5 flex items-center gap-1"><Link2 className="w-3 h-3" /> GHL Contact ID</label><input type="text" value={ghlId} onChange={e => setGhlId(e.target.value)} className="w-full bg-c-input border border-c-border-input rounded-xl px-3 py-2.5 text-sm text-c-text font-mono focus:outline-none focus:border-accent/60" /></div>
             </div>
-            <div className="flex gap-2"><button onClick={saveEdits} className="h-12 px-6 bg-[#C62828] text-black text-sm font-bold rounded-2xl active:bg-[#C62828] active:scale-[0.97] transition-all">Save</button><button onClick={() => setEditing(false)} className="h-12 px-5 bg-c-elevated text-c-text-3 text-sm rounded-2xl active:bg-c-surface transition-all">Cancel</button></div>
+            <div className="flex gap-2"><button onClick={saveEdits} className="h-12 px-6 bg-accent text-black text-sm font-bold rounded-2xl active:bg-accent active:scale-[0.97] transition-all">Save</button><button onClick={() => setEditing(false)} className="h-12 px-5 bg-c-elevated text-c-text-3 text-sm rounded-2xl active:bg-c-surface transition-all">Cancel</button></div>
           </div>
         )}
 
@@ -206,13 +206,13 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
           <div>
             {project.updates.length === 0 ? <div className="text-xs text-c-text-4 py-3">No updates yet.</div> : (
               <div className="space-y-2.5 max-h-64 overflow-y-auto">{project.updates.map(u => (
-                <div key={u.id} className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-[#C62828]/50 mt-1.5 shrink-0" /><div><div className="text-sm text-c-text-2">{u.note}</div><div className="text-[11px] text-c-text-4 mt-0.5">{formatDateShort(u.date)} · <span className="capitalize">{u.phase.replace(/-/g, ' ')}</span></div></div></div>
+                <div key={u.id} className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent/50 mt-1.5 shrink-0" /><div><div className="text-sm text-c-text-2">{u.note}</div><div className="text-[11px] text-c-text-4 mt-0.5">{formatDateShort(u.date)} · <span className="capitalize">{u.phase.replace(/-/g, ' ')}</span></div></div></div>
               ))}</div>
             )}
             {project.phase !== 'delivered' && (
               <div className="flex gap-2 mt-4 border-t border-c-border-inner pt-4">
-                <input value={noteText} onChange={e => setNoteText(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitNote()} placeholder="Add a project update note..." className="flex-1 h-12 bg-c-surface border border-c-border-inner rounded-2xl px-4 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-[#C62828]/50" />
-                <button onClick={submitNote} className="h-12 px-6 bg-[#C62828] text-black text-sm font-bold rounded-2xl active:bg-[#C62828] active:scale-[0.97] transition-all">Post</button>
+                <input value={noteText} onChange={e => setNoteText(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitNote()} placeholder="Add a project update note..." className="flex-1 h-12 bg-c-surface border border-c-border-inner rounded-2xl px-4 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50" />
+                <button onClick={submitNote} className="h-12 px-6 bg-accent text-black text-sm font-bold rounded-2xl active:bg-accent active:scale-[0.97] transition-all">Post</button>
               </div>
             )}
           </div>
@@ -231,8 +231,8 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
               ))}</div>
             )}
             <div className="flex gap-2 border-t border-c-border-inner pt-4">
-              <input value={todoText} onChange={e => setTodoText(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitTodo()} placeholder="Add a task..." className="flex-1 h-12 bg-c-surface border border-c-border-inner rounded-2xl px-4 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-[#C62828]/50" />
-              <button onClick={submitTodo} className="h-12 w-12 flex items-center justify-center bg-[#C62828] text-black font-bold rounded-2xl active:bg-[#C62828] active:scale-[0.97] transition-all"><Plus className="w-4 h-4" /></button>
+              <input value={todoText} onChange={e => setTodoText(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitTodo()} placeholder="Add a task..." className="flex-1 h-12 bg-c-surface border border-c-border-inner rounded-2xl px-4 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50" />
+              <button onClick={submitTodo} className="h-12 w-12 flex items-center justify-center bg-accent text-black font-bold rounded-2xl active:bg-accent active:scale-[0.97] transition-all"><Plus className="w-4 h-4" /></button>
             </div>
           </div>
         )}
@@ -260,14 +260,14 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
             <div className="bg-c-surface border border-c-border-inner rounded-2xl p-5 mb-4">
               <div className="text-xs font-semibold text-c-text-3 mb-3 flex items-center gap-1.5"><CreditCard className="w-3.5 h-3.5" />Record Payment</div>
               <div className="grid grid-cols-2 gap-3 mb-3">
-                <div><label className="text-[10px] text-c-text-4 mb-1.5 block">Amount ($)</label><input type="number" value={payAmount} onChange={e => setPayAmount(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitPayment()} placeholder="0.00" className="w-full h-12 bg-c-input border border-c-border-input rounded-2xl px-4 text-sm text-c-text focus:outline-none focus:border-[#C62828]/60" /></div>
-                <div><label className="text-[10px] text-c-text-4 mb-1.5 block">Payment For</label><select value={payType} onChange={e => setPayType(e.target.value as PaymentType)} className="w-full h-12 bg-c-input border border-c-border-input rounded-2xl px-4 text-sm text-c-text focus:outline-none focus:border-[#C62828]/60">{PAYMENT_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}</select></div>
+                <div><label className="text-[10px] text-c-text-4 mb-1.5 block">Amount ($)</label><input type="number" value={payAmount} onChange={e => setPayAmount(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitPayment()} placeholder="0.00" className="w-full h-12 bg-c-input border border-c-border-input rounded-2xl px-4 text-sm text-c-text focus:outline-none focus:border-accent/60" /></div>
+                <div><label className="text-[10px] text-c-text-4 mb-1.5 block">Payment For</label><select value={payType} onChange={e => setPayType(e.target.value as PaymentType)} className="w-full h-12 bg-c-input border border-c-border-input rounded-2xl px-4 text-sm text-c-text focus:outline-none focus:border-accent/60">{PAYMENT_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}</select></div>
               </div>
               <div className="mb-3"><label className="text-[10px] text-c-text-4 mb-1.5 block">Payment Method</label><div className="grid grid-cols-3 gap-2">{PAYMENT_METHODS.map(m => (
-                <button key={m.value} onClick={() => setPayMethod(m.value)} className={`flex items-center gap-2 h-12 px-3 rounded-2xl text-xs font-medium transition-all border ${payMethod === m.value ? 'bg-[#C62828]/15 border-[#C62828]/40 text-[#fcad55]' : 'bg-c-input border-c-border-input text-c-text-3 active:border-c-border-hover'}`}><span>{m.icon}</span>{m.label}</button>
+                <button key={m.value} onClick={() => setPayMethod(m.value)} className={`flex items-center gap-2 h-12 px-3 rounded-2xl text-xs font-medium transition-all border ${payMethod === m.value ? 'bg-accent/15 border-accent/40 text-[#fcad55]' : 'bg-c-input border-c-border-input text-c-text-3 active:border-c-border-hover'}`}><span>{m.icon}</span>{m.label}</button>
               ))}</div></div>
-              <div className="mb-3"><label className="text-[10px] text-c-text-4 mb-1.5 block">Note (optional)</label><input type="text" value={payNote} onChange={e => setPayNote(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitPayment()} placeholder="e.g. check #1042" className="w-full h-12 bg-c-input border border-c-border-input rounded-2xl px-4 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-[#C62828]/60" /></div>
-              <button onClick={submitPayment} disabled={!payAmount || parseFloat(payAmount) <= 0} className="w-full h-14 bg-[#C62828] disabled:opacity-40 disabled:cursor-not-allowed text-black text-base font-bold rounded-2xl active:bg-[#C62828] active:scale-[0.98] transition-all flex items-center justify-center gap-2"><Banknote className="w-4 h-4" />Record Payment</button>
+              <div className="mb-3"><label className="text-[10px] text-c-text-4 mb-1.5 block">Note (optional)</label><input type="text" value={payNote} onChange={e => setPayNote(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitPayment()} placeholder="e.g. check #1042" className="w-full h-12 bg-c-input border border-c-border-input rounded-2xl px-4 text-sm text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/60" /></div>
+              <button onClick={submitPayment} disabled={!payAmount || parseFloat(payAmount) <= 0} className="w-full h-14 bg-accent disabled:opacity-40 disabled:cursor-not-allowed text-black text-base font-bold rounded-2xl active:bg-accent active:scale-[0.98] transition-all flex items-center justify-center gap-2"><Banknote className="w-4 h-4" />Record Payment</button>
             </div>
             {payments.length > 0 && (
               <>
@@ -278,7 +278,7 @@ function ProjectDetail({ project, clientPhone, clientEmail }: { project: Project
                   return (
                     <div key={tx.id} className="flex items-center gap-3 bg-c-surface border border-c-border-inner rounded-2xl px-4 py-3 group">
                       <div className="text-lg shrink-0">{methodInfo?.icon ?? '\ud83d\udcb0'}</div>
-                      <div className="flex-1 min-w-0"><div className="flex items-center gap-2"><span className="text-sm font-bold text-c-text">{formatCurrency(tx.amount)}</span><span className="text-xs px-2 py-0.5 rounded-full bg-[#C62828]/10 text-[#C62828] font-medium">{typeLabel}</span><span className="text-xs text-c-text-4">{methodInfo?.label}</span></div>{tx.note && <div className="text-xs text-c-text-4 mt-0.5 truncate">{tx.note}</div>}<div className="text-xs text-c-text-5 mt-0.5">{formatDateShort(tx.date)}</div></div>
+                      <div className="flex-1 min-w-0"><div className="flex items-center gap-2"><span className="text-sm font-bold text-c-text">{formatCurrency(tx.amount)}</span><span className="text-xs px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">{typeLabel}</span><span className="text-xs text-c-text-4">{methodInfo?.label}</span></div>{tx.note && <div className="text-xs text-c-text-4 mt-0.5 truncate">{tx.note}</div>}<div className="text-xs text-c-text-5 mt-0.5">{formatDateShort(tx.date)}</div></div>
                       <button onClick={() => { if (confirm('Remove this payment?')) removePayment(project.id, tx.id); }} className="w-9 h-9 flex items-center justify-center text-c-text-5 active:text-red-400 transition-all shrink-0"><X className="w-3.5 h-3.5" /></button>
                     </div>
                   );
@@ -353,7 +353,7 @@ export default function ProjectsPage() {
               {/* Metrics */}
               <div className="grid grid-cols-2 gap-2 mb-3">
                 {[
-                  { label: 'Active', value: String(stats.active), color: 'text-[#C62828]' },
+                  { label: 'Active', value: String(stats.active), color: 'text-accent' },
                   { label: 'Collected', value: formatCurrency(stats.collected), color: 'text-emerald-400' },
                 ].map(m => (
                   <div key={m.label} className="bg-c-surface border border-c-border-inner rounded-2xl px-4 py-3">
@@ -364,11 +364,11 @@ export default function ProjectsPage() {
               </div>
               {/* Filter tabs */}
               <div className="flex flex-wrap gap-1.5">
-                <button onClick={() => setFilter('all')} className={`h-10 px-3 text-xs font-semibold rounded-xl transition-all ${filter === 'all' ? 'bg-[#C62828]/12 text-[#C62828] border border-[#C62828]/25' : 'bg-c-card text-c-text-4 border border-c-border active:bg-c-surface'}`}>All ({projects.length})</button>
+                <button onClick={() => setFilter('all')} className={`h-10 px-3 text-xs font-semibold rounded-xl transition-all ${filter === 'all' ? 'bg-accent/12 text-accent border border-accent/25' : 'bg-c-card text-c-text-4 border border-c-border active:bg-c-surface'}`}>All ({projects.length})</button>
                 {PHASES.slice(0, -1).map(p => {
                   const count = projects.filter(proj => proj.phase === p.id).length;
                   if (count === 0) return null;
-                  return <button key={p.id} onClick={() => setFilter(p.id)} className={`h-10 px-3 text-xs font-semibold rounded-xl transition-all ${filter === p.id ? 'bg-[#C62828]/12 text-[#C62828] border border-[#C62828]/25' : 'bg-c-card text-c-text-4 border border-c-border active:bg-c-surface'}`}>{p.short} ({count})</button>;
+                  return <button key={p.id} onClick={() => setFilter(p.id)} className={`h-10 px-3 text-xs font-semibold rounded-xl transition-all ${filter === p.id ? 'bg-accent/12 text-accent border border-accent/25' : 'bg-c-card text-c-text-4 border border-c-border active:bg-c-surface'}`}>{p.short} ({count})</button>;
                 })}
               </div>
             </div>
@@ -391,7 +391,7 @@ export default function ProjectsPage() {
                       <span className="text-c-text-3 font-semibold">{formatCurrency(p.totalValue)}</span>
                       <span className="text-c-text-4">{pct.toFixed(0)}% collected</span>
                     </div>
-                    <div className="mt-1.5 h-1 rounded-full bg-c-border-inner"><div className="h-full rounded-full bg-[#C62828] transition-all" style={{ width: `${pct}%` }} /></div>
+                    <div className="mt-1.5 h-1 rounded-full bg-c-border-inner"><div className="h-full rounded-full bg-accent transition-all" style={{ width: `${pct}%` }} /></div>
                   </button>
                 );
               })}

@@ -81,13 +81,13 @@ export default function LoginPage() {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="Your name"
-                className="w-full h-14 bg-c-input border border-c-border-input rounded-xl px-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-[#C62828]/50 transition-colors"
+                className="w-full h-14 bg-c-input border border-c-border-input rounded-xl px-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50 transition-colors"
               />
             </div>
             <button
               type="submit"
               disabled={!name.trim()}
-              className="w-full h-14 bg-[#C62828] text-black text-base font-bold rounded-xl hover:bg-[#C62828] active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full h-14 bg-accent text-black text-base font-bold rounded-xl hover:bg-accent active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Continue
             </button>
@@ -110,7 +110,7 @@ export default function LoginPage() {
                 <div
                   key={i}
                   className={`w-4 h-4 rounded-full transition-all duration-150 ${
-                    i < pin.length ? 'bg-[#C62828] scale-110 shadow-[0_0_12px_rgba(198,40,40,0.5)]' : 'bg-c-border-inner'
+                    i < pin.length ? 'bg-accent scale-110 shadow-[0_0_12px_rgba(198,40,40,0.5)]' : 'bg-c-border-inner'
                   }`}
                 />
               ))}

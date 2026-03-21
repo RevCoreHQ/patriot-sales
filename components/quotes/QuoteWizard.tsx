@@ -94,7 +94,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
       <div className="px-6 py-3 border-b border-c-border-inner shrink-0">
         <div className="h-[3px] w-full bg-c-border-inner rounded-full overflow-hidden mb-2.5">
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-[#C62828] via-white/80 to-[#1565C0]"
+            className="h-full rounded-full bg-gradient-to-r from-accent via-white/80 to-accent-secondary"
             animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
             transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
           />
@@ -109,7 +109,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
                     key={idx}
                     type="button"
                     onClick={() => wizard.setStep(idx)}
-                    className="w-1.5 h-1.5 rounded-full bg-[#C62828]/50 hover:bg-[#C62828] transition-colors cursor-pointer"
+                    className="w-1.5 h-1.5 rounded-full bg-accent/50 hover:bg-accent transition-colors cursor-pointer"
                   />
                 ))}
               </div>
@@ -158,7 +158,7 @@ export function QuoteWizard({ editingId, initialState }: QuoteWizardProps) {
           ) : (
             <>
               <PanelRightOpen className="w-4 h-4 text-c-text-3" />
-              <span className="text-sm font-bold text-[#C62828] tabular-nums">
+              <span className="text-sm font-bold text-accent tabular-nums">
                 {formatCurrency(total)}
               </span>
             </>

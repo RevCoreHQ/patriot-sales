@@ -60,9 +60,9 @@ const PHASES = [
     number: '01',
     label: 'Free Roof Inspection',
     icon: ClipboardList,
-    color: 'from-[#C62828]/20 to-[#C62828]/5',
-    border: 'border-[#C62828]/30',
-    text: 'text-[#C62828]',
+    color: 'from-accent/20 to-accent/5',
+    border: 'border-accent/30',
+    text: 'text-accent',
     accent: '#C62828',
     image: 'https://images.unsplash.com/photo-1632823471565-1ecdf5c6da20?w=1200&q=85',
     description: 'We come to you — no charge, no obligation. Our inspector visits your property, examines shingles, flashing, and gutters, checks for storm damage, and takes detailed measurements and photos. We\'ll walk you through our findings, recommend materials, and provide a written estimate.',
@@ -150,9 +150,9 @@ const PHASES = [
     number: '06',
     label: 'Final Walkthrough',
     icon: BadgeCheck,
-    color: 'from-[#C62828]/20 to-[#C62828]/5',
-    border: 'border-[#C62828]/30',
-    text: 'text-[#C62828]',
+    color: 'from-accent/20 to-accent/5',
+    border: 'border-accent/30',
+    text: 'text-accent',
     accent: '#C62828',
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=85',
     description: 'We don\'t consider a project finished until you sign off. We walk the entire property with you, explain ongoing maintenance, and hand over all warranty documentation. You\'re backed by our workmanship guarantee and full manufacturer warranty registration.',
@@ -169,7 +169,7 @@ const PHASES = [
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
     <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-5 text-center">
-      <div className="text-3xl font-bold text-[#C62828] mb-1">{value}</div>
+      <div className="text-3xl font-bold text-accent mb-1">{value}</div>
       <div className="text-xs text-white/40 leading-tight">{label}</div>
     </div>
   );
@@ -318,7 +318,7 @@ function PresentationContent() {
       {/* ── Progress bar ── */}
       <div className="h-[2px] w-full bg-white/[0.04] shrink-0 relative">
         <motion.div
-          className="h-full bg-[#C62828]"
+          className="h-full bg-accent"
           initial={false}
           animate={{ width: `${progressPct}%` }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -365,15 +365,15 @@ function PresentationContent() {
                 <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-[#060606]/70 to-[#060606]" />
                 <div className="relative z-10 max-w-2xl">
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}>
-                    <div className="inline-flex items-center gap-2 bg-[#C62828]/10 border border-[#C62828]/25 text-[#C62828] text-[11px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-8">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#C62828]" />
+                    <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/25 text-accent text-[11px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-8">
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent" />
                       Patriot Roofing &amp; Home Repairs
                     </div>
                   </motion.div>
                   <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.65 }}
                     className="text-6xl font-bold text-white mb-5 leading-[1.05] tracking-tight">
                     Your Home.<br />
-                    <span className="text-[#C62828]">Protected &amp; Beautiful.</span>
+                    <span className="text-accent">Protected &amp; Beautiful.</span>
                   </motion.h1>
                   <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }}
                     className="text-lg text-white/40 max-w-lg mx-auto mb-10 leading-relaxed">
@@ -387,7 +387,7 @@ function PresentationContent() {
                       { icon: CheckCircle2, label: 'Workmanship Guarantee' },
                     ].map(({ icon: Icon, label }) => (
                       <div key={label} className="flex items-center gap-2">
-                        <Icon className="w-4 h-4 text-[#C62828]" />
+                        <Icon className="w-4 h-4 text-accent" />
                         {label}
                       </div>
                     ))}
@@ -416,7 +416,7 @@ function PresentationContent() {
                   </div>
                 </div>
                 <div className="flex flex-col justify-center px-14 py-12 bg-[#0a0a0a]">
-                  <div className="text-[#C62828] text-[11px] font-bold tracking-widest uppercase mb-3">Who We Are</div>
+                  <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-3">Who We Are</div>
                   <h2 className="text-4xl font-bold text-white mb-5 leading-tight">
                     Lexington, NC&apos;s<br />Roofing Specialists
                   </h2>
@@ -444,7 +444,7 @@ function PresentationContent() {
                   style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1632823471565-1ecdf5c6da20?w=1200&q=85)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.12 }} />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#060606]/60 via-[#060606]/75 to-[#060606]" />
                 <div className="relative z-10 w-full max-w-4xl mt-6">
-                  <div className="text-[#C62828] text-[11px] font-bold tracking-widest uppercase mb-3">The Patriot Difference</div>
+                  <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-3">The Patriot Difference</div>
                   <h2 className="text-4xl font-bold text-white mb-10">Why Piedmont Triad Homeowners Choose Us</h2>
                   <div className="grid grid-cols-2 gap-5">
                     {[
@@ -452,7 +452,7 @@ function PresentationContent() {
                         icon: Award,
                         title: 'Safety First',
                         desc: 'Roofing is serious work. Our crews follow strict safety protocols on every job — proper fall protection, equipment inspection, and worksite management. Your family and property are always protected during our work.',
-                        color: 'text-[#C62828]',
+                        color: 'text-accent',
                         bg: 'rgba(198,40,40,0.1)',
                       },
                       {
@@ -495,7 +495,7 @@ function PresentationContent() {
             {/* ── PORTFOLIO ── */}
             {currentSlide === 'portfolio' && (
               <div className="h-full flex flex-col px-12 py-8">
-                <div className="text-[#C62828] text-[11px] font-bold tracking-widest uppercase mb-2">Our Work</div>
+                <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-2">Our Work</div>
                 <h2 className="text-3xl font-bold text-white mb-5">Recent Piedmont Triad Projects</h2>
                 <div className="flex-1 grid grid-cols-3 grid-rows-2 gap-3 min-h-0">
                   {/* Project photos */}
@@ -537,7 +537,7 @@ function PresentationContent() {
               <div className="h-full flex flex-col items-center justify-center px-16"
                 style={{ background: 'radial-gradient(ellipse at 70% 50%, rgba(198,40,40,0.05) 0%, transparent 60%)' }}>
                 <div className="w-full max-w-5xl">
-                  <div className="text-[#C62828] text-[11px] font-bold tracking-widest uppercase mb-3">Your Roofing Project</div>
+                  <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-3">Your Roofing Project</div>
                   <h2 className="text-4xl font-bold text-white mb-3">From First Call to Final Walkthrough</h2>
                   <p className="text-white/35 mb-10 text-[15px]">A process we&apos;ve refined across 500+ Piedmont Triad projects — always with our own crew, never subcontracted.</p>
                   <div className="grid grid-cols-3 gap-4">
@@ -574,7 +574,7 @@ function PresentationContent() {
               <div className="h-full flex flex-col items-center justify-center px-12"
                 style={{ background: 'radial-gradient(ellipse at 50% 40%, rgba(198,40,40,0.07) 0%, transparent 65%)' }}>
                 <div className="w-full max-w-3xl">
-                  <div className="text-[#C62828] text-[11px] font-bold tracking-widest uppercase mb-2">Your Investment</div>
+                  <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-2">Your Investment</div>
                   <h2 className="text-4xl font-bold text-white mb-8">Project Summary for {quote?.client.name}</h2>
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-4">
@@ -582,7 +582,7 @@ function PresentationContent() {
                         <div className="text-[10px] text-white/35 uppercase tracking-widest mb-4 font-semibold">Scope of Work</div>
                         {quote.projectTypes.map(pt => (
                           <div key={pt} className="flex items-center gap-2.5 text-sm text-white/75 mb-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#C62828] shrink-0" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
                             <span className="capitalize">{pt.replace(/-/g, ' ')}</span>
                           </div>
                         ))}
@@ -593,14 +593,14 @@ function PresentationContent() {
                           <div>{quote.siteConditions.roofArea?.toLocaleString()} total sq ft</div>
                           <div className="capitalize">{quote.siteConditions.pitch} pitch · {quote.siteConditions.stories} {quote.siteConditions.stories === 1 ? 'story' : 'stories'}</div>
                           <div className="capitalize">{quote.siteConditions.access} access</div>
-                          {quote.siteConditions.tearOff && <div className="text-[#C62828]/70">Includes tear-off{quote.siteConditions.layers && quote.siteConditions.layers > 1 ? ` (${quote.siteConditions.layers} layers)` : ''}</div>}
+                          {quote.siteConditions.tearOff && <div className="text-accent/70">Includes tear-off{quote.siteConditions.layers && quote.siteConditions.layers > 1 ? ` (${quote.siteConditions.layers} layers)` : ''}</div>}
                         </div>
                       </div>
                       {/* Warranty badge */}
-                      <div className="bg-[#C62828]/8 border border-[#C62828]/25 rounded-2xl p-4 flex items-center gap-3">
-                        <BadgeCheck className="w-5 h-5 text-[#C62828] shrink-0" />
+                      <div className="bg-accent/8 border border-accent/25 rounded-2xl p-4 flex items-center gap-3">
+                        <BadgeCheck className="w-5 h-5 text-accent shrink-0" />
                         <div>
-                          <div className="text-xs font-semibold text-[#C62828]">Workmanship Guarantee</div>
+                          <div className="text-xs font-semibold text-accent">Workmanship Guarantee</div>
                           <div className="text-[11px] text-white/35 mt-0.5">+ Manufacturer warranty on all materials</div>
                         </div>
                       </div>
@@ -617,7 +617,7 @@ function PresentationContent() {
                       </div>
                       <div className="mt-6 pt-6 border-t border-white/[0.08]">
                         <div className="text-xs text-white/35 uppercase tracking-widest mb-3">Total Investment</div>
-                        <div className="text-6xl font-bold text-[#C62828] leading-none mb-3">{formatCurrency(quote.total)}</div>
+                        <div className="text-6xl font-bold text-accent leading-none mb-3">{formatCurrency(quote.total)}</div>
                         <div className="text-xs text-white/20">Quote valid until {formatDate(quote.validUntil)}</div>
                       </div>
                     </div>
@@ -630,7 +630,7 @@ function PresentationContent() {
             {currentSlide === 'financing' && quote && (
               <div className="h-full flex flex-col items-center justify-center px-12">
                 <div className="w-full max-w-2xl">
-                  <div className="text-[#C62828] text-[11px] font-bold tracking-widest uppercase mb-2">Flexible Options</div>
+                  <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-2">Flexible Options</div>
                   <h2 className="text-4xl font-bold text-white mb-2">Financing Available</h2>
                   <p className="text-white/40 mb-2 text-[15px]">
                     We offer flexible financing options to fit your budget. Fast approvals, competitive rates, and easy monthly payments for your roofing project.
@@ -644,7 +644,7 @@ function PresentationContent() {
                     {settings.financing.map((opt, i) => (
                       <button key={opt.id} onClick={() => setSelectedTerm(i)}
                         className={cn('flex-1 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer',
-                          selectedTerm === i ? 'bg-[#C62828] text-black shadow-lg shadow-[#C62828]/25' : 'text-white/35 active:bg-white/5'
+                          selectedTerm === i ? 'bg-accent text-black shadow-lg shadow-accent/25' : 'text-white/35 active:bg-white/5'
                         )}>
                         {opt.label}
                       </button>
@@ -654,7 +654,7 @@ function PresentationContent() {
                     <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8">
                       <div className="grid grid-cols-3 gap-8 text-center mb-6">
                         <div>
-                          <div className="text-5xl font-bold text-[#C62828] mb-2">{formatCurrency(financing.monthlyPayment)}</div>
+                          <div className="text-5xl font-bold text-accent mb-2">{formatCurrency(financing.monthlyPayment)}</div>
                           <div className="text-xs text-white/35 uppercase tracking-wider">per month</div>
                         </div>
                         <div>
@@ -686,7 +686,7 @@ function PresentationContent() {
                 <div className="absolute inset-0 bg-gradient-to-b from-[#060606]/60 via-[#060606]/85 to-[#060606]" />
                 <div className="relative z-10 w-full max-w-3xl">
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                    <div className="inline-flex items-center gap-2 bg-[#C62828]/10 border border-[#C62828]/25 text-[#C62828] text-[11px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
+                    <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/25 text-accent text-[11px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
                       <ThumbsUp className="w-3.5 h-3.5" />
                       Ready to Protect Your Home?
                     </div>
@@ -694,7 +694,7 @@ function PresentationContent() {
                   <motion.h2 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}
                     className="text-5xl font-bold text-white mb-5 leading-[1.05] tracking-tight">
                     Let&apos;s Protect Your Home<br />
-                    <span className="text-[#C62828]">For Years to Come</span>
+                    <span className="text-accent">For Years to Come</span>
                   </motion.h2>
                   <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}
                     className="text-white/40 max-w-lg mx-auto mb-10 text-[15px] leading-relaxed">
@@ -709,7 +709,7 @@ function PresentationContent() {
                       <motion.div key={s.step}
                         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 + i * 0.1, duration: 0.45 }}
                         className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-5">
-                        <div className="text-3xl font-bold text-[#C62828]/25 mb-3">{s.step}</div>
+                        <div className="text-3xl font-bold text-accent/25 mb-3">{s.step}</div>
                         <div className="text-sm font-semibold text-white mb-1.5">{s.label}</div>
                         <div className="text-xs text-white/35 leading-relaxed">{s.desc}</div>
                       </motion.div>
@@ -718,7 +718,7 @@ function PresentationContent() {
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
                     className="flex items-center justify-center gap-5 text-sm text-white/35">
                     <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-[#C62828]/70" />
+                      <Phone className="w-4 h-4 text-accent/70" />
                       {settings.company.phone}
                     </div>
                     <span className="text-white/10">|</span>
@@ -746,7 +746,7 @@ function PresentationContent() {
               className="p-1.5 cursor-pointer"
             >
               <div className={cn('rounded-full transition-all',
-                i === slide ? 'w-5 h-2 bg-[#C62828]' : 'w-2 h-2 bg-white/[0.12]'
+                i === slide ? 'w-5 h-2 bg-accent' : 'w-2 h-2 bg-white/[0.12]'
               )} />
             </button>
           ))}

@@ -41,7 +41,7 @@ export default function GalleryPage() {
               onClick={() => setFilter(c)}
               className={cn(
                 'h-11 px-5 rounded-xl text-sm font-medium border transition-all cursor-pointer',
-                filter === c ? 'border-[#C62828]/50 bg-[#C62828]/10 text-[#C62828]' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
+                filter === c ? 'border-accent/50 bg-accent/10 text-accent' : 'border-c-border-inner text-neutral-500 hover:text-neutral-300'
               )}
             >
               {CAT_LABELS[c]}

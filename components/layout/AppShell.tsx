@@ -92,14 +92,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   'flex flex-col items-center justify-center w-[56px] h-[52px] rounded-2xl gap-0.5 transition-all active:scale-[0.92]',
                   active
-                    ? 'bg-[#C62828]/12 text-[#C62828]'
+                    ? 'bg-accent/12 text-accent'
                     : 'text-c-text-3 hover:text-c-text-2 hover:bg-c-elevated'
                 )}
               >
                 <tab.icon className="w-[22px] h-[22px]" strokeWidth={active ? 2.2 : 1.6} />
                 <span className={cn(
                   'text-[10px] font-semibold leading-tight',
-                  active ? 'text-[#C62828]' : ''
+                  active ? 'text-accent' : ''
                 )}>
                   {tab.label}
                 </span>

@@ -111,8 +111,8 @@ export function SignaturePad({ clientName, total, onSave, onCancel }: Props) {
         {/* Header */}
         <div className="px-6 py-5 flex items-start justify-between border-b border-c-border-inner">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#C62828]/15 flex items-center justify-center">
-              <PenLine className="w-5 h-5 text-[#C62828]" />
+            <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center">
+              <PenLine className="w-5 h-5 text-accent" />
             </div>
             <div>
               <div className="text-base font-bold text-c-text">Sign & Accept</div>
@@ -135,7 +135,7 @@ export function SignaturePad({ clientName, total, onSave, onCancel }: Props) {
           </div>
           <div className="text-right">
             <div className="text-xs text-c-text-4">Total Investment</div>
-            <div className="text-xl font-bold text-[#C62828] mt-0.5">{total}</div>
+            <div className="text-xl font-bold text-accent mt-0.5">{total}</div>
           </div>
         </div>
 
