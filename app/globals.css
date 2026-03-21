@@ -1,7 +1,15 @@
 @import "tailwindcss";
 
-/* ── Dark luxury theme ───────────────────────────────────────────── */
+/* ── Shared accent tokens ────────────────────────────────────────── */
 :root {
+  --accent: #C62828;
+  --accent-glow: rgba(198,40,40,0.15);
+  --accent-secondary: #1565C0;
+  --accent-secondary-glow: rgba(21,101,192,0.15);
+}
+
+/* ── Dark theme (default) ────────────────────────────────────────── */
+[data-theme="dark"] {
   --background: #050508;
   --foreground: #f0f0f0;
   --card: #0c0c14;
@@ -9,14 +17,9 @@
   --surface: #101018;
   --surface-2: #161622;
   --input-bg: #0c0c14;
-  --accent: #C62828;
-  --accent-glow: rgba(198,40,40,0.15);
-  --accent-secondary: #1565C0;
-  --accent-secondary-glow: rgba(21,101,192,0.15);
   --muted: #6b7280;
   --muted-text: rgba(255,255,255,0.35);
   --scrollbar: rgba(255,255,255,0.08);
-
   /* ── Component surface tokens ── */
   --c-card: #111119;
   --c-surface: #161620;
@@ -34,6 +37,39 @@
   --c-text-3: rgba(255,255,255,0.40);
   --c-text-4: rgba(255,255,255,0.22);
   --c-text-5: rgba(255,255,255,0.10);
+  color-scheme: dark;
+}
+
+/* ── Light theme ─────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --background: #f5f5f7;
+  --foreground: #1d1d1f;
+  --card: #ffffff;
+  --border: rgba(0,0,0,0.08);
+  --surface: #f0f0f2;
+  --surface-2: #e8e8ec;
+  --input-bg: #ffffff;
+  --muted: #86868b;
+  --muted-text: rgba(0,0,0,0.45);
+  --scrollbar: rgba(0,0,0,0.12);
+  /* ── Component surface tokens ── */
+  --c-card: #ffffff;
+  --c-surface: #f5f5f7;
+  --c-input: #ffffff;
+  --c-elevated: #f0f0f2;
+  --c-tag: #e8e8ec;
+  /* ── Border tokens ── */
+  --c-border: rgba(0,0,0,0.10);
+  --c-border-inner: rgba(0,0,0,0.06);
+  --c-border-input: #d2d2d7;
+  --c-border-hover: #b0b0b5;
+  /* ── Text tokens ── */
+  --c-text: #1d1d1f;
+  --c-text-2: rgba(0,0,0,0.65);
+  --c-text-3: rgba(0,0,0,0.45);
+  --c-text-4: rgba(0,0,0,0.25);
+  --c-text-5: rgba(0,0,0,0.10);
+  color-scheme: light;
 }
 
 @theme inline {
@@ -74,24 +110,40 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Card elevation ─────────────────────────────────────────────────── */
-.bg-c-card {
+/* ── Card elevation (dark) ──────────────────────────────────────────── */
+[data-theme="dark"] .bg-c-card {
   box-shadow:
     0 0 0 0.5px rgba(255,255,255,0.06),
     0 1px 2px rgba(0,0,0,0.3),
     0 4px 12px rgba(0,0,0,0.15);
   transition: box-shadow 0.2s ease;
 }
-.bg-c-card:hover {
+[data-theme="dark"] .bg-c-card:hover {
   box-shadow:
     0 0 0 0.5px rgba(255,255,255,0.10),
     0 2px 4px rgba(0,0,0,0.35),
     0 8px 24px rgba(0,0,0,0.2);
 }
-.bg-c-surface {
+[data-theme="dark"] .bg-c-surface {
   box-shadow:
     0 0 0 0.5px rgba(255,255,255,0.04),
     0 1px 3px rgba(0,0,0,0.2);
+}
+/* ── Card elevation (light) ─────────────────────────────────────────── */
+[data-theme="light"] .bg-c-card {
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 4px 12px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s ease;
+}
+[data-theme="light"] .bg-c-card:hover {
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.06),
+    0 8px 24px rgba(0,0,0,0.1);
+}
+[data-theme="light"] .bg-c-surface {
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.04);
 }
 
 /* ── iPad / Touch optimizations ───────────────────────────────────── */
@@ -117,14 +169,22 @@ button, nav a {
 ::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 4px; }
 
 /* ── Date input ─────────────────────────────────────────────────────── */
-input[type="date"] { color-scheme: dark; }
+input[type="date"] { color-scheme: inherit; }
 
-/* ── Autofill override ──────────────────────────────────────────────── */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
+/* ── Autofill override (dark) ──────────────────────────────────────── */
+[data-theme="dark"] input:-webkit-autofill,
+[data-theme="dark"] input:-webkit-autofill:hover,
+[data-theme="dark"] input:-webkit-autofill:focus {
   -webkit-text-fill-color: #f0f0f0;
   -webkit-box-shadow: 0 0 0px 1000px #0e0e16 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+/* ── Autofill override (light) ─────────────────────────────────────── */
+[data-theme="light"] input:-webkit-autofill,
+[data-theme="light"] input:-webkit-autofill:hover,
+[data-theme="light"] input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1d1d1f;
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
   transition: background-color 5000s ease-in-out 0s;
 }
 

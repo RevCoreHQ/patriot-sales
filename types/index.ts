@@ -176,6 +176,7 @@ export interface FinancingCalculation {
 
 // ─── App Settings ─────────────────────────────────────────────────────────────
 export interface AppSettings {
+  theme: 'light' | 'dark';
   team: TeamMember[];
   company: {
     name: string;

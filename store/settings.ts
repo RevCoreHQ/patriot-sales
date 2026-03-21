@@ -18,20 +18,24 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
 
   init: () => {
     const stored = getSettings();
-    set({
-      // Merge stored settings with defaults so new fields (e.g. notifications) get filled
-      settings: stored ? {
-        ...DEFAULT_SETTINGS,
-        ...stored,
-        notifications: { ...DEFAULT_SETTINGS.notifications, ...stored.notifications },
-        team: stored.team ?? DEFAULT_SETTINGS.team,
-      } : DEFAULT_SETTINGS,
-      initialized: true,
-    });
+    const merged = stored ? {
+      ...DEFAULT_SETTINGS,
+      ...stored,
+      notifications: { ...DEFAULT_SETTINGS.notifications, ...stored.notifications },
+      team: stored.team ?? DEFAULT_SETTINGS.team,
+      theme: stored.theme ?? DEFAULT_SETTINGS.theme,
+    } : DEFAULT_SETTINGS;
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', merged.theme);
+    }
+    set({ settings: merged, initialized: true });
   },
 
   update: (settings: AppSettings) => {
     saveSettings(settings);
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', settings.theme);
+    }
     set({ settings });
   },
 }));

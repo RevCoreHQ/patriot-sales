@@ -1,6 +1,7 @@
 import type { AppSettings } from '@/types';
 
 export const DEFAULT_SETTINGS: AppSettings = {
+  theme: 'dark',
   team: [
     { id: 'tm-1', name: 'Timothy', role: 'admin', phone: '336-479-6059', email: 'timothy@patriotroofingandhomerepair.com' },
   ],

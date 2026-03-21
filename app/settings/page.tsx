@@ -11,7 +11,7 @@ import { seedSampleData } from '@/lib/storage';
 import type { AppSettings, TeamMember, TeamRole } from '@/types';
 import { requestPermission, sendNotification } from '@/lib/notifications';
 import { generateId } from '@/lib/utils';
-import { CheckCircle2, Trash2, Database, Bell, Smartphone, Plus, X, UsersRound } from 'lucide-react';
+import { CheckCircle2, Trash2, Database, Bell, Smartphone, Plus, X, UsersRound, Sun, Moon } from 'lucide-react';
 
 const ROLE_LABELS: Record<TeamRole, string> = { admin: 'Admin', closer: 'Closer', setter: 'Setter' };
 
@@ -45,6 +45,10 @@ export default function SettingsPage() {
 
   useEffect(() => { init(); }, []);
   useEffect(() => { setForm(settings); }, [settings]);
+  // Apply theme live as user toggles
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', form.theme);
+  }, [form.theme]);
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setIsStandalone(window.matchMedia('(display-mode: standalone)').matches || (navigator as unknown as Record<string, unknown>).standalone === true);
@@ -102,6 +106,31 @@ export default function SettingsPage() {
         </div>
 
         <div className="space-y-6">
+          {/* Appearance */}
+          <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
+            <h2 className="text-sm font-semibold text-c-text mb-4">Appearance</h2>
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-sm text-c-text">Theme</div>
+                <div className="text-xs text-c-text-4">Switch between light and dark mode</div>
+              </div>
+              <div className="flex items-center bg-c-elevated rounded-xl p-1 gap-1">
+                <button
+                  onClick={() => setForm(f => ({ ...f, theme: 'light' }))}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${form.theme === 'light' ? 'bg-c-card text-c-text shadow-sm' : 'text-c-text-3 hover:text-c-text-2'}`}
+                >
+                  <Sun className="w-4 h-4" /> Light
+                </button>
+                <button
+                  onClick={() => setForm(f => ({ ...f, theme: 'dark' }))}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${form.theme === 'dark' ? 'bg-c-card text-c-text shadow-sm' : 'text-c-text-3 hover:text-c-text-2'}`}
+                >
+                  <Moon className="w-4 h-4" /> Dark
+                </button>
+              </div>
+            </div>
+          </section>
+
           {/* Company */}
           <section className="bg-c-card border border-c-border-inner rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-c-text mb-4">Company Information</h2>

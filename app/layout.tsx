@@ -26,14 +26,18 @@ export const metadata: Metadata = {
   },
 };
 
+// Inline script to apply saved theme before first paint (prevents flash)
+const themeScript = `(function(){try{var s=JSON.parse(localStorage.getItem('patriot:settings'));if(s&&s.theme)document.documentElement.setAttribute('data-theme',s.theme);else document.documentElement.setAttribute('data-theme','dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}})()`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <meta name="theme-color" content="#C62828" />
         <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
       </head>
