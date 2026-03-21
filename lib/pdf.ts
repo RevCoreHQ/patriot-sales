@@ -2,7 +2,7 @@ import { jsPDF } from 'jspdf';
 import type { Quote, AppSettings } from '@/types';
 
 // ─── Constants ──────────────────────────────────────────────────────────────
-const LOGO_URL = '';
+const LOGO_URL = 'https://assets.cdn.filesafe.space/UrIbmSbNwH6Sfvb4CBZw/media/69be15640d1cfcbcd90ec244.png';
 const PAGE_W = 215.9;   // Letter width mm
 const PAGE_H = 279.4;   // Letter height mm
 const M = 14;           // Margin mm
