@@ -300,9 +300,9 @@ function computeTierPricing(quote: Quote, settings: AppSettings): TierPackage[] 
 /* ─── Stat card ─────────────────────────────────────────────────────────────── */
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
-    <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-5 text-center">
-      <div className="text-3xl font-bold text-accent mb-1">{value}</div>
-      <div className="text-xs text-white/40 leading-tight">{label}</div>
+    <div className="bg-c-elevated border border-c-border-inner rounded-2xl p-6 text-center">
+      <div className="text-4xl font-bold text-accent mb-1">{value}</div>
+      <div className="text-sm text-c-text-3 leading-tight">{label}</div>
     </div>
   );
 }
@@ -310,7 +310,7 @@ function StatCard({ value, label }: { value: string; label: string }) {
 /* ─── Tag badge ─────────────────────────────────────────────────────────────── */
 function Tag({ label }: { label: string }) {
   return (
-    <span className="text-xs bg-white/[0.05] border border-white/[0.1] text-white/50 px-3 py-1.5 rounded-full">
+    <span className="text-base bg-c-elevated border border-c-border text-c-text-3 px-4 py-2 rounded-full">
       {label}
     </span>
   );
@@ -323,33 +323,33 @@ function PhaseSlide({ phase }: { phase: typeof PHASES[number] }) {
       {/* Left: image */}
       <div className="relative overflow-hidden">
         <img src={phase.image} alt={phase.label} className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/20 to-black/75" />
-        <div className={`absolute bottom-8 left-8 flex items-center gap-3 bg-black/50 backdrop-blur-md border ${phase.border} rounded-2xl px-5 py-3.5`}>
+        <div className="absolute inset-0 bg-gradient-to-r from-background/10 via-background/20 to-background/75" />
+        <div className={`absolute bottom-8 left-8 flex items-center gap-3 bg-background/50 backdrop-blur-md border ${phase.border} rounded-2xl px-5 py-3.5`}>
           <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${phase.accent}22` }}>
             <phase.icon className={`w-5 h-5 ${phase.text}`} />
           </div>
           <div>
-            <div className="text-[10px] text-white/40 uppercase tracking-widest font-medium">Phase {phase.number}</div>
-            <div className={`text-base font-bold ${phase.text}`}>{phase.label}</div>
+            <div className="text-xs text-c-text-3 uppercase tracking-widest font-medium">Phase {phase.number}</div>
+            <div className={`text-lg font-bold ${phase.text}`}>{phase.label}</div>
           </div>
         </div>
       </div>
 
       {/* Right: content */}
-      <div className="flex flex-col justify-center px-14 py-12 bg-[#0a0a0a]">
-        <div className={`text-[11px] font-bold tracking-widest uppercase mb-3 ${phase.text}`}>
+      <div className="flex flex-col justify-center px-16 py-14 bg-c-surface">
+        <div className={`text-[13px] font-bold tracking-widest uppercase mb-3 ${phase.text}`}>
           Phase {phase.number} of 06
         </div>
-        <h2 className="text-4xl font-bold text-white mb-5 leading-tight">{phase.label}</h2>
-        <p className="text-white/50 leading-relaxed mb-9 text-[15px]">{phase.description}</p>
+        <h2 className="text-5xl font-bold text-c-text mb-5 leading-tight">{phase.label}</h2>
+        <p className="text-c-text-3 leading-relaxed mb-9 text-lg">{phase.description}</p>
         <div className="space-y-3.5">
           {phase.steps.map((step, i) => (
             <div key={i} className="flex items-center gap-3.5">
-              <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
+              <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
                 style={{ background: `${phase.accent}18`, border: `1px solid ${phase.accent}40` }}>
-                <span className={`text-[11px] font-bold ${phase.text}`}>{i + 1}</span>
+                <span className={`text-[13px] font-bold ${phase.text}`}>{i + 1}</span>
               </div>
-              <span className="text-sm text-white/65">{step}</span>
+              <span className="text-base text-c-text-2">{step}</span>
             </div>
           ))}
         </div>
@@ -442,13 +442,12 @@ function PresentationContent() {
   return (
     <div
       ref={containerRef}
-      data-theme="dark"
-      className="h-screen w-screen bg-[#060606] flex flex-col overflow-hidden select-none"
+      className="h-screen w-screen bg-background flex flex-col overflow-hidden select-none"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
       {/* ── Progress bar ── */}
-      <div className="h-[2px] w-full bg-white/[0.04] shrink-0 relative">
+      <div className="h-[2px] w-full bg-c-elevated shrink-0 relative">
         <motion.div
           className="h-full bg-accent"
           initial={false}
@@ -460,18 +459,18 @@ function PresentationContent() {
       {/* ── Top bar ── */}
       <div className="flex items-center justify-between px-8 py-3.5 shrink-0 z-10">
         <div className="flex items-center gap-3">
-          {LOGO_URL && <img src={LOGO_URL} alt="Patriot Roofing & Home Repairs" className="h-9 w-auto object-contain opacity-90" />}
-          {LOGO_URL && <div className="w-px h-5 bg-white/10" />}
-          <span className="text-[11px] text-white/20 tracking-widest uppercase font-medium">Roofing &amp; Home Repairs</span>
+          {LOGO_URL && <img src={LOGO_URL} alt="Patriot Roofing & Home Repairs" className="h-11 w-auto object-contain opacity-90" />}
+          {LOGO_URL && <div className="w-px h-5 bg-c-border-inner" />}
+          <span className="text-[13px] text-c-text-4 tracking-widest uppercase font-medium">Roofing &amp; Home Repairs</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="text-xs text-white/20 mr-2 tabular-nums">{slide + 1} / {totalSlides}</span>
+          <span className="text-sm text-c-text-4 mr-2 tabular-nums">{slide + 1} / {totalSlides}</span>
           <button onClick={toggleFullscreen}
-            className="w-11 h-11 rounded-full flex items-center justify-center text-white/25 active:bg-white/10 active:text-white transition-all">
+            className="w-11 h-11 rounded-full flex items-center justify-center text-c-text-4 active:bg-c-elevated active:text-c-text transition-all">
             {isFullscreen ? <Minimize2 className="w-4.5 h-4.5" /> : <Maximize2 className="w-4.5 h-4.5" />}
           </button>
           <button onClick={() => router.back()}
-            className="w-11 h-11 rounded-full flex items-center justify-center text-white/25 active:bg-white/10 active:text-white transition-all">
+            className="w-11 h-11 rounded-full flex items-center justify-center text-c-text-4 active:bg-c-elevated active:text-c-text transition-all">
             <X className="w-4.5 h-4.5" />
           </button>
         </div>
@@ -494,25 +493,25 @@ function PresentationContent() {
               <div className="h-full flex flex-col items-center justify-center text-center px-12 relative overflow-hidden">
                 <div className="absolute inset-0"
                   style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1632823471565-1ecdf5c6da20?w=1200&q=85)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.18 }} />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-[#060606]/70 to-[#060606]" />
+                <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />
                 <div className="relative z-10 max-w-2xl">
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}>
-                    <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/25 text-accent text-[11px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-8">
+                    <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/25 text-accent text-[13px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-8">
                       <div className="w-1.5 h-1.5 rounded-full bg-accent" />
                       Patriot Roofing &amp; Home Repairs
                     </div>
                   </motion.div>
                   <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.65 }}
-                    className="text-6xl font-bold text-white mb-5 leading-[1.05] tracking-tight">
+                    className="text-7xl font-bold text-c-text mb-5 leading-[1.05] tracking-tight">
                     Your Home.<br />
                     <span className="text-accent">Protected &amp; Beautiful.</span>
                   </motion.h1>
                   <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }}
-                    className="text-lg text-white/40 max-w-lg mx-auto mb-10 leading-relaxed">
+                    className="text-xl text-c-text-3 max-w-lg mx-auto mb-10 leading-relaxed">
                     Quality roofing installation, repair &amp; replacement, plus home renovations — built by the Piedmont Triad&apos;s trusted roofing professionals. In-house crews. Every time.
                   </motion.p>
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7, duration: 0.6 }}
-                    className="flex items-center justify-center gap-8 text-sm text-white/35 mb-12">
+                    className="flex items-center justify-center gap-8 text-base text-c-text-3 mb-12">
                     {[
                       { icon: Star, label: 'GAF Certified' },
                       { icon: Shield, label: 'Licensed & Insured' },
@@ -526,9 +525,9 @@ function PresentationContent() {
                   </motion.div>
                   {quote && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85, duration: 0.5 }}
-                      className="inline-flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-full px-5 py-2.5">
-                      <span className="text-sm text-white/30">Prepared for</span>
-                      <span className="text-sm text-white/70 font-semibold">{quote.client.name}</span>
+                      className="inline-flex items-center gap-2 bg-c-elevated border border-c-border-inner rounded-full px-5 py-2.5">
+                      <span className="text-base text-c-text-4">Prepared for</span>
+                      <span className="text-base text-c-text-2 font-semibold">{quote.client.name}</span>
                     </motion.div>
                   )}
                 </div>
@@ -540,19 +539,19 @@ function PresentationContent() {
               <div className="h-full grid grid-cols-2">
                 <div className="relative overflow-hidden">
                   <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=85" alt="Patriot Roofing Project" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-black/20 to-black/75" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-background/5 via-background/20 to-background/75" />
                   <div className="absolute inset-0 flex items-end p-10">
-                    <blockquote className="text-xl font-medium text-white/80 italic leading-relaxed max-w-xs">
+                    <blockquote className="text-2xl font-medium text-c-text-2 italic leading-relaxed max-w-xs">
                       &ldquo;We&apos;re not just contractors — we&apos;re the neighbors who protect your home.&rdquo;
                     </blockquote>
                   </div>
                 </div>
-                <div className="flex flex-col justify-center px-14 py-12 bg-[#0a0a0a]">
-                  <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-3">Who We Are</div>
-                  <h2 className="text-4xl font-bold text-white mb-5 leading-tight">
+                <div className="flex flex-col justify-center px-16 py-14 bg-c-surface">
+                  <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-3">Who We Are</div>
+                  <h2 className="text-5xl font-bold text-c-text mb-5 leading-tight">
                     Lexington, NC&apos;s<br />Roofing Specialists
                   </h2>
-                  <p className="text-white/50 leading-relaxed mb-7 text-[15px]">
+                  <p className="text-c-text-3 leading-relaxed mb-7 text-lg">
                     Patriot Roofing &amp; Home Repairs serves Lexington and the Piedmont Triad — specializing in roofing installation, repair, replacement, and home renovations including bathroom &amp; kitchen remodels. Everything is handled in-house by our own experienced crew. No subcontractors, ever.
                   </p>
                   <div className="grid grid-cols-3 gap-3 mb-7">
@@ -574,10 +573,10 @@ function PresentationContent() {
               <div className="h-full flex flex-col items-center justify-center px-16 relative overflow-hidden">
                 <div className="absolute inset-0"
                   style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1632823471565-1ecdf5c6da20?w=1200&q=85)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.12 }} />
-                <div className="absolute inset-0 bg-gradient-to-b from-[#060606]/60 via-[#060606]/75 to-[#060606]" />
+                <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/75 to-background" />
                 <div className="relative z-10 w-full max-w-4xl mt-6">
-                  <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-3">The Patriot Difference</div>
-                  <h2 className="text-4xl font-bold text-white mb-10">Why Piedmont Triad Homeowners Choose Us</h2>
+                  <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-3">The Patriot Difference</div>
+                  <h2 className="text-5xl font-bold text-c-text mb-10">Why Piedmont Triad Homeowners Choose Us</h2>
                   <div className="grid grid-cols-2 gap-5">
                     {[
                       {
@@ -609,13 +608,13 @@ function PresentationContent() {
                         bg: 'rgba(168,85,247,0.1)',
                       },
                     ].map(({ icon: Icon, title, desc, color, bg }) => (
-                      <div key={title} className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-6 flex gap-4">
+                      <div key={title} className="bg-c-card border border-c-border-inner rounded-2xl p-6 flex gap-4">
                         <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: bg }}>
                           <Icon className={`w-5 h-5 ${color}`} />
                         </div>
                         <div>
-                          <div className="text-[15px] font-semibold text-white mb-2">{title}</div>
-                          <div className="text-sm text-white/45 leading-relaxed">{desc}</div>
+                          <div className="text-lg font-semibold text-c-text mb-2">{title}</div>
+                          <div className="text-base text-c-text-3 leading-relaxed">{desc}</div>
                         </div>
                       </div>
                     ))}
@@ -627,8 +626,8 @@ function PresentationContent() {
             {/* ── PORTFOLIO ── */}
             {currentSlide === 'portfolio' && (
               <div className="h-full flex flex-col px-12 py-8">
-                <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-2">Our Work</div>
-                <h2 className="text-3xl font-bold text-white mb-5">Recent Piedmont Triad Projects</h2>
+                <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-2">Our Work</div>
+                <h2 className="text-4xl font-bold text-c-text mb-5">Recent Piedmont Triad Projects</h2>
                 <div className="flex-1 grid grid-cols-3 grid-rows-2 gap-3 min-h-0">
                   {/* Project photos */}
                   {[
@@ -638,10 +637,10 @@ function PresentationContent() {
                   ].map(({ src, label, sub }) => (
                     <div key={src + label} className="rounded-2xl overflow-hidden relative">
                       <img src={src} alt={label} className="w-full h-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <div className="text-sm font-semibold text-white">{label}</div>
-                        <div className="text-xs text-white/50">{sub}</div>
+                        <div className="text-base font-semibold text-c-text">{label}</div>
+                        <div className="text-sm text-c-text-3">{sub}</div>
                       </div>
                     </div>
                   ))}
@@ -654,9 +653,9 @@ function PresentationContent() {
                     <div key={label} className={`rounded-2xl overflow-hidden relative bg-gradient-to-br ${color} border ${border} flex flex-col items-center justify-center gap-3`}>
                       <Icon className={`w-10 h-10 ${text} opacity-40`} />
                       <div className="text-center px-4">
-                        <div className={`text-xs font-bold uppercase tracking-widest ${text} mb-1`}>{label}</div>
-                        <div className="text-xs text-white/30 leading-tight">{sub}</div>
-                        <div className="text-[10px] text-white/15 mt-2 italic">Photo coming soon</div>
+                        <div className={`text-sm font-bold uppercase tracking-widest ${text} mb-1`}>{label}</div>
+                        <div className="text-sm text-c-text-4 leading-tight">{sub}</div>
+                        <div className="text-xs text-c-text-5 mt-2 italic">Photo coming soon</div>
                       </div>
                     </div>
                   ))}
@@ -669,9 +668,9 @@ function PresentationContent() {
               <div className="h-full flex flex-col items-center justify-center px-16"
                 style={{ background: 'radial-gradient(ellipse at 70% 50%, rgba(198,40,40,0.05) 0%, transparent 60%)' }}>
                 <div className="w-full max-w-5xl">
-                  <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-3">Your Roofing Project</div>
-                  <h2 className="text-4xl font-bold text-white mb-3">From First Call to Final Walkthrough</h2>
-                  <p className="text-white/35 mb-10 text-[15px]">A process we&apos;ve refined across 500+ Piedmont Triad projects — always with our own crew, never subcontracted.</p>
+                  <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-3">Your Roofing Project</div>
+                  <h2 className="text-5xl font-bold text-c-text mb-3">From First Call to Final Walkthrough</h2>
+                  <p className="text-c-text-3 mb-10 text-lg">A process we&apos;ve refined across 500+ Piedmont Triad projects — always with our own crew, never subcontracted.</p>
                   <div className="grid grid-cols-3 gap-4">
                     {PHASES.map((phase, i) => (
                       <motion.div
@@ -682,13 +681,13 @@ function PresentationContent() {
                         className={`bg-gradient-to-br ${phase.color} border ${phase.border} rounded-2xl p-5`}
                       >
                         <div className="flex items-center gap-3 mb-3">
-                          <div className="w-8 h-8 rounded-lg bg-black/20 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-lg bg-background/20 flex items-center justify-center">
                             <phase.icon className={`w-4 h-4 ${phase.text}`} />
                           </div>
-                          <span className={`text-[10px] font-bold ${phase.text} uppercase tracking-wider`}>Phase {phase.number}</span>
+                          <span className={`text-xs font-bold ${phase.text} uppercase tracking-wider`}>Phase {phase.number}</span>
                         </div>
-                        <div className="text-sm font-semibold text-white mb-1.5">{phase.label}</div>
-                        <div className="text-xs text-white/40 leading-relaxed">{phase.steps[0]}</div>
+                        <div className="text-base font-semibold text-c-text mb-1.5">{phase.label}</div>
+                        <div className="text-sm text-c-text-3 leading-relaxed">{phase.steps[0]}</div>
                       </motion.div>
                     ))}
                   </div>
@@ -710,11 +709,11 @@ function PresentationContent() {
                   style={{ background: 'radial-gradient(ellipse at 50% 40%, rgba(37,99,235,0.06) 0%, transparent 65%)' }}>
                   <div className="w-full max-w-4xl">
                     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                      <div className="text-accent-secondary text-[11px] font-bold tracking-widest uppercase mb-2">Your Investment</div>
-                      <h2 className="text-4xl font-bold text-white mb-3 leading-tight">Everything That&apos;s Included</h2>
+                      <div className="text-accent-secondary text-[13px] font-bold tracking-widest uppercase mb-2">Your Investment</div>
+                      <h2 className="text-5xl font-bold text-c-text mb-3 leading-tight">Everything That&apos;s Included</h2>
                       <div className="flex items-center gap-3 mb-7">
-                        <span className="text-sm text-white/40">Prepared for <span className="text-white/70 font-semibold">{quote.client.name}</span></span>
-                        <span className="text-white/10">|</span>
+                        <span className="text-base text-c-text-3">Prepared for <span className="text-c-text-2 font-semibold">{quote.client.name}</span></span>
+                        <span className="text-c-text-5">|</span>
                         <div className="flex gap-2">
                           {quote.projectTypes.map(pt => (
                             <Tag key={pt} label={pt.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} />
@@ -728,20 +727,20 @@ function PresentationContent() {
                         <motion.div key={group.label}
                           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.15 + i * 0.08, duration: 0.45 }}
-                          className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-5"
+                          className="bg-c-card border border-c-border-inner rounded-2xl p-5"
                         >
                           <div className="flex items-center gap-3 mb-3.5">
                             <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
                               style={{ background: `${group.accentColor}18` }}>
                               <group.icon className="w-4.5 h-4.5" style={{ color: group.accentColor }} />
                             </div>
-                            <div className="text-sm font-semibold text-white">{group.label}</div>
+                            <div className="text-base font-semibold text-c-text">{group.label}</div>
                           </div>
                           <div className="space-y-2">
                             {group.items.map((item, j) => (
                               <div key={j} className="flex items-start gap-2.5">
                                 <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 shrink-0" style={{ color: group.accentColor }} />
-                                <span className="text-sm text-white/60 leading-snug">{item}</span>
+                                <span className="text-base text-c-text/60 leading-snug">{item}</span>
                               </div>
                             ))}
                           </div>
@@ -750,17 +749,17 @@ function PresentationContent() {
                     </div>
 
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55 }}
-                      className="bg-white/[0.03] border border-white/[0.06] rounded-xl px-6 py-3.5 flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm text-white/45">
+                      className="bg-c-card border border-c-border-inner rounded-xl px-6 py-3.5 flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-base text-c-text-3">
                         <Clock className="w-4 h-4 text-accent-secondary/70" />
-                        <span>Est. Timeline: <span className="text-white/70 font-medium">{timeline}</span></span>
+                        <span>Est. Timeline: <span className="text-c-text-2 font-medium">{timeline}</span></span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-white/45">
+                      <div className="flex items-center gap-2 text-base text-c-text-3">
                         <Star className="w-4 h-4 text-accent/70" />
                         <span>GAF Certified</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-white/45">
-                        <MapPin className="w-4 h-4 text-white/30" />
+                      <div className="flex items-center gap-2 text-base text-c-text-3">
+                        <MapPin className="w-4 h-4 text-c-text-4" />
                         <span className="capitalize">{quote.siteConditions.roofArea?.toLocaleString()} sq ft · {quote.siteConditions.pitch} pitch · {quote.siteConditions.stories} {quote.siteConditions.stories === 1 ? 'story' : 'stories'}</span>
                       </div>
                     </motion.div>
@@ -792,8 +791,8 @@ function PresentationContent() {
                   <div className="w-full max-w-5xl">
                     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
                       className="text-center mb-7">
-                      <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-2">Choose Your Package</div>
-                      <h2 className="text-4xl font-bold text-white">Select the Right Option for Your Home</h2>
+                      <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-2">Choose Your Package</div>
+                      <h2 className="text-5xl font-bold text-c-text">Select the Right Option for Your Home</h2>
                     </motion.div>
 
                     <div className="grid grid-cols-3 gap-5 items-start">
@@ -806,35 +805,35 @@ function PresentationContent() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.15 + idx * 0.12, duration: 0.5 }}
                             className={cn(
-                              'relative rounded-2xl p-6 flex flex-col bg-white/[0.03] border',
+                              'relative rounded-2xl p-6 flex flex-col bg-c-card border',
                               isBetter
                                 ? 'border-accent-secondary/50 ring-1 ring-accent-secondary/20'
-                                : 'border-white/[0.08]'
+                                : 'border-c-border-inner'
                             )}
                           >
                             {isBetter && (
-                              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg shadow-accent-secondary/30">
+                              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg shadow-accent-secondary/30">
                                 Recommended
                               </div>
                             )}
 
                             {/* Tier header */}
                             <div className="mb-4">
-                              <div className="text-lg font-bold text-white">{pkg.label}</div>
-                              <div className="text-xs text-white/40 mt-0.5">{pkg.tagline}</div>
+                              <div className="text-xl font-bold text-c-text">{pkg.label}</div>
+                              <div className="text-sm text-c-text-3 mt-0.5">{pkg.tagline}</div>
                             </div>
 
                             {/* Materials */}
                             <div className="space-y-3 mb-4">
                               {pkg.materials.map((mat, mi) => (
                                 <div key={mi}>
-                                  <div className="text-sm font-semibold text-white/80">{mat.name}</div>
-                                  <div className="text-[11px] text-white/35 mb-1.5">{mat.brand}</div>
+                                  <div className="text-base font-semibold text-c-text-2">{mat.name}</div>
+                                  <div className="text-[13px] text-c-text-3 mb-1.5">{mat.brand}</div>
                                   <div className="space-y-1">
                                     {mat.features.slice(0, 3).map((feat, fi) => (
                                       <div key={fi} className="flex items-center gap-2">
                                         <CheckCircle2 className="w-3 h-3 shrink-0" style={{ color: tierColor }} />
-                                        <span className="text-xs text-white/50">{feat}</span>
+                                        <span className="text-sm text-c-text-3">{feat}</span>
                                       </div>
                                     ))}
                                   </div>
@@ -843,31 +842,31 @@ function PresentationContent() {
                             </div>
 
                             {/* Divider + included items */}
-                            <div className="h-px bg-white/[0.06] my-3" />
+                            <div className="h-px bg-c-border-inner my-3" />
                             <div className="space-y-1.5 mb-4 flex-1">
-                              <div className="text-[10px] text-white/30 uppercase tracking-widest font-semibold mb-2">Also Included</div>
+                              <div className="text-xs text-c-text-4 uppercase tracking-widest font-semibold mb-2">Also Included</div>
                               {includedItems.map((item, ii) => (
                                 <div key={ii} className="flex items-center gap-2">
                                   <CheckCircle2 className="w-3 h-3 text-emerald-500/60 shrink-0" />
-                                  <span className="text-xs text-white/45">{item}</span>
+                                  <span className="text-sm text-c-text-3">{item}</span>
                                 </div>
                               ))}
                             </div>
 
                             {/* Divider + price */}
-                            <div className="h-px bg-white/[0.06] my-3" />
+                            <div className="h-px bg-c-border-inner my-3" />
                             <div className="text-center">
-                              <div className={cn('text-3xl font-bold mb-1',
-                                isBetter ? 'text-accent-secondary' : pkg.tier === 'best' ? 'text-accent' : 'text-white'
+                              <div className={cn('text-4xl font-bold mb-1',
+                                isBetter ? 'text-accent-secondary' : pkg.tier === 'best' ? 'text-accent' : 'text-c-text'
                               )}>
                                 {formatCurrency(pkg.total)}
                               </div>
-                              <div className="text-[10px] text-white/30 uppercase tracking-widest mb-1">Total Investment</div>
+                              <div className="text-xs text-c-text-4 uppercase tracking-widest mb-1">Total Investment</div>
                               {pkg.monthlyPayment && (
-                                <div className="text-sm text-white/35">~{formatCurrency(pkg.monthlyPayment)}/mo*</div>
+                                <div className="text-base text-c-text-3">~{formatCurrency(pkg.monthlyPayment)}/mo*</div>
                               )}
                               {pkg.isSelected && (
-                                <div className="inline-flex items-center gap-1.5 bg-accent/10 border border-accent/25 text-accent text-[10px] font-bold px-3 py-1 rounded-full mt-3">
+                                <div className="inline-flex items-center gap-1.5 bg-accent/10 border border-accent/25 text-accent text-xs font-bold px-3 py-1 rounded-full mt-3">
                                   <BadgeCheck className="w-3 h-3" />
                                   Your Selection
                                 </div>
@@ -880,7 +879,7 @@ function PresentationContent() {
 
                     {defaultFin && (
                       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
-                        className="text-[11px] text-white/15 mt-4 text-center">
+                        className="text-[13px] text-c-text-5 mt-4 text-center">
                         *Estimated monthly payment based on {defaultFin.termMonths} months at {defaultFin.apr}% APR with 20% down. Subject to credit approval.
                       </motion.p>
                     )}
@@ -892,51 +891,51 @@ function PresentationContent() {
             {/* ── FINANCING ── */}
             {currentSlide === 'financing' && quote && (
               <div className="h-full flex flex-col items-center justify-center px-12">
-                <div className="w-full max-w-2xl">
-                  <div className="text-accent text-[11px] font-bold tracking-widest uppercase mb-2">Flexible Options</div>
-                  <h2 className="text-4xl font-bold text-white mb-2">Financing Available</h2>
-                  <p className="text-white/40 mb-2 text-[15px]">
+                <div className="w-full max-w-3xl">
+                  <div className="text-accent text-[13px] font-bold tracking-widest uppercase mb-2">Flexible Options</div>
+                  <h2 className="text-5xl font-bold text-c-text mb-2">Financing Available</h2>
+                  <p className="text-c-text-3 mb-2 text-lg">
                     We offer flexible financing options to fit your budget. Fast approvals, competitive rates, and easy monthly payments for your roofing project.
                   </p>
                   <div className="flex items-center gap-3 mb-7">
                     {['24–48 hr approval', 'No home collateral', 'Up to 20 years', 'All credit types'].map(t => (
-                      <span key={t} className="text-[11px] bg-white/[0.05] border border-white/[0.08] text-white/40 px-3 py-1 rounded-full">{t}</span>
+                      <span key={t} className="text-[13px] bg-c-elevated border border-c-border-inner text-c-text-3 px-3 py-1 rounded-full">{t}</span>
                     ))}
                   </div>
-                  <div className="flex gap-2 mb-6 p-1 bg-white/[0.04] border border-white/[0.07] rounded-2xl">
+                  <div className="flex gap-2 mb-6 p-1 bg-c-elevated border border-c-border-inner rounded-2xl">
                     {settings.financing.map((opt, i) => (
                       <button key={opt.id} onClick={() => setSelectedTerm(i)}
-                        className={cn('flex-1 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer',
-                          selectedTerm === i ? 'bg-accent text-black shadow-lg shadow-accent/25' : 'text-white/35 active:bg-white/5'
+                        className={cn('flex-1 py-3 rounded-xl text-base font-semibold transition-all cursor-pointer',
+                          selectedTerm === i ? 'bg-accent text-white shadow-lg shadow-accent/25' : 'text-c-text-3 active:bg-c-card'
                         )}>
                         {opt.label}
                       </button>
                     ))}
                   </div>
                   {financing && (
-                    <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-8">
+                    <div className="bg-c-card border border-c-border-inner rounded-2xl p-8">
                       <div className="grid grid-cols-3 gap-8 text-center mb-6">
                         <div>
-                          <div className="text-5xl font-bold text-accent mb-2">{formatCurrency(financing.monthlyPayment)}</div>
-                          <div className="text-xs text-white/35 uppercase tracking-wider">per month</div>
+                          <div className="text-6xl font-bold text-accent mb-2">{formatCurrency(financing.monthlyPayment)}</div>
+                          <div className="text-sm text-c-text-3 uppercase tracking-wider">per month</div>
                         </div>
                         <div>
-                          <div className="text-5xl font-bold text-white mb-2">{financingOption.termMonths}</div>
-                          <div className="text-xs text-white/35 uppercase tracking-wider">months</div>
+                          <div className="text-6xl font-bold text-c-text mb-2">{financingOption.termMonths}</div>
+                          <div className="text-sm text-c-text-3 uppercase tracking-wider">months</div>
                         </div>
                         <div>
-                          <div className="text-5xl font-bold text-white mb-2">{financingOption.apr}%</div>
-                          <div className="text-xs text-white/35 uppercase tracking-wider">APR</div>
+                          <div className="text-6xl font-bold text-c-text mb-2">{financingOption.apr}%</div>
+                          <div className="text-sm text-c-text-3 uppercase tracking-wider">APR</div>
                         </div>
                       </div>
-                      <div className="pt-5 border-t border-white/[0.06] flex justify-between text-sm text-white/30">
+                      <div className="pt-5 border-t border-c-border-inner flex justify-between text-base text-c-text-4">
                         <span>20% down: {formatCurrency(financing.downPayment)}</span>
                         <span>Financed: {formatCurrency(financing.financed)}</span>
                         <span>Total cost: {formatCurrency(financing.totalCost)}</span>
                       </div>
                     </div>
                   )}
-                  <p className="text-[11px] text-white/15 mt-3 text-center">Financing subject to credit approval. Terms shown for illustration purposes only.</p>
+                  <p className="text-[13px] text-c-text-5 mt-3 text-center">Financing subject to credit approval. Terms shown for illustration purposes only.</p>
                 </div>
               </div>
             )}
@@ -946,21 +945,21 @@ function PresentationContent() {
               <div className="h-full flex flex-col items-center justify-center text-center px-12 relative overflow-hidden">
                 <div className="absolute inset-0"
                   style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=85)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.12 }} />
-                <div className="absolute inset-0 bg-gradient-to-b from-[#060606]/60 via-[#060606]/85 to-[#060606]" />
+                <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/85 to-background" />
                 <div className="relative z-10 w-full max-w-3xl">
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                    <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/25 text-accent text-[11px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
+                    <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/25 text-accent text-[13px] font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
                       <ThumbsUp className="w-3.5 h-3.5" />
                       Ready to Protect Your Home?
                     </div>
                   </motion.div>
                   <motion.h2 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}
-                    className="text-5xl font-bold text-white mb-5 leading-[1.05] tracking-tight">
+                    className="text-6xl font-bold text-c-text mb-5 leading-[1.05] tracking-tight">
                     Let&apos;s Protect Your Home<br />
                     <span className="text-accent">For Years to Come</span>
                   </motion.h2>
                   <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}
-                    className="text-white/40 max-w-lg mx-auto mb-10 text-[15px] leading-relaxed">
+                    className="text-c-text-3 max-w-lg mx-auto mb-10 text-lg leading-relaxed">
                     Accepting this quote kicks off a process refined across 500+ Piedmont Triad projects. Our crew handles everything — you just enjoy the result.
                   </motion.p>
                   <div className="grid grid-cols-3 gap-4 mb-10 text-left">
@@ -971,22 +970,22 @@ function PresentationContent() {
                     ].map((s, i) => (
                       <motion.div key={s.step}
                         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 + i * 0.1, duration: 0.45 }}
-                        className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-5">
-                        <div className="text-3xl font-bold text-accent/25 mb-3">{s.step}</div>
-                        <div className="text-sm font-semibold text-white mb-1.5">{s.label}</div>
-                        <div className="text-xs text-white/35 leading-relaxed">{s.desc}</div>
+                        className="bg-c-elevated border border-c-border-inner rounded-2xl p-5">
+                        <div className="text-4xl font-bold text-accent/25 mb-3">{s.step}</div>
+                        <div className="text-base font-semibold text-c-text mb-1.5">{s.label}</div>
+                        <div className="text-sm text-c-text-3 leading-relaxed">{s.desc}</div>
                       </motion.div>
                     ))}
                   </div>
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
-                    className="flex items-center justify-center gap-5 text-sm text-white/35">
+                    className="flex items-center justify-center gap-5 text-base text-c-text-3">
                     <div className="flex items-center gap-2">
                       <Phone className="w-4 h-4 text-accent/70" />
                       {settings.company.phone}
                     </div>
-                    <span className="text-white/10">|</span>
+                    <span className="text-c-text-5">|</span>
                     <span>{settings.company.email}</span>
-                    <span className="text-white/10">|</span>
+                    <span className="text-c-text-5">|</span>
                     <span>patriotroofingandhomerepair.com</span>
                   </motion.div>
                 </div>
@@ -1000,7 +999,7 @@ function PresentationContent() {
       {/* ── Bottom navigation ── */}
       <div className="flex items-center justify-center gap-5 py-4 shrink-0">
         <button onClick={prev} disabled={slide === 0}
-          className="w-11 h-11 rounded-full border border-white/[0.1] flex items-center justify-center text-white/30 disabled:opacity-20 disabled:cursor-not-allowed active:bg-white/10 active:text-white active:scale-95 transition-all cursor-pointer">
+          className="w-11 h-11 rounded-full border border-c-border flex items-center justify-center text-c-text-4 disabled:opacity-20 disabled:cursor-not-allowed active:bg-c-elevated active:text-c-text active:scale-95 transition-all cursor-pointer">
           <ChevronLeft className="w-5 h-5" />
         </button>
         <div className="flex items-center gap-1.5">
@@ -1009,13 +1008,13 @@ function PresentationContent() {
               className="p-1.5 cursor-pointer"
             >
               <div className={cn('rounded-full transition-all',
-                i === slide ? 'w-5 h-2 bg-accent' : 'w-2 h-2 bg-white/[0.12]'
+                i === slide ? 'w-5 h-2 bg-accent' : 'w-2 h-2 bg-c-border'
               )} />
             </button>
           ))}
         </div>
         <button onClick={next} disabled={slide === totalSlides - 1}
-          className="w-11 h-11 rounded-full border border-white/[0.1] flex items-center justify-center text-white/30 disabled:opacity-20 disabled:cursor-not-allowed active:bg-white/10 active:text-white active:scale-95 transition-all cursor-pointer">
+          className="w-11 h-11 rounded-full border border-c-border flex items-center justify-center text-c-text-4 disabled:opacity-20 disabled:cursor-not-allowed active:bg-c-elevated active:text-c-text active:scale-95 transition-all cursor-pointer">
           <ChevronRight className="w-5 h-5" />
         </button>
       </div>
@@ -1026,7 +1025,7 @@ function PresentationContent() {
 export default function PresentationPage() {
   return (
     <Suspense fallback={
-      <div data-theme="dark" className="h-screen bg-[#060606] flex items-center justify-center text-neutral-500">Loading…</div>
+      <div className="h-screen bg-background flex items-center justify-center text-c-text-3">Loading…</div>
     }>
       <PresentationContent />
     </Suspense>
