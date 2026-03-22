@@ -182,16 +182,16 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                     <motion.div className="fixed inset-0 z-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} onClick={() => setMenuOpen(false)} />
                   )}
                 </AnimatePresence>
-                <AnimatedOverlay open={menuOpen} className="absolute right-0 top-full mt-2 w-56 bg-c-card border border-c-border-inner rounded-2xl shadow-2xl z-20 overflow-hidden py-1.5">
+                <AnimatedOverlay open={menuOpen} className="absolute right-0 top-full mt-2 w-72 bg-c-card border border-c-border-inner rounded-2xl shadow-2xl z-20 overflow-hidden py-2">
                       {/* Status */}
-                      <div className="px-4 py-2">
-                        <div className="text-[10px] font-bold text-c-text-4 uppercase tracking-widest mb-2">Status</div>
-                        <div className="flex gap-1.5">
+                      <div className="px-5 py-3">
+                        <div className="text-xs font-bold text-c-text-4 uppercase tracking-widest mb-2.5">Status</div>
+                        <div className="flex gap-2">
                           {STATUS_OPTIONS.map(opt => (
                             <button
                               key={opt.value}
                               onClick={() => { updateStatus(id, opt.value); setMenuOpen(false); }}
-                              className={`flex-1 py-2 rounded-xl text-[11px] font-semibold text-center transition-all ${
+                              className={`flex-1 py-2.5 rounded-xl text-sm font-semibold text-center transition-all ${
                                 quote.status === opt.value ? 'bg-accent/15 text-accent border border-accent/25' : 'bg-c-elevated text-c-text-3 active:bg-c-surface'
                               }`}
                             >
@@ -200,36 +200,36 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                           ))}
                         </div>
                       </div>
-                      <div className="h-px bg-c-border-inner mx-3 my-1" />
-                      <button onClick={() => { handleSendEmail(); setMenuOpen(false); }} disabled={emailLoading || !quote.client.email} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors disabled:opacity-40">
-                        <Send className="w-4 h-4 text-c-text-4" />
+                      <div className="h-px bg-c-border-inner mx-4 my-1.5" />
+                      <button onClick={() => { handleSendEmail(); setMenuOpen(false); }} disabled={emailLoading || !quote.client.email} className="w-full flex items-center gap-3.5 px-5 py-3.5 text-base text-c-text-2 active:bg-c-elevated transition-colors disabled:opacity-40">
+                        <Send className="w-5 h-5 text-c-text-4" />
                         {emailLoading ? 'Sending...' : emailSent ? 'Sent!' : 'Email to Client'}
                       </button>
-                      <button onClick={() => { handleDownloadPDF(); setMenuOpen(false); }} disabled={pdfLoading} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors disabled:opacity-40">
-                        <Download className="w-4 h-4 text-c-text-4" />
+                      <button onClick={() => { handleDownloadPDF(); setMenuOpen(false); }} disabled={pdfLoading} className="w-full flex items-center gap-3.5 px-5 py-3.5 text-base text-c-text-2 active:bg-c-elevated transition-colors disabled:opacity-40">
+                        <Download className="w-5 h-5 text-c-text-4" />
                         Download PDF
                       </button>
-                      <button onClick={() => { const url = `${window.location.origin}/q/${id}`; navigator.clipboard.writeText(url).then(() => { setLinkCopied(true); setTimeout(() => setLinkCopied(false), 2500); }); setMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors">
-                        <Copy className="w-4 h-4 text-c-text-4" />
+                      <button onClick={() => { const url = `${window.location.origin}/q/${id}`; navigator.clipboard.writeText(url).then(() => { setLinkCopied(true); setTimeout(() => setLinkCopied(false), 2500); }); setMenuOpen(false); }} className="w-full flex items-center gap-3.5 px-5 py-3.5 text-base text-c-text-2 active:bg-c-elevated transition-colors">
+                        <Copy className="w-5 h-5 text-c-text-4" />
                         {linkCopied ? 'Link Copied!' : 'Copy Client Link'}
                       </button>
-                      <Link href={`/q/${id}`} target="_blank" onClick={() => setMenuOpen(false)} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors">
-                        <ExternalLink className="w-4 h-4 text-c-text-4" />
+                      <Link href={`/q/${id}`} target="_blank" onClick={() => setMenuOpen(false)} className="w-full flex items-center gap-3.5 px-5 py-3.5 text-base text-c-text-2 active:bg-c-elevated transition-colors">
+                        <ExternalLink className="w-5 h-5 text-c-text-4" />
                         Client View
                       </Link>
                       {quote.status === 'accepted' && (
-                        <button onClick={() => { handleMoveToProjects(); setMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors">
-                          <Hammer className="w-4 h-4 text-c-text-4" />
+                        <button onClick={() => { handleMoveToProjects(); setMenuOpen(false); }} className="w-full flex items-center gap-3.5 px-5 py-3.5 text-base text-c-text-2 active:bg-c-elevated transition-colors">
+                          <Hammer className="w-5 h-5 text-c-text-4" />
                           {alreadyInProjects ? 'View Project' : 'Move to Jobs'}
                         </button>
                       )}
-                      <div className="h-px bg-c-border-inner mx-3 my-1" />
-                      <button onClick={() => { handleDuplicate(); setMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-c-text-2 active:bg-c-elevated transition-colors">
-                        <Copy className="w-4 h-4 text-c-text-4" />
+                      <div className="h-px bg-c-border-inner mx-4 my-1.5" />
+                      <button onClick={() => { handleDuplicate(); setMenuOpen(false); }} className="w-full flex items-center gap-3.5 px-5 py-3.5 text-base text-c-text-2 active:bg-c-elevated transition-colors">
+                        <Copy className="w-5 h-5 text-c-text-4" />
                         Duplicate Quote
                       </button>
-                      <button onClick={() => { handleDelete(); setMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 active:bg-red-500/10 transition-colors">
-                        <Trash2 className="w-4 h-4" />
+                      <button onClick={() => { handleDelete(); setMenuOpen(false); }} className="w-full flex items-center gap-3.5 px-5 py-3.5 text-base text-red-400 active:bg-red-500/10 transition-colors">
+                        <Trash2 className="w-5 h-5" />
                         Delete Quote
                       </button>
                 </AnimatedOverlay>
