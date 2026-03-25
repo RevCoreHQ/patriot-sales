@@ -12,8 +12,6 @@ const ORG_ID_KEY = 'patriot:org_id';
 
 function isClient() { return typeof window !== 'undefined'; }
 
-// ─── localStorage helpers (fallback / cache) ────────────────────────────────
-
 function loadUsersLocal(): AppUser[] {
   if (!isClient()) return [];
   try {
@@ -43,7 +41,7 @@ function loadCachedProfiles(): AppUser[] {
 function loadSession(): { id: string; name: string; role: UserRole } | null {
   if (!isClient()) return null;
   try {
-    const r = sessionStorage.getItem(SESSION_KEY);
+    const r = localStorage.getItem(SESSION_KEY);
     return r ? JSON.parse(r) : null;
   } catch { return null; }
 }
@@ -51,9 +49,9 @@ function loadSession(): { id: string; name: string; role: UserRole } | null {
 function saveSession(user: { id: string; name: string; role: UserRole } | null) {
   if (!isClient()) return;
   if (user) {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
+    localStorage.setItem(SESSION_KEY, JSON.stringify(user));
   } else {
-    sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(SESSION_KEY);
   }
 }
 
@@ -67,14 +65,6 @@ function saveOrgId(orgId: string) {
   localStorage.setItem(ORG_ID_KEY, orgId);
 }
 
-const DEFAULT_ADMIN: AppUser = {
-  id: 'default-admin',
-  name: 'Admin',
-  pin: '1234',
-  role: 'admin',
-  createdAt: new Date().toISOString(),
-};
-
 interface AuthStore {
   users: AppUser[];
   currentUser: { id: string; name: string; role: UserRole } | null;
@@ -82,11 +72,10 @@ interface AuthStore {
   supabaseReady: boolean;
   initialized: boolean;
   init: () => void;
-  login: (name: string, pin: string) => boolean;
   logout: () => void;
-  addUser: (name: string, pin: string, role: UserRole) => AppUser;
+  addUser: (name: string, role: UserRole) => AppUser;
   removeUser: (id: string) => void;
-  updateUser: (id: string, updates: Partial<Pick<AppUser, 'name' | 'pin' | 'role'>>) => void;
+  updateUser: (id: string, updates: Partial<Pick<AppUser, 'name' | 'role'>>) => void;
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -97,22 +86,14 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   initialized: false,
 
   init: () => {
-    // 1. Start with cached / local data immediately
+    // Start with cached data immediately
     const cachedOrgId = loadOrgId();
     const session = loadSession();
-
-    let users = loadCachedProfiles();
-    if (users.length === 0) {
-      users = loadUsersLocal();
-    }
-    if (users.length === 0) {
-      users = [DEFAULT_ADMIN];
-      saveUsersLocal(users);
-    }
+    const users = loadCachedProfiles().length > 0 ? loadCachedProfiles() : loadUsersLocal();
 
     set({ users, currentUser: session, orgId: cachedOrgId, initialized: true });
 
-    // 2. Async: try to fetch profiles from Supabase
+    // Async: fetch from Supabase + auto-login from session
     (async () => {
       try {
         const supabase = createClient();
@@ -125,7 +106,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         // Get profile to find org_id
         const { data: profile } = await supabase
           .from('profiles')
-          .select('org_id')
+          .select('*')
           .eq('id', user.id)
           .single();
 
@@ -137,6 +118,14 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         const orgId = profile.org_id;
         saveOrgId(orgId);
 
+        // Auto-set current user from Supabase profile
+        const currentUser = {
+          id: profile.id,
+          name: profile.name,
+          role: profile.role as UserRole,
+        };
+        saveSession(currentUser);
+
         // Fetch all profiles in this org
         const { data: profiles } = await supabase
           .from('profiles')
@@ -147,45 +136,40 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
           const appUsers: AppUser[] = profiles.map((p) => ({
             id: p.id,
             name: p.name,
-            pin: p.pin,
+            pin: p.pin ?? '0000',
             role: p.role as UserRole,
             createdAt: p.created_at,
           }));
           cacheProfiles(appUsers);
-          set({ users: appUsers, orgId, supabaseReady: true });
+          set({ users: appUsers, currentUser, orgId, supabaseReady: true });
         } else {
-          set({ orgId, supabaseReady: true });
+          set({ currentUser, orgId, supabaseReady: true });
         }
       } catch {
-        // Offline — keep using cached data
         set({ supabaseReady: false });
       }
     })();
   },
 
-  login: (name, pin) => {
-    const { users } = get();
-    const user = users.find(u => u.name.toLowerCase() === name.toLowerCase() && u.pin === pin);
-    if (!user) return false;
-    const session = { id: user.id, name: user.name, role: user.role };
-    saveSession(session);
-    set({ currentUser: session });
-    return true;
-  },
-
   logout: () => {
     saveSession(null);
     set({ currentUser: null });
+    // Also sign out of Supabase
+    (async () => {
+      try {
+        const supabase = createClient();
+        await supabase.auth.signOut();
+      } catch { /* offline */ }
+    })();
   },
 
-  addUser: (name, pin, role) => {
-    const user: AppUser = { id: generateId(), name, pin, role, createdAt: new Date().toISOString() };
+  addUser: (name, role) => {
+    const user: AppUser = { id: generateId(), name, pin: '0000', role, createdAt: new Date().toISOString() };
     const users = [...get().users, user];
     saveUsersLocal(users);
     cacheProfiles(users);
     set({ users });
 
-    // Async: save to Supabase if connected
     const { orgId } = get();
     if (orgId) {
       (async () => {
@@ -195,10 +179,10 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
             id: user.id,
             org_id: orgId,
             name: user.name,
-            pin: user.pin,
+            pin: '0000',
             role: user.role,
           });
-        } catch { /* offline — local only */ }
+        } catch { /* offline */ }
       })();
     }
 

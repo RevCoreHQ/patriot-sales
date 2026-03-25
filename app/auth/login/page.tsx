@@ -13,7 +13,6 @@ export default function AuthLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [pin, setPin] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -31,15 +30,10 @@ export default function AuthLoginPage() {
         setLoading(false);
         return;
       }
-      router.replace('/login');
+      router.replace('/');
     } else {
       if (!name.trim()) {
         setError('Name is required');
-        setLoading(false);
-        return;
-      }
-      if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
-        setError('PIN must be exactly 4 digits');
         setLoading(false);
         return;
       }
@@ -85,7 +79,7 @@ export default function AuthLoginPage() {
           id: data.user.id,
           org_id: orgId,
           name: name.trim(),
-          pin,
+          pin: '0000',
           role: existingOrg ? 'sales' : 'admin',
         });
 
@@ -95,7 +89,7 @@ export default function AuthLoginPage() {
           return;
         }
 
-        router.replace('/login');
+        router.replace('/');
       } else {
         setSuccess('Check your email for a confirmation link, then sign in.');
         setLoading(false);
@@ -159,17 +153,6 @@ export default function AuthLoginPage() {
                 placeholder="Password"
                 className="w-full h-14 bg-c-input border border-c-border-input rounded-xl px-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50 transition-colors"
               />
-              {mode === 'signup' && (
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={4}
-                  value={pin}
-                  onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                  placeholder="4-digit PIN (for quick iPad login)"
-                  className="w-full h-14 bg-c-input border border-c-border-input rounded-xl px-4 text-base text-c-text placeholder:text-c-text-4 focus:outline-none focus:border-accent/50 transition-colors tracking-[0.3em]"
-                />
-              )}
             </div>
 
             {error && (
@@ -182,7 +165,7 @@ export default function AuthLoginPage() {
 
           <button
             type="submit"
-            disabled={!email || !password || (mode === 'signup' && (!name.trim() || pin.length !== 4)) || loading}
+            disabled={!email || !password || (mode === 'signup' && !name.trim()) || loading}
             className="w-full h-14 bg-gradient-to-br from-accent-from to-accent-to text-white text-base font-bold rounded-xl active:scale-[0.98] transition-all shadow-lg shadow-accent/25 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {loading
