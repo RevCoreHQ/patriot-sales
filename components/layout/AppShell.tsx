@@ -1,13 +1,17 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/store/auth';
 import { useSettingsStore } from '@/store/settings';
 import { useQuotesStore } from '@/store/quotes';
 import { useProjectsStore } from '@/store/projects';
 import { useNotifications } from '@/lib/useNotifications';
+import { subscribeToChanges, unsubscribe } from '@/lib/supabase/realtime';
+import { startOfflineSync } from '@/lib/supabase/sync';
+import { fetchQuoteById } from '@/lib/supabase/db/quotes';
 import {
   LayoutDashboard,
   FileText,
@@ -58,16 +62,53 @@ const TABS: Tab[] = [
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { orgId, supabaseReady } = useAuthStore();
   const { init: initSettings } = useSettingsStore();
   const { init: initQuotes } = useQuotesStore();
   const { init: initProjects } = useProjectsStore();
+  const realtimeStarted = useRef(false);
   useNotifications();
 
   useEffect(() => {
     initSettings();
     initQuotes();
     initProjects();
+    startOfflineSync();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Start realtime subscriptions once Supabase is ready
+  useEffect(() => {
+    if (!orgId || !supabaseReady || realtimeStarted.current) return;
+    realtimeStarted.current = true;
+
+    subscribeToChanges(
+      orgId,
+      // Quote changes
+      async (payload) => {
+        if (payload.eventType === 'DELETE') {
+          useQuotesStore.getState().removeFromRemote(payload.old.id as string);
+        } else {
+          const quote = await fetchQuoteById(payload.new.id as string);
+          if (quote) useQuotesStore.getState().mergeFromRemote(quote);
+        }
+      },
+      // Project changes
+      (payload) => {
+        if (payload.eventType === 'DELETE') {
+          useProjectsStore.getState().removeFromRemote(payload.old.id as string);
+        } else {
+          // Re-init to get full project data
+          useProjectsStore.getState().init();
+        }
+      },
+      // Settings changes
+      () => {
+        useSettingsStore.getState().init();
+      }
+    );
+
+    return () => { unsubscribe(); realtimeStarted.current = false; };
+  }, [orgId, supabaseReady]);
 
   // Hide sidebar on presentation (fullscreen) routes
   const hideSidebar = pathname.startsWith('/presentation');

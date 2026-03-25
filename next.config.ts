@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'assets.cdn.filesafe.space' },
+      // Supabase Storage — matches any project subdomain
+      { protocol: 'https', hostname: '*.supabase.co' },
     ],
   },
 };
